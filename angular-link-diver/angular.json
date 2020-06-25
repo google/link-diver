@@ -21,7 +21,8 @@
             "aot": true,
             "assets": [
               "src/favicon.ico",
-              "src/assets"
+              "src/assets",
+              "src/manifest.json"
             ],
             "styles": [
               "src/styles.css"
@@ -119,6 +120,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "angular-link-diver"
+    }
+  },
+  "defaultProject": "angular-link-diver",
+  "cli": {
+    "analytics": "e5725210-450d-419e-81e6-78472d3fa26b"
+  }
 }
