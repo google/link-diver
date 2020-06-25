@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LinkService } from '../link.service';
 
 @Component({
   selector: 'app-link-list',
@@ -7,19 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LinkListComponent implements OnInit {
 
-  constructor() { }
-
-  private mockLinkList: string[] = [
-    'example.url.1',
-    'example.url.2',
-    'example.url.3'
-  ];
+  constructor(private linkService: LinkService) { }
 
   ngOnInit(): void {
   }
 
   getLinks(): string[] {
-    return this.mockLinkList;
+    return this.linkService.getLinks();
   }
 
 }
