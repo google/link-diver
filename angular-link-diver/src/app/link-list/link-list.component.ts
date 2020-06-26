@@ -10,7 +10,10 @@ export class LinkListComponent implements OnInit {
 
   constructor(private linkService: LinkService) { }
 
+  public links: string[];
+
   ngOnInit(): void {
+    this.links = this.getLinks();
   }
 
   getLinks(): string[] {

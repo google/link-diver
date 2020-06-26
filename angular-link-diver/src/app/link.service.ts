@@ -1,3 +1,4 @@
+/// <reference types="chrome"/>
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -13,7 +14,8 @@ export class LinkService {
   ];
 
   getLinks(): string[] {
-    return this.mockLinkList;
+    const links: string[] = this.mockLinkList;
+    return links;
   }
 
   constructor() { }
