@@ -1,22 +1,39 @@
 /// <reference types="chrome"/>
-import { Injectable } from '@angular/core';
+import { Injectable, ApplicationRef } from '@angular/core';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LinkService {
 
-  private mockLinkList: string[] = [
-    'example.url.1',
-    'example.url.2',
-    'example.url.3',
-    'example.url.4'
-  ];
+  private linkList: string[] = [];
 
   getLinks(): string[] {
-    const links: string[] = this.mockLinkList;
-    return links;
+    return this.linkList;
   }
 
-  constructor() { }
+  addLinks(newLinks: string[]): void {
+    for (const str of newLinks) {
+      this.linkList.push(str);
+    }
+  }
+
+  constructor(private applicationRef: ApplicationRef) {
+
+    chrome.tabs.query({
+      active: true,
+      currentWindow: true},
+      (tabs: any) => {
+        console.log('Sending request for links');
+        chrome.tabs.sendMessage(tabs[0].id, {
+            message: 'send links'
+          }, (links: string[]) => {
+            console.log(links);
+            this.addLinks(links);
+            console.log('Links added');
+            this.applicationRef.tick();
+          });
+      });
+  }
+
 }

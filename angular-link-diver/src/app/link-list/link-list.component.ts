@@ -13,11 +13,7 @@ export class LinkListComponent implements OnInit {
   public links: string[];
 
   ngOnInit(): void {
-    this.links = this.getLinks();
-  }
-
-  getLinks(): string[] {
-    return this.linkService.getLinks();
+    this.links = this.linkService.getLinks();
   }
 
 }
