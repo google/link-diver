@@ -1,3 +1,5 @@
 <ul>
-    <li *ngFor="let link of links">{{ link }}</li>
+    <li *ngFor="let link of links">
+        <a href={{link}}>{{link}}</a>
+    </li>
 </ul>
