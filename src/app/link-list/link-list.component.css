@@ -1,0 +1,19 @@
+.links ul{
+    list-style: none;
+    padding: 0;
+}
+
+.links a{
+    text-decoration: none;
+}
+
+.links li{
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+.links li:nth-child(odd){
+    background-color: #eee
+}
