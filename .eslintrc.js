@@ -15,5 +15,10 @@ module.exports = {
     '@typescript-eslint',
   ],
   'rules': {
+    'comma-dangle': 0,
+    'require-jsdoc': 0,
+    'padded-blocks': 0,
+    'object-curly-spacing': 0,
+    'new-cap': 0
   },
 };
