@@ -15,5 +15,4 @@ export class LinkListComponent implements OnInit {
   ngOnInit(): void {
     this.links = this.linkService.getLinks();
   }
-
 }
