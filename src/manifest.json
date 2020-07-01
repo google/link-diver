@@ -1,0 +1,9 @@
+{
+    "name": "Link Diver",
+    "version": "1.0",
+    "description": "A link diver tool for chrome.",
+    "manifest_version": 2,
+    "browser_action": {
+        "default_popup": "index.html"
+    }
+}
