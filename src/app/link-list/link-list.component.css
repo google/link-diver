@@ -1,6 +1,10 @@
 .links ul{
     list-style: none;
     padding: 0;
+    max-height: 400px;
+    width: 350px;
+    overflow: hidden;
+    overflow-y: scroll;
 }
 
 .links a{
@@ -12,8 +16,19 @@
     padding-bottom: 0.5em;
     padding-left: 2px;
     padding-right: 2px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .links li:nth-child(odd){
     background-color: #eee
+}
+
+.search-bar{
+    text-align: center;
+}
+
+.search-bar input{
+    width: 95%;
 }

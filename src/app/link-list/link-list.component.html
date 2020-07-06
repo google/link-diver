@@ -1,7 +1,8 @@
-<div class="links">
-    
-    <input #searchBox (input)="search(searchBox.value)"/>
-
+<div class="search-bar">
+    <input #searchBox (input)="search(searchBox.value)" 
+            placeholder="Insert your regular expression here"/>
+</div>
+<div class="links">    
     <ul>
         <li *ngFor="let link of links$ | async">
             <a href={{link}} target="_blank">{{link}}</a>
