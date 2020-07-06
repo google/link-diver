@@ -1,6 +1,9 @@
 <div class="links">
+    
+    <input #searchBox (input)="search(searchBox.value)"/>
+
     <ul>
-        <li *ngFor="let link of links">
+        <li *ngFor="let link of links$ | async">
             <a href={{link}} target="_blank">{{link}}</a>
         </li>
     </ul>
