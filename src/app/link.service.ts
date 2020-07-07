@@ -1,7 +1,7 @@
 /// <reference types="chrome"/>
-import { Injectable, ApplicationRef } from '@angular/core';
+import { Injectable, ApplicationRef, EventEmitter } from '@angular/core';
 
-import { Observable, of} from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +9,8 @@ import { Observable, of} from 'rxjs';
 export class LinkService {
 
   private linkList: string[] = [];
+
+  invokeSearch = new EventEmitter();
 
   getLinks(): string[] {
     return this.linkList;
@@ -24,8 +26,13 @@ export class LinkService {
     if (!term.trim()) {
       return of(this.linkList);
     }
-    const regExp = new RegExp(term);
-    return of(this.linkList.filter((str) => regExp.test(str)));
+    try {
+      const regExp = new RegExp(term);
+      return of(this.linkList.filter((str) => regExp.test(str)));
+    } catch (err) {
+      console.log(err);
+      return of(this.linkList);
+    }
   }
 
   constructor(private applicationRef: ApplicationRef) {
@@ -42,7 +49,7 @@ export class LinkService {
         console.log(links);
         this.addLinks(links);
         console.log('Links added');
-        this.applicationRef.tick();
+        this.invokeSearch.emit();
       });
     });
   }
