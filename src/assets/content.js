@@ -1,3 +1,4 @@
+// eslint-disable-next-line spaced-comment
 /// <reference types="chrome"/>
 
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
