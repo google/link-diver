@@ -8,7 +8,8 @@
         <div class="links">    
             <ul>
                 <li *ngFor="let link of links$ | async">
-                    <a href={{link}} target="_blank">{{link}}</a>
+                    <a href={{link}} target="_blank" 
+                        [innerHTML]="link | redMatch:searchBox.value"></a>
                 </li>
             </ul>
         </div>

@@ -38,22 +38,6 @@ export class LinkService {
 
   constructor(private applicationRef: ApplicationRef) {
 
-    /* chrome.tabs.query({
-      active: true,
-      currentWindow: true
-    },
-    (tabs: any) => {
-      console.log('Sending request for links');
-      chrome.tabs.sendMessage(tabs[0].openerTabId, {
-        message: 'send links'
-      }, (links: string[]) => {
-        console.log(links);
-        this.addLinks(links);
-        console.log('Links added');
-        this.invokeSearch.emit();
-      });
-    });*/
-
     chrome.tabs.getCurrent((tab) => {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'

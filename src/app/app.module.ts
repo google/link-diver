@@ -4,11 +4,13 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LinkListComponent } from './link-list/link-list.component';
+import { RedMatchPipe } from './red-match.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    LinkListComponent
+    LinkListComponent,
+    RedMatchPipe
   ],
   imports: [
     BrowserModule,
