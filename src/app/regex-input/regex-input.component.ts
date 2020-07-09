@@ -6,11 +6,11 @@ import { RegexService } from '../regex.service';
  * pushing changes into the observable stream
  */
 @Component({
-  selector: 'app-input',
-  templateUrl: './input.component.html',
-  styleUrls: ['./input.component.css']
+  selector: 'app-regex-input',
+  templateUrl: './regex-input.component.html',
+  styleUrls: ['./regex-input.component.css']
 })
-export class InputComponent implements OnInit {
+export class RegexInputComponent implements OnInit {
 
   newRegex: string;
 

@@ -5,14 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LinkListComponent } from './link-list/link-list.component';
-import { InputComponent } from './input/input.component';
+import { RegexInputComponent } from './regex-input/regex-input.component';
 import { FilterByRegexPipe } from './filter-by-regex.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LinkListComponent,
-    InputComponent,
+    RegexInputComponent,
     FilterByRegexPipe
   ],
   imports: [
