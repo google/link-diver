@@ -1,0 +1,26 @@
+ul {
+    list-style: none;
+    padding: 0;
+    max-height: 400px;
+    width: 350px;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 2px;
+    padding-right: 2px;
+    overflow-x: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+li:nth-child(odd) {
+    background-color: #eee
+}
