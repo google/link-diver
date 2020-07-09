@@ -4,6 +4,10 @@ import { LinkService } from '../link.service';
 import { Observable, Subject} from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
+/**
+ * This component is responsible for filtering and displaying all of the links
+ * from the parent site
+ */
 @Component({
   selector: 'app-link-list',
   templateUrl: './link-list.component.html',
@@ -27,6 +31,8 @@ export class LinkListComponent implements OnInit {
         switchMap((term: string) => this.linkService.filterLinks(term))
     );
 
+    // Manually invoke a search and refresh angular contents once links have
+    // been received from the content script
     this.linkService.invokeSearch.subscribe(() => {
       this.search('');
       setTimeout(() => this.app.tick(), 500);

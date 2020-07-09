@@ -3,6 +3,10 @@ import { Injectable, ApplicationRef, EventEmitter } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
 
+/**
+ * This service is responsible for communicating with the content script,
+ * specifically for reciving the links and their metadata
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -42,13 +46,10 @@ export class LinkService {
       currentWindow: true
     },
     (tabs: any) => {
-      console.log('Sending request for links');
       chrome.tabs.sendMessage(tabs[0].id, {
         message: 'send links'
       }, (links: string[]) => {
-        console.log(links);
         this.addLinks(links);
-        console.log('Links added');
         this.invokeSearch.emit();
       });
     });
