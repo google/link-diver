@@ -1,4 +1,4 @@
-.links ul{
+ul {
     list-style: none;
     padding: 20px;
     max-height: 80vh;
@@ -6,11 +6,11 @@
     overflow-y: scroll;
 }
 
-.links a{
+a {
     text-decoration: none;
 }
 
-.links li{
+li {
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     padding-left: 2px;
@@ -20,14 +20,6 @@
     white-space: nowrap;
 }
 
-.links li:nth-child(odd){
+li:nth-child(odd) {
     background-color: #eee
-}
-
-.search-bar{
-    text-align: center;
-}
-
-.search-bar input{
-    width: 95%;
 }

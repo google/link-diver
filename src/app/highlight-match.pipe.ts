@@ -1,9 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'redMatch'
+  name: 'highlightMatch'
 })
-export class RedMatchPipe implements PipeTransform {
+export class HighlightMatchPipe implements PipeTransform {
   transform(link: string, term: string): string {
     if (term == '') {
       return link;

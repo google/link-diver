@@ -1,20 +1,26 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LinkListComponent } from './link-list/link-list.component';
-import { RedMatchPipe } from './red-match.pipe';
+import { HighlightMatchPipe } from './highlight-match.pipe';
+import { RegexInputComponent } from './regex-input/regex-input.component';
+import { FilterByRegexPipe } from './filter-by-regex.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     LinkListComponent,
-    RedMatchPipe
+    HighlightMatchPipe,
+    RegexInputComponent,
+    FilterByRegexPipe
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

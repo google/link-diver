@@ -1,17 +1,18 @@
 // eslint-disable-next-line spaced-comment
 /// <reference types="chrome"/>
-import { Injectable, ApplicationRef, EventEmitter } from '@angular/core';
 
-import { Observable, of } from 'rxjs';
+import { Injectable, ApplicationRef } from '@angular/core';
 
+/**
+ * This service is responsible for retreving links from the content script and
+ * passing them onto components
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class LinkService {
 
   private linkList: string[] = [];
-
-  invokeSearch = new EventEmitter();
 
   getLinks(): string[] {
     return this.linkList;
@@ -23,31 +24,15 @@ export class LinkService {
     }
   }
 
-  filterLinks(term: string): Observable<string[]> {
-    if (!term.trim()) {
-      return of(this.linkList);
-    }
-    try {
-      const regExp = new RegExp(term);
-      return of(this.linkList.filter((str) => regExp.test(str)));
-    } catch (err) {
-      console.log(err);
-      return of(this.linkList);
-    }
-  }
-
   constructor(private applicationRef: ApplicationRef) {
 
     chrome.tabs.getCurrent((tab) => {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
       }, (links: string[]) => {
-        console.log(links);
         this.addLinks(links);
-        console.log('Links added');
-        this.invokeSearch.emit();
+        this.applicationRef.tick();
       });
     });
   }
-
 }

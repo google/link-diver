@@ -1,13 +1,6 @@
-<div class="search-bar">
-    <input #searchBox (input)="search(searchBox.value)" 
-            placeholder="Insert your regular expression here"
-            autofocus="autofocus"/>
-</div>
-<div class="links">    
-    <ul>
-        <li *ngFor="let link of links$ | async">
-            <a href={{link}} target="_blank" 
-                [innerHTML]="link | redMatch:searchBox.value"></a>
-        </li>
-    </ul>
-</div>
+<ul>
+    <li *ngFor="let link of getLinks() | filterByRegex: regex">
+        <a href={{link}} target="_blank"
+            [innerHTML]="link | highlightMatch: regex"></a>
+    </li>
+</ul>

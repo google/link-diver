@@ -1,9 +1,12 @@
-import { Component, OnInit, ApplicationRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LinkService } from '../link.service';
 
-import { Observable, Subject} from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { RegexService } from '../regex.service';
 
+/**
+ * This component is responsible for filtering and displaying all of the links
+ * from the parent site
+ */
 @Component({
   selector: 'app-link-list',
   templateUrl: './link-list.component.html',
@@ -11,25 +14,16 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 })
 export class LinkListComponent implements OnInit {
 
-  constructor(private linkService: LinkService, private app: ApplicationRef) { }
+  regex: string;
 
-  links$: Observable<string[]>;
-  private searchTerms = new Subject();
-
-  search(term: string): void {
-    this.searchTerms.next(term);
-  }
+  constructor(private linkService: LinkService,
+    private regexService: RegexService) { }
 
   ngOnInit(): void {
-    this.links$ = this.searchTerms.pipe(
-        distinctUntilChanged(),
-        debounceTime(300),
-        switchMap((term: string) => this.linkService.filterLinks(term))
-    );
+    this.regexService.regexStr.subscribe((str) => this.regex = str);
+  }
 
-    this.linkService.invokeSearch.subscribe(() => {
-      this.search('');
-      setTimeout(() => this.app.tick(), 500);
-    });
+  getLinks() {
+    return this.linkService.getLinks();
   }
 }
