@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { LinkData } from './link.service';
 
 /**
  * This pipe filters the list of links for the ones that have a match with a
@@ -9,12 +10,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterByRegexPipe implements PipeTransform {
 
-  transform(links: string[], regexStr: string): string[] {
+  transform(links: LinkData[], regexStr: string): LinkData[] {
     if (!regexStr.trim()) {
       return links;
     }
     const regex = new RegExp(regexStr);
-    return links.filter((str) => regex.test(str));
+    return links.filter((link) => regex.test(link.href));
   }
 
 }

@@ -3,6 +3,13 @@
 
 import { Injectable, ApplicationRef } from '@angular/core';
 
+export interface LinkData {
+  href: string;
+  host: string;
+  tagName: string;
+  hidden: boolean;
+}
+
 /**
  * This service is responsible for retreving links from the content script and
  * passing them onto components
@@ -12,24 +19,24 @@ import { Injectable, ApplicationRef } from '@angular/core';
 })
 export class LinkService {
 
-  private linkList: string[] = [];
+  private linkList: LinkData[] = [];
 
-  getLinks(): string[] {
+  getLinks(): LinkData[] {
     return this.linkList;
   }
 
-  addLinks(newLinks: string[]): void {
+  addLinks(newLinks: LinkData[]): void {
     for (const str of newLinks) {
       this.linkList.push(str);
     }
   }
 
   constructor(private applicationRef: ApplicationRef) {
-
     chrome.tabs.getCurrent((tab) => {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
-      }, (links: string[]) => {
+      }, (links: LinkData[]) => {
+        console.log(links);
         this.addLinks(links);
         this.applicationRef.tick();
       });
