@@ -1,12 +1,18 @@
+* {
+    box-sizing: border-box;
+}
+
 .search-bar {
     text-align: center;
     width: 100%;
+    padding: 0 5px;
 }
 
-.input {
+input {
     width: 90%;
 }
 
-.button {
-    width: 10%;
+button {
+    width: 9%;
+    margin-left: 1%;
 }
