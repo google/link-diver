@@ -36,7 +36,6 @@ export class LinkService {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
       }, (links: LinkData[]) => {
-        console.log(links);
         this.addLinks(links);
         this.applicationRef.tick();
       });
