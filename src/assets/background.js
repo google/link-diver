@@ -1,14 +1,9 @@
 // eslint-disable-next-line spaced-comment
 /// <reference types="chrome"/>
 
+// Listens for a click of the extension button at which point it launches
+// the extension in a new tab
 chrome.browserAction.onClicked.addListener(function(activeTab) {
-  console.log(activeTab.index);
-
-  chrome.tabs.query({
-    active: true,
-    currentWindow: true
-  }, (tab) => console.log(tab.index));
-
   chrome.tabs.create({
     url: chrome.runtime.getURL('index.html'),
     openerTabId: activeTab.id,

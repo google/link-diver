@@ -1,5 +1,9 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+/**
+ * This pipe filters each link and applies a bold, red font to whichever part of
+ * the link matches the regular expression given by 'term'
+ */
 @Pipe({
   name: 'highlightMatch'
 })
