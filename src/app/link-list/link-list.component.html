@@ -1,6 +1,5 @@
 <ul>
     <li *ngFor="let link of getLinks() | filterByRegex: regex">
-        <a href={{link.href}} target="_blank"
-            [innerHTML]="link.href | highlightMatch: regex"></a>
+        <app-indiv-link [link]="link"></app-indiv-link>
     </li>
 </ul>

@@ -8,6 +8,7 @@ import { LinkListComponent } from './link-list/link-list.component';
 import { HighlightMatchPipe } from './highlight-match.pipe';
 import { RegexInputComponent } from './regex-input/regex-input.component';
 import { FilterByRegexPipe } from './filter-by-regex.pipe';
+import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import { FilterByRegexPipe } from './filter-by-regex.pipe';
     LinkListComponent,
     HighlightMatchPipe,
     RegexInputComponent,
-    FilterByRegexPipe
+    FilterByRegexPipe,
+    IndivLinkComponent
   ],
   imports: [
     BrowserModule,
