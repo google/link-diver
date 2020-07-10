@@ -26,12 +26,8 @@ export class LinkService {
 
   constructor(private applicationRef: ApplicationRef) {
 
-    chrome.tabs.query({
-      active: true,
-      currentWindow: true
-    },
-    (tabs: any) => {
-      chrome.tabs.sendMessage(tabs[0].id, {
+    chrome.tabs.getCurrent((tab) => {
+      chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
       }, (links: string[]) => {
         this.addLinks(links);

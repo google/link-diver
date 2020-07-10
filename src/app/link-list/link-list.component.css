@@ -1,8 +1,7 @@
 ul {
     list-style: none;
-    padding: 0;
-    max-height: 400px;
-    width: 350px;
+    padding: 20px;
+    max-height: 80vh;
     overflow: hidden;
     overflow-y: scroll;
 }

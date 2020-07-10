@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LinkListComponent } from './link-list/link-list.component';
+import { HighlightMatchPipe } from './highlight-match.pipe';
 import { RegexInputComponent } from './regex-input/regex-input.component';
 import { FilterByRegexPipe } from './filter-by-regex.pipe';
 
@@ -12,6 +13,7 @@ import { FilterByRegexPipe } from './filter-by-regex.pipe';
   declarations: [
     AppComponent,
     LinkListComponent,
+    HighlightMatchPipe,
     RegexInputComponent,
     FilterByRegexPipe
   ],
