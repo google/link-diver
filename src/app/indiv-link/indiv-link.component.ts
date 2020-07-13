@@ -14,6 +14,7 @@ import { LinkData } from '../link.service';
 export class IndivLinkComponent implements OnInit {
 
   regex: string;
+  expand: boolean = false;
 
   @Input() link: LinkData;
 
@@ -21,6 +22,10 @@ export class IndivLinkComponent implements OnInit {
 
   ngOnInit(): void {
     this.regexService.regexStr.subscribe((str) => this.regex = str);
+  }
+
+  toggle(): void {
+    this.expand = !this.expand;
   }
 
 }

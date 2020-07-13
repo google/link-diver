@@ -1,3 +1,16 @@
 a {
     text-decoration: none;
 }
+
+.light {
+    color: #888;
+}
+
+ul {
+    list-style-type: none;
+}
+
+li {
+    float: left;
+    padding: 10px;
+}

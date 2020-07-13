@@ -37,7 +37,9 @@ export class LinkService {
         message: 'send links'
       }, (links: LinkData[]) => {
         this.addLinks(links);
-        this.applicationRef.tick();
+        // still looking for a way to refreshview without
+        // breaking detection cycle
+        // this.applicationRef.tick();
       });
     });
   }
