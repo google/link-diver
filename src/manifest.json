@@ -13,5 +13,5 @@
             "js": ["assets/content.js"]
         }
     ],
-    "permissions": ["tabs"]
+    "permissions": ["tabs", "contextMenus"]
 }
