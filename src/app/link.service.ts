@@ -1,7 +1,7 @@
 // eslint-disable-next-line spaced-comment
 /// <reference types="chrome"/>
 
-import { Injectable, ApplicationRef } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 
 export interface LinkData {
   href: string;
@@ -20,6 +20,7 @@ export interface LinkData {
 export class LinkService {
 
   private linkList: LinkData[] = [];
+  dataLoaded = new EventEmitter();
 
   getLinks(): LinkData[] {
     return this.linkList;
@@ -31,15 +32,13 @@ export class LinkService {
     }
   }
 
-  constructor(private applicationRef: ApplicationRef) {
+  constructor() {
     chrome.tabs.getCurrent((tab) => {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
       }, (links: LinkData[]) => {
         this.addLinks(links);
-        // still looking for a way to refreshview without
-        // breaking detection cycle
-        // this.applicationRef.tick();
+        this.dataLoaded.emit();
       });
     });
   }
