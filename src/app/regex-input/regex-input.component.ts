@@ -15,13 +15,13 @@ export class RegexInputComponent implements OnInit {
 
   newRegex: string = '';
 
-  constructor(private regexService: RegexService, private ls: LinkService) { }
+  constructor(private regexService: RegexService,
+    private linkService: LinkService) { }
 
   ngOnInit(): void {
     this.pushRegex();
-    this.ls.dataLoaded.subscribe(() => {
+    this.linkService.dataLoaded.subscribe(() => {
       document.getElementById('filterButton').click();
-      console.log('fake click');
     });
   }
 
