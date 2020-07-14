@@ -1,5 +1,6 @@
 a {
     text-decoration: none;
+    padding: 5px;
 }
 
 .light {
@@ -13,4 +14,31 @@ ul {
 li {
     float: left;
     padding: 10px;
+}
+
+.title {
+    padding-top: 0.5em;
+    padding-bottom: 0.5em;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.title:hover {
+    background-color: #ddd;
+}
+
+.arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+    border-left: 5px solid #888;
+
+}
+
+.down {
+    transform: rotate(90deg);
+    transition: transform .25s;
 }
