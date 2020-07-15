@@ -3,6 +3,10 @@
 
 import { Injectable, EventEmitter } from '@angular/core';
 
+/**
+ * Packages the URL of a link along with other relevant metadata about that link
+ * used throughout the app
+ */
 export interface LinkData {
   href: string;
   host: string;
