@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LinkService } from '../link.service';
+import { LinkService, LinkData } from '../link.service';
 
 import { RegexService } from '../regex.service';
 
@@ -23,7 +23,7 @@ export class LinkListComponent implements OnInit {
     this.regexService.regexStr.subscribe((str) => this.regex = str);
   }
 
-  getLinks() {
+  getLinks(): LinkData[] {
     return this.linkService.getLinks();
   }
 }

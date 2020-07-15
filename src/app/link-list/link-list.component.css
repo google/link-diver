@@ -6,15 +6,7 @@ ul {
     overflow-y: scroll;
 }
 
-a {
-    text-decoration: none;
-}
-
 li {
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    padding-left: 2px;
-    padding-right: 2px;
     overflow-x: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

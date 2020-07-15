@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RegexService } from '../regex.service';
+import { LinkService } from '../link.service';
 
 /**
  * This component is responsible for taking a regular expression as input and
@@ -12,11 +13,16 @@ import { RegexService } from '../regex.service';
 })
 export class RegexInputComponent implements OnInit {
 
-  newRegex: string;
+  newRegex: string = '';
 
-  constructor(private regexService: RegexService) { }
+  constructor(private regexService: RegexService,
+    private linkService: LinkService) { }
 
   ngOnInit(): void {
+    this.pushRegex();
+    this.linkService.dataLoaded.subscribe(() => {
+      document.getElementById('filterButton').click();
+    });
   }
 
   pushRegex() {
