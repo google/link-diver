@@ -10,7 +10,8 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
         'href': val.href,
         'host': val.host,
         'tagName': val.tagName,
-        'hidden': val.hidden
+        'hidden': val.hidden,
+        'status': 'unknown'
       };
     }));
   }

@@ -3,6 +3,7 @@
     <a href={{link.href}} target="_blank"
     [innerHTML]="link.href | highlightMatch: regex"
     (click)="toggle()"></a>
+    <span class="status">{{link.status}}</span>
 </div>
 <div *ngIf="expand">
     <ul>

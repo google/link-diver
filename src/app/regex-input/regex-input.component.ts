@@ -22,6 +22,7 @@ export class RegexInputComponent implements OnInit {
     this.pushRegex();
     this.linkService.dataLoaded.subscribe(() => {
       document.getElementById('filterButton').click();
+      console.log('I\'m here');
     });
   }
 

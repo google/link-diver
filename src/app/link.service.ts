@@ -2,6 +2,8 @@
 /// <reference types="chrome"/>
 
 import { Injectable, EventEmitter } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { FetchStatusService } from './fetch-status.service';
 
 /**
  * Packages the URL of a link along with other relevant metadata about that link
@@ -12,6 +14,7 @@ export interface LinkData {
   host: string;
   tagName: string;
   hidden: boolean;
+  status: string;
 }
 
 /**
@@ -24,16 +27,14 @@ export interface LinkData {
 export class LinkService {
 
   private linkList: LinkData[] = [];
+  linkList$ = new BehaviorSubject<LinkData[]>([]);
   dataLoaded = new EventEmitter();
-
-  getLinks(): LinkData[] {
-    return this.linkList;
-  }
 
   addLinks(newLinks: LinkData[]): void {
     for (const str of newLinks) {
       this.linkList.push(str);
     }
+    this.linkList$.next(this.linkList);
   }
 
   constructor() {
