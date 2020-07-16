@@ -14,7 +14,8 @@ export interface LinkData {
   host: string;
   tagName: string;
   hidden: boolean;
-  status: string;
+  status?: number;
+  statusOk?: boolean;
 }
 
 /**
@@ -31,18 +32,20 @@ export class LinkService {
   dataLoaded = new EventEmitter();
 
   addLinks(newLinks: LinkData[]): void {
-    for (const str of newLinks) {
+    /* for (const str of newLinks) {
       this.linkList.push(str);
     }
-    this.linkList$.next(this.linkList);
+    this.linkList$.next(this.linkList);*/
+    this.linkList$.next(newLinks);
   }
 
-  constructor() {
+  constructor(private fetchService: FetchStatusService) {
     chrome.tabs.getCurrent((tab) => {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
       }, (links: LinkData[]) => {
         this.addLinks(links);
+        this.fetchService.startFetching(links);
         this.dataLoaded.emit();
       });
     });

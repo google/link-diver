@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { LinkService, LinkData } from '../link.service';
 
 import { RegexService } from '../regex.service';
-import { FetchStatusService } from '../fetch-status.service';
 
 /**
  * This component is responsible for filtering and displaying all of the links
@@ -19,15 +18,13 @@ export class LinkListComponent implements OnInit {
   links: LinkData[];
 
   constructor(private linkService: LinkService,
-    private regexService: RegexService,
-    private fetchService: FetchStatusService) { }
+    private regexService: RegexService) { }
 
   ngOnInit(): void {
     this.regexService.regexStr.subscribe((str: string) => this.regex = str);
     this.linkService.linkList$.subscribe((newLinks: LinkData[]) => {
       this.links = newLinks;
     });
-    this.linkService.dataLoaded.subscribe(() => this.fetchService.startFetching());
   }
 
 }

@@ -1,9 +1,12 @@
 <div class="title" (click)="toggle()">
     <div class="arrow" [ngClass]="{'down': expand}"></div>
     <a href={{link.href}} target="_blank"
-    [innerHTML]="link.href | highlightMatch: regex"
-    (click)="toggle()"></a>
-    <span class="status">{{link.status}}</span>
+        [innerHTML]="link.href | highlightMatch: regex"
+        (click)="toggle()"></a>
+    <span *ngIf="link.status !== null" 
+        [ngClass]="{'status': true,'red': !link.statusOk}">
+        {{link.status}}
+    </span>
 </div>
 <div *ngIf="expand">
     <ul>

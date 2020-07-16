@@ -1,29 +1,29 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponseBase } from '@angular/common/http';
 
 import { LinkService, LinkData } from './link.service';
 
+/**
+ * This service is responsible for checking the status of each link
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class FetchStatusService {
 
-  private linkList: LinkData[];
+  constructor(private http: HttpClient) { }
 
-  constructor(private http: HttpClient, private linkService: LinkService) { 
-    this.linkService.linkList$.subscribe((newLinks: LinkData[]) => {
-      this.linkList = newLinks;
-      console.log('This is strange');
+  startFetching(linkList: LinkData[]): void {
+    linkList.forEach((link: LinkData) => {
+      console.log(this.http.head(link.href, { observe: 'response' })
+          .subscribe((response: HttpResponseBase) => {
+            link.status = response.status;
+            link.statusOk = response.ok;
+          }, (error: HttpResponseBase) => {
+            link.status = error.status;
+            link.statusOk = error.ok;
+          }));
     });
-    console.log('Hello?');
-    // this.linkService.dataLoaded.subscribe(() => this.startFetching());
-  }
 
-  startFetching(): void {
-    this.linkList = this.linkService.linkList$.getValue();
-    console.log(this.linkList);
-    this.linkList.forEach((link: LinkData) => {
-      console.log(this.http.head(link.href));
-    });
   }
 }
