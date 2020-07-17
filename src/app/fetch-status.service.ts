@@ -1,7 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponseBase } from '@angular/common/http';
 
-import { LinkService, LinkData } from './link.service';
+import { LinkData } from './link.service';
+import { BehaviorSubject } from 'rxjs';
+
+/**
+ * Internal inte
+ */
+interface Status {
+  code?: number;
+  ok?: boolean;
+}
 
 /**
  * This service is responsible for checking the status of each link
@@ -11,19 +20,51 @@ import { LinkService, LinkData } from './link.service';
 })
 export class FetchStatusService {
 
-  constructor(private http: HttpClient) { }
+  private statusMap: Map<string, BehaviorSubject<Status>>;
+  private readonly emptyStatus: Status;
 
-  startFetching(linkList: LinkData[]): void {
-    linkList.forEach((link: LinkData) => {
-      console.log(this.http.head(link.href, { observe: 'response' })
-          .subscribe((response: HttpResponseBase) => {
-            link.status = response.status;
-            link.statusOk = response.ok;
-          }, (error: HttpResponseBase) => {
-            link.status = error.status;
-            link.statusOk = error.ok;
-          }));
-    });
-
+  constructor(private http: HttpClient) {
+    this.statusMap = new Map();
+    this.emptyStatus = {};
   }
+
+  createMap(linkList: LinkData[]): void {
+    linkList.forEach((link: LinkData) => {
+      let linkStatus$: BehaviorSubject<Status>;
+      if (this.statusMap.has(link.href)) {
+        linkStatus$ = this.statusMap.get(link.href);
+      } else {
+        linkStatus$ = new BehaviorSubject<Status>(undefined);
+        this.statusMap.set(link.href, linkStatus$);
+      }
+
+      linkStatus$.subscribe((status: Status) => {
+        if (status) {
+          link.status = status.code;
+          link.statusOk = status.ok;
+        }
+      });
+    });
+    console.log(this.statusMap);
+  }
+
+  startFetching(): void {
+    this.statusMap.forEach((status$: BehaviorSubject<Status>, str: string) => {
+      this.http.head(str, { observe: 'response' })
+          .subscribe((response: HttpResponseBase) => {
+            status$.next(this.getStatus(response));
+          }, (error: HttpResponseBase) => {
+            console.log(error);
+            status$.next(this.getStatus(error));
+          });
+    });
+  }
+
+  private getStatus(response: HttpResponseBase): Status {
+    return {
+      code: response.status,
+      ok: response.ok
+    };
+  }
+
 }

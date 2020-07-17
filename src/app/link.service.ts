@@ -44,9 +44,11 @@ export class LinkService {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
       }, (links: LinkData[]) => {
+        // this.fetchService.startFetching(links);
+        this.fetchService.createMap(links);
         this.addLinks(links);
-        this.fetchService.startFetching(links);
         this.dataLoaded.emit();
+        this.fetchService.startFetching();
       });
     });
   }
