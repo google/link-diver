@@ -1,7 +1,7 @@
 // eslint-disable-next-line spaced-comment
 /// <reference types="chrome"/>
 
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { FetchStatusService } from './fetch-status.service';
 
@@ -29,7 +29,6 @@ export class LinkService {
 
   private linkList: LinkData[] = [];
   linkList$ = new BehaviorSubject<LinkData[]>([]);
-  dataLoaded = new EventEmitter();
 
   addLinks(newLinks: LinkData[]): void {
     /* for (const str of newLinks) {
@@ -39,16 +38,18 @@ export class LinkService {
     this.linkList$.next(newLinks);
   }
 
-  constructor(private fetchService: FetchStatusService) {
+  constructor(private fetchService: FetchStatusService,
+    private ngZone: NgZone) {
+
     chrome.tabs.getCurrent((tab) => {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
       }, (links: LinkData[]) => {
-        // this.fetchService.startFetching(links);
-        this.fetchService.createMap(links);
-        this.addLinks(links);
-        this.dataLoaded.emit();
-        this.fetchService.startFetching();
+        this.ngZone.run(() => {
+          this.fetchService.createMap(links);
+          this.addLinks(links);
+          this.fetchService.startFetching();
+        });
       });
     });
   }

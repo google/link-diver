@@ -5,7 +5,8 @@ import { LinkData } from './link.service';
 import { BehaviorSubject } from 'rxjs';
 
 /**
- * Internal inte
+ * Internal interface to pair a status code with a boolean indicating success
+ * or failure
  */
 interface Status {
   code?: number;
@@ -21,11 +22,9 @@ interface Status {
 export class FetchStatusService {
 
   private statusMap: Map<string, BehaviorSubject<Status>>;
-  private readonly emptyStatus: Status;
 
   constructor(private http: HttpClient) {
     this.statusMap = new Map();
-    this.emptyStatus = {};
   }
 
   createMap(linkList: LinkData[]): void {
