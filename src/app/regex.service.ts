@@ -11,7 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 export class RegexService {
 
   private regexSource = new BehaviorSubject<string>('');
-  regexStr = this.regexSource.asObservable();
+  regex$ = this.regexSource.asObservable();
 
   constructor() { }
 

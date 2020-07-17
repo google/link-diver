@@ -21,7 +21,7 @@ export class LinkListComponent implements OnInit {
     private regexService: RegexService) { }
 
   ngOnInit(): void {
-    this.regexService.regexStr.subscribe((str: string) => this.regex = str);
+    this.regexService.regex$.subscribe((str: string) => this.regex = str);
     this.linkService.linkList$.subscribe((newLinks: LinkData[]) => {
       this.links = newLinks;
     });

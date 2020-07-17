@@ -21,7 +21,7 @@ export class IndivLinkComponent implements OnInit {
   constructor(private regexService: RegexService) { }
 
   ngOnInit(): void {
-    this.regexService.regexStr.subscribe((str) => this.regex = str);
+    this.regexService.regex$.subscribe((str) => this.regex = str);
   }
 
   toggle(): void {

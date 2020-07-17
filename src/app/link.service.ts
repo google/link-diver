@@ -27,15 +27,11 @@ export interface LinkData {
 })
 export class LinkService {
 
-  private linkList: LinkData[] = [];
-  linkList$ = new BehaviorSubject<LinkData[]>([]);
+  linkListSource = new BehaviorSubject<LinkData[]>([]);
+  linkList$ = this.linkListSource.asObservable();
 
-  addLinks(newLinks: LinkData[]): void {
-    /* for (const str of newLinks) {
-      this.linkList.push(str);
-    }
-    this.linkList$.next(this.linkList);*/
-    this.linkList$.next(newLinks);
+  private setLinks(newLinks: LinkData[]): void {
+    this.linkListSource.next(newLinks);
   }
 
   constructor(private fetchService: FetchStatusService,
@@ -46,8 +42,8 @@ export class LinkService {
         message: 'send links'
       }, (links: LinkData[]) => {
         this.ngZone.run(() => {
-          this.fetchService.createMap(links);
-          this.addLinks(links);
+          this.fetchService.initMap(links);
+          this.setLinks(links);
           this.fetchService.startFetching();
         });
       });

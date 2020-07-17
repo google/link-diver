@@ -11,7 +11,7 @@ import { LinkData } from './link.service';
 export class FilterByRegexPipe implements PipeTransform {
 
   transform(links: LinkData[], regexStr: string): LinkData[] {
-    if (!regexStr.trim()) {
+    if (!regexStr) {
       return links;
     }
     const regex = new RegExp(regexStr);
