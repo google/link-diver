@@ -1,7 +1,7 @@
 // eslint-disable-next-line spaced-comment
 /// <reference types="chrome"/>
 
-import { Injectable, EventEmitter, NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { FetchStatusService } from './fetch-status.service';
 
