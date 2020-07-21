@@ -1,7 +1,8 @@
 // eslint-disable-next-line spaced-comment
 /// <reference types="chrome"/>
 
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable, EventEmitter, NgZone } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 
 /**
  * Packages the URL of a link along with other relevant metadata about that link
@@ -23,6 +24,9 @@ export interface LinkData {
 })
 export class LinkService {
 
+  private parentSource = new BehaviorSubject<string>('');
+  parent$ = this.parentSource.asObservable();
+
   private linkList: LinkData[] = [];
   dataLoaded = new EventEmitter();
 
@@ -36,13 +40,21 @@ export class LinkService {
     }
   }
 
-  constructor() {
+  constructor(private ngZone: NgZone) {
     chrome.tabs.getCurrent((tab) => {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
       }, (links: LinkData[]) => {
         this.addLinks(links);
         this.dataLoaded.emit();
+      });
+
+      chrome.tabs.sendMessage(tab.openerTabId, {
+        message: 'send parent'
+      }, (parent: string) => {
+        this.ngZone.run(() => {
+          this.parentSource.next(parent);
+        });
       });
     });
   }

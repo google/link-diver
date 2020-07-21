@@ -10,6 +10,7 @@ import { RegexInputComponent } from './regex-input/regex-input.component';
 import { FilterByRegexPipe } from './filter-by-regex.pipe';
 import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
+import { ParentLinkComponent } from './parent-link/parent-link.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { InputPanelComponent } from './input-panel/input-panel.component';
     RegexInputComponent,
     FilterByRegexPipe,
     IndivLinkComponent,
-    InputPanelComponent
+    InputPanelComponent,
+    ParentLinkComponent
   ],
   imports: [
     BrowserModule,
