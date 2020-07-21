@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+/**
+ * This service is responsible for relaying a collapse/expand all signal from
+ * the expand collapse all component and pushing it to the indiv-link component
+ */
 @Injectable({
   providedIn: 'root'
 })

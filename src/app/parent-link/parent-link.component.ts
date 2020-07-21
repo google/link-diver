@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { LinkService } from '../link.service';
 
+/**
+ * Responsible for displaying a link to the original page in the input panel
+ */
 @Component({
   selector: 'app-parent-link',
   templateUrl: './parent-link.component.html',
