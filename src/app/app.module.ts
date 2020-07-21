@@ -11,6 +11,7 @@ import { FilterByRegexPipe } from './filter-by-regex.pipe';
 import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
 import { ParentLinkComponent } from './parent-link/parent-link.component';
+import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collapse-all.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { ParentLinkComponent } from './parent-link/parent-link.component';
     FilterByRegexPipe,
     IndivLinkComponent,
     InputPanelComponent,
-    ParentLinkComponent
+    ParentLinkComponent,
+    ExpandCollapseAllComponent
   ],
   imports: [
     BrowserModule,
