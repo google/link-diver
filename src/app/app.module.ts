@@ -9,6 +9,7 @@ import { HighlightMatchPipe } from './highlight-match.pipe';
 import { RegexInputComponent } from './regex-input/regex-input.component';
 import { FilterByRegexPipe } from './filter-by-regex.pipe';
 import { IndivLinkComponent } from './indiv-link/indiv-link.component';
+import { InputPanelComponent } from './input-panel/input-panel.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { IndivLinkComponent } from './indiv-link/indiv-link.component';
     HighlightMatchPipe,
     RegexInputComponent,
     FilterByRegexPipe,
-    IndivLinkComponent
+    IndivLinkComponent,
+    InputPanelComponent
   ],
   imports: [
     BrowserModule,
