@@ -20,16 +20,21 @@ function findLinks() {
     } else if (element.hasAttribute('onclick')) {
       addLinkFromOnClick(element, links);
     } else if (element.hasAttribute('action')) {
-      getLinkFromFormAction(element, links);
+      // Only form elements can have an action attribute.
+      addLinkFromAttribute(element, links, 'action');
+    } else if (element.tagName === 'IMG') {
+      addLinkFromAttribute(element, links, 'src');
     }
   });
-  console.log(links);
   return links;
 }
 
 function addLinkFromHref(element, links) {
   if (element.tagName === 'A' || element.tagName === 'AREA') {
-    links.push(getLinkData(element, element.href));
+    // Avoid bad links, such as javascript:void(0)
+    if (urlRegex.test(element.href)) {
+      links.push(getLinkData(element, element.href));
+    }
   }
 }
 
@@ -49,9 +54,9 @@ function addLinkFromOnClick(element, links) {
   }
 }
 
-function getLinkFromFormAction(element, links) {
-  // Only form elements can have an action attribute.
-  let link = element.getAttribute('action');
+function addLinkFromAttribute(element, links, attribute) {
+  console.log(element);
+  let link = element.getAttribute(attribute);
   if (!urlRegex.test(link)) {
     link = window.location.origin + link;
   }
