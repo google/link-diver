@@ -2,7 +2,9 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpResponseBase } from '@angular/common/http';
 
 import { LinkData } from './link.service';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
+import { mergeAll } from 'rxjs/operators';
+import { defer } from 'rxjs/index';
 
 /**
  * Internal interface to pair a status code with a boolean indicating success
@@ -21,7 +23,7 @@ interface Status {
 })
 export class FetchStatusService {
 
-  private readonly batchSize = 50;
+  private readonly batchSize = 10;
   private activeRequests = 0;
   private newBatch: EventEmitter<any>;
 
@@ -64,11 +66,44 @@ export class FetchStatusService {
     });
   }
 
+  // --Trying something different here
+
+  private startFetching(statusMap: any): void {
+    const mapArr = Array.from(statusMap.entries()).map(([key, val]) => {
+      return {
+        link: key,
+        subject: val
+      };
+    });
+    // this.fetchLink(mapArr[0].link, mapArr[0].subject).then();
+    const observables = mapArr.map((x) => defer(() => {
+      return this.fetchLink(x.link, x.subject);
+    }));
+    from(observables)
+        .pipe(mergeAll(this.batchSize))
+        .subscribe();
+  }
+
+  private async fetchLink(url: string, status$: BehaviorSubject<Status>) {
+    await this.http.head(url, { observe: 'response' })
+        .subscribe((response: HttpResponseBase) => {
+          console.log(response); // TEMP TEMP TEMP TEMP
+          status$.next(this.registerStatus(response));
+        }, (error: HttpResponseBase) => {
+          console.log(error);
+          status$.next(this.registerStatus(error));
+        });
+    /* status$.next({
+      code: 200, // response.status,
+      ok: true // response.ok
+    });*/
+  }
+  /*
   /**
    * Iterates through the previously initialized map in batches sending out http
    * requests
    * @param {any} statusMap
-   */
+   *
   private startFetching(statusMap: any): void {
     const linkIterator = statusMap.keys();
     const subjectIterator = statusMap.values();
@@ -82,11 +117,11 @@ export class FetchStatusService {
 
   /**
     * Sends a new batch of requests to http serivce and handles the response.
-    * @param linkIterator 
+    * @param linkIterator
     * @param subjectIterator
     * @return {boolean} Returns true if there are no more links to be fetched.
     * Otherwise returns false.
-    */
+    *
   private fetchBatch(linkIterator: Iterator<string>,
       subjectIterator: Iterator<BehaviorSubject<Status>>): boolean {
     while (this.activeRequests < this.batchSize) {
@@ -103,17 +138,16 @@ export class FetchStatusService {
       this.activeRequests ++;
     }
     return false;
-  }
+  }*/
 
   private registerStatus(response: HttpResponseBase): Status {
-    this.activeRequests --;
+    /* this.activeRequests --;
     if (this.activeRequests < this.batchSize) {
       this.newBatch.emit();
-    }
+    }*/
     return {
       code: response.status,
       ok: response.ok
     };
   }
-
 }
