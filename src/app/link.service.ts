@@ -44,9 +44,8 @@ export class LinkService {
         // NgZone.run here is needed so that angular is aware that changes are
         // being made and can run its change detection cycle
         this.ngZone.run(() => {
-          this.fetchService.initMap(links);
           this.setLinks(links);
-          this.fetchService.startFetching();
+          this.fetchService.fetch(links);
         });
       });
     });

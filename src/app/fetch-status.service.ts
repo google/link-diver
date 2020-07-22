@@ -23,14 +23,16 @@ export class FetchStatusService {
 
   private readonly batchSize = 50;
   private activeRequests = 0;
-  private statusMap: Map<string, BehaviorSubject<Status>>;
-  private linkIterator: Iterator<string>;
-  private subjectIterator: Iterator<BehaviorSubject<Status>>;
   private newBatch: EventEmitter<any>;
 
   constructor(private http: HttpClient) {
-    this.statusMap = new Map();
     this.newBatch = new EventEmitter();
+  }
+
+  fetch(linkList: LinkData[]) {
+    const statusMap: Map<string, BehaviorSubject<Status>> = new Map();
+    this.initMap(statusMap, linkList);
+    this.startFetching(statusMap);
   }
 
   /**
@@ -38,16 +40,19 @@ export class FetchStatusService {
    * make multiple calls to the same url. Each link object gets subscribed to
    * its corresponding subject so that it will get updated once the http request
    * for that url returns.
+   * @param {Map<string, BehaviorSubject<Status>>} statusMap An empty map that
+   * will be filled with url-subject pairs.
    * @param {LinkData[]} linkList Links that will eventually get statuses filled
    */
-  initMap(linkList: LinkData[]): void {
+  private initMap(statusMap: Map<string, BehaviorSubject<Status>>,
+      linkList: LinkData[]): void {
     linkList.forEach((link: LinkData) => {
       let linkStatus$: BehaviorSubject<Status>;
-      if (this.statusMap.has(link.href)) {
-        linkStatus$ = this.statusMap.get(link.href);
+      if (statusMap.has(link.href)) {
+        linkStatus$ = statusMap.get(link.href);
       } else {
         linkStatus$ = new BehaviorSubject<Status>(undefined);
-        this.statusMap.set(link.href, linkStatus$);
+        statusMap.set(link.href, linkStatus$);
       }
 
       linkStatus$.subscribe((status: Status) => {
@@ -57,17 +62,18 @@ export class FetchStatusService {
         }
       });
     });
-    this.linkIterator = this.statusMap.keys();
-    this.subjectIterator = this.statusMap.values();
   }
 
   /**
    * Iterates through the previously initialized map in batches sending out http
    * requests
+   * @param {any} statusMap
    */
-  startFetching(): void {
+  private startFetching(statusMap: any): void {
+    const linkIterator = statusMap.keys();
+    const subjectIterator = statusMap.values();
     const batchSubscription = this.newBatch.subscribe(() => {
-      if (this.fetchBatch()) {
+      if (this.fetchBatch(linkIterator, subjectIterator)) {
         batchSubscription.unsubscribe();
       }
     });
@@ -75,14 +81,17 @@ export class FetchStatusService {
   }
 
   /**
-   * Sends a new batch of requests to http serivce and handles the response.
-   * @return {boolean} Returns true if there are no more links to be fetched.
-   * Otherwise returns false
-   */
-  private fetchBatch(): boolean {
-    for (let i = 0; i < this.batchSize; i ++) {
-      const nextLink = this.linkIterator.next();
-      const status$ = this.subjectIterator.next().value;
+    * Sends a new batch of requests to http serivce and handles the response.
+    * @param linkIterator 
+    * @param subjectIterator
+    * @return {boolean} Returns true if there are no more links to be fetched.
+    * Otherwise returns false.
+    */
+  private fetchBatch(linkIterator: Iterator<string>,
+      subjectIterator: Iterator<BehaviorSubject<Status>>): boolean {
+    while (this.activeRequests < this.batchSize) {
+      const nextLink = linkIterator.next();
+      const status$ = subjectIterator.next().value;
       if (nextLink.done) return true;
       this.http.head(nextLink.value, { observe: 'response' })
           .subscribe((response: HttpResponseBase) => {
@@ -98,7 +107,7 @@ export class FetchStatusService {
 
   private registerStatus(response: HttpResponseBase): Status {
     this.activeRequests --;
-    if (this.activeRequests == 0) {
+    if (this.activeRequests < this.batchSize) {
       this.newBatch.emit();
     }
     return {
