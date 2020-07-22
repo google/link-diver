@@ -41,6 +41,8 @@ export class LinkService {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
       }, (links: LinkData[]) => {
+        // NgZone.run here is needed so that angular is aware that changes are
+        // being made and can run its change detection cycle
         this.ngZone.run(() => {
           this.fetchService.initMap(links);
           this.setLinks(links);
