@@ -13,5 +13,7 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
         'hidden': val.hidden
       };
     }));
+  } else if (request.message === 'send parent') {
+    sendResponse(window.location.href);
   }
 });
