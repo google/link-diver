@@ -16,7 +16,10 @@ interface Status {
 }
 
 /**
- * This service is responsible for checking the status of each link
+ * This service is responsible for checking the status of each link. For each
+ * unique link that is passed in in linkList it checks the HTTP status by
+ * sending a HEAD request. In addition in throttles the amount of requests that
+ * get sent to the HttpClient so it does not get overworked.
  */
 @Injectable({
   providedIn: 'root'
