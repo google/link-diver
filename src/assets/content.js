@@ -6,6 +6,8 @@
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
   if (request.message === 'send links') {
     sendResponse(findLinks());
+  } else if (request.message === 'send parent') {
+    sendResponse(window.location.href);
   }
 });
 
