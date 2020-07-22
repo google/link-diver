@@ -55,7 +55,6 @@ function addLinkFromOnClick(element, links) {
 }
 
 function addLinkFromAttribute(element, links, attribute) {
-  console.log(element);
   let link = element.getAttribute(attribute);
   if (!urlRegex.test(link)) {
     link = window.location.origin + link;
