@@ -9,39 +9,52 @@ chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
   }
 });
 
+const urlRegex = /https?:\/\/[^\s]+/;
+
 function findLinks() {
-  const urlRegex = /https?:\/\/[^\s]+/;
   const all = document.querySelectorAll('*');
   const links = [];
   all.forEach((element) => {
     if (element.getAttribute('href')) {
-      if (element.tagName == 'A' || element.tagName == 'AREA') {
-        links.push(getLinkData(element, element.href));
-      }
+      addLinkFromHref(element, links);
     } else if (element.hasAttribute('onclick')) {
-      const jsFunc = element.getAttribute('onclick');
-      const specialCase = /window[.]location[.]href=["'](.*)["']/;
-      const specialCaseMatches = jsFunc.match(specialCase);
-      const generalMatches = jsFunc.match(urlRegex);
-      if (specialCaseMatches) {
-        let urlString = specialCaseMatches[1];
-        if (!urlRegex.test(urlString)) {
-          urlString = window.location.origin + urlString;
-        }
-        links.push(getLinkData(element, urlString));
-      } else if (generalMatches) {
-        links.push(getLinkData(element, generalMatches[0]));
-      }
+      addLinkFromOnClick(element, links);
     } else if (element.hasAttribute('action')) {
-      let link = element.getAttribute('action');
-      if (!urlRegex.test(link)) {
-        link = window.location.origin + link;
-      }
-      links.push(getLinkData(element, link));
+      getLinkFromFormAction(element, links);
     }
   });
-
+  console.log(links);
   return links;
+}
+
+function addLinkFromHref(element, links) {
+  if (element.tagName === 'A' || element.tagName === 'AREA') {
+    links.push(getLinkData(element, element.href));
+  }
+}
+
+function addLinkFromOnClick(element, links) {
+  const jsFunc = element.getAttribute('onclick');
+  const specialCase = /window[.]location[.]href=["'](.*)["']/;
+  const specialCaseMatches = jsFunc.match(specialCase);
+  const generalMatches = jsFunc.match(urlRegex);
+  if (specialCaseMatches) {
+    let urlString = specialCaseMatches[1];
+    if (!urlRegex.test(urlString)) {
+      urlString = window.location.origin + urlString;
+    }
+    links.push(getLinkData(element, urlString));
+  } else if (generalMatches) {
+    links.push(getLinkData(element, generalMatches[0]));
+  }
+}
+
+function getLinkFromFormAction(element, links) {
+  let link = element.getAttribute('action');
+  if (!urlRegex.test(link)) {
+    link = window.location.origin + link;
+  }
+  links.push(getLinkData(element, link));
 }
 
 function getLinkData(element, urlString) {
@@ -53,8 +66,3 @@ function getLinkData(element, urlString) {
     'hidden': element.hidden
   };
 }
-
-console.log(findLinks());
-console.log(Array.from(document.links).map((val) => getLinkData(val)));
-
-
