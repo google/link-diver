@@ -2,7 +2,7 @@
 /// <reference types="chrome"/>
 
 // Listens for a request from LinkService and respondes with all of the links
-// from the contents of the active page
+// from the contents of the active page.
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
   if (request.message === 'send links') {
     sendResponse(findLinks());
@@ -50,6 +50,7 @@ function addLinkFromOnClick(element, links) {
 }
 
 function getLinkFromFormAction(element, links) {
+  // Only form elements can have an action attribute.
   let link = element.getAttribute('action');
   if (!urlRegex.test(link)) {
     link = window.location.origin + link;
