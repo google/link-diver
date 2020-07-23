@@ -1,5 +1,5 @@
 <ul>
-    <li *ngFor="let group of getLinks() | filterByRegex: regex | groupBy">
+    <li *ngFor="let group of links | filterByRegex: regex | groupBy">
         <app-link-list [group]="group"></app-link-list>
     </li>
 </ul>

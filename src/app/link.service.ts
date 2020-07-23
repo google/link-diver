@@ -27,33 +27,29 @@ export class LinkService {
   private parentSource = new BehaviorSubject<string>('');
   parent$ = this.parentSource.asObservable();
 
-  private linkList: LinkData[] = [];
-  dataLoaded = new EventEmitter();
+  private linkListSource = new BehaviorSubject<LinkData[]>([]);
+  linkList$ = this.linkListSource.asObservable();
 
-  getLinks(): LinkData[] {
-    return this.linkList;
-  }
-
-  addLinks(newLinks: LinkData[]): void {
-    for (const str of newLinks) {
-      this.linkList.push(str);
-    }
+  private setLinks(newLinks: LinkData[]): void {
+    this.linkListSource.next(newLinks);
   }
 
   constructor(private ngZone: NgZone) {
-    chrome.tabs.getCurrent((tab) => {
-      chrome.tabs.sendMessage(tab.openerTabId, {
-        message: 'send links'
-      }, (links: LinkData[]) => {
-        this.addLinks(links);
-        this.dataLoaded.emit();
-      });
 
+    chrome.tabs.getCurrent((tab) => {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send parent'
       }, (parent: string) => {
         this.ngZone.run(() => {
           this.parentSource.next(parent);
+        });
+      });
+
+      chrome.tabs.sendMessage(tab.openerTabId, {
+        message: 'send links'
+      }, (links: LinkData[]) => {
+        this.ngZone.run(() => {
+          this.setLinks(links);
         });
       });
     });

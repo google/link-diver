@@ -13,17 +13,11 @@ import { LinkService } from '../link.service';
 })
 export class RegexInputComponent implements OnInit {
 
-  newRegex: string = '';
+  newRegex: string;
 
-  constructor(private regexService: RegexService,
-    private linkService: LinkService) { }
+  constructor(private regexService: RegexService) { }
 
-  ngOnInit(): void {
-    this.pushRegex();
-    this.linkService.dataLoaded.subscribe(() => {
-      document.getElementById('filterButton').click();
-    });
-  }
+  ngOnInit(): void { }
 
   pushRegex() {
     this.regexService.updateRegex(this.newRegex);

@@ -14,6 +14,7 @@ import { ParentLinkComponent } from './parent-link/parent-link.component';
 import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collapse-all.component';
 import { GroupByPipe } from './group-by.pipe';
 import { GroupListComponent } from './group-list/group-list.component';
+import { GroupHeaderComponent } from './group-header/group-header.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { GroupListComponent } from './group-list/group-list.component';
     ParentLinkComponent,
     ExpandCollapseAllComponent,
     GroupByPipe,
-    GroupListComponent
+    GroupListComponent,
+    GroupHeaderComponent
   ],
   imports: [
     BrowserModule,

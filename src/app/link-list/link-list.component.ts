@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import { LinkService, LinkData } from '../link.service';
 
 import { RegexService } from '../regex.service';
+import { GroupData } from '../group-list/group-list.component';
 
 /**
  * This component is responsible for filtering and displaying all of the links
@@ -14,7 +15,7 @@ import { RegexService } from '../regex.service';
 })
 export class LinkListComponent implements OnInit {
 
-  @Input() group: LinkData[];
+  @Input() group: GroupData;
 
   constructor() { }
 
