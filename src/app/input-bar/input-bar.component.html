@@ -1,0 +1,7 @@
+<div class="search-bar border-box">
+    <input class="border-box" type="text" [(ngModel)]="newInput" 
+            placeholder="Insert your regular expression here"
+            autofocus="autofocus"
+            (keyup.enter)="pushInput()"/>
+    <button id="filterButton" class="border-box" (click)="pushInput()">Filter</button>
+</div>

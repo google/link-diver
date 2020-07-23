@@ -1,12 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LinkService, LinkData } from '../link.service';
 
-import { RegexService } from '../regex.service';
 import { GroupData } from '../group-list/group-list.component';
 
 /**
- * This component is responsible for filtering and displaying all of the links
- * from the parent site
+ * Responsible for displaying all of the links of a group in a list.
  */
 @Component({
   selector: 'app-link-list',

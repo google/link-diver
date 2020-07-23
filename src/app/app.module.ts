@@ -6,7 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LinkListComponent } from './link-list/link-list.component';
 import { HighlightMatchPipe } from './highlight-match.pipe';
-import { RegexInputComponent } from './regex-input/regex-input.component';
+import { InputBarComponent } from './input-bar/input-bar.component';
 import { FilterByRegexPipe } from './filter-by-regex.pipe';
 import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
@@ -21,7 +21,7 @@ import { GroupHeaderComponent } from './group-header/group-header.component';
     AppComponent,
     LinkListComponent,
     HighlightMatchPipe,
-    RegexInputComponent,
+    InputBarComponent,
     FilterByRegexPipe,
     IndivLinkComponent,
     InputPanelComponent,

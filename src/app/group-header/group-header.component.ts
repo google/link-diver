@@ -1,6 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { GroupData } from '../group-list/group-list.component';
 
+/**
+ * This component displays header information for a group of links if the user
+ * has choosen to use the group setting.
+ */
 @Component({
   selector: 'app-group-header',
   templateUrl: './group-header.component.html',
