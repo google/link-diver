@@ -1,5 +1,5 @@
 <ul>
-    <li *ngFor="let link of getLinks() | filterByRegex: regex">
+    <li *ngFor="let link of group">
         <app-indiv-link [link]="link"></app-indiv-link>
     </li>
 </ul>

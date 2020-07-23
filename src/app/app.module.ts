@@ -12,6 +12,8 @@ import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
 import { ParentLinkComponent } from './parent-link/parent-link.component';
 import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collapse-all.component';
+import { GroupByPipe } from './group-by.pipe';
+import { GroupListComponent } from './group-list/group-list.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collaps
     IndivLinkComponent,
     InputPanelComponent,
     ParentLinkComponent,
-    ExpandCollapseAllComponent
+    ExpandCollapseAllComponent,
+    GroupByPipe,
+    GroupListComponent
   ],
   imports: [
     BrowserModule,

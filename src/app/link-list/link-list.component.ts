@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { LinkService, LinkData } from '../link.service';
 
 import { RegexService } from '../regex.service';
@@ -14,16 +14,11 @@ import { RegexService } from '../regex.service';
 })
 export class LinkListComponent implements OnInit {
 
-  regex: string;
+  @Input() group: LinkData[];
 
-  constructor(private linkService: LinkService,
-    private regexService: RegexService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.regexService.regexStr.subscribe((str) => this.regex = str);
   }
 
-  getLinks(): LinkData[] {
-    return this.linkService.getLinks();
-  }
 }
