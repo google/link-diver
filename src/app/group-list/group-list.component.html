@@ -1,5 +1,6 @@
 <ul>
-    <li *ngFor="let group of links | filterByRegex: regex | sort | groupBy: key">
+    <li *ngFor="let group of links | filterByRegex: regex | 
+            sort: order | groupBy: key">
         <app-group-header *ngIf="key" [group]="group" (click)="toggle(group)">
         </app-group-header>
         <app-link-list *ngIf="!group.hide" [group]="group"></app-link-list>

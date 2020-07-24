@@ -1,6 +1,25 @@
+<form>
+    <mat-form-field appearance="fill">
+        <mat-label>Sort By</mat-label>
+        <mat-select [(ngModel)]="order" (change)="pushSortOrder()">
+            <mat-option *ngFor="let option of sortOptions" [value]="option.val">
+                {{option.display}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</form>
+
 <button mat-stroked-button (click)="toggleAll(true)">
     Expand All
 </button>
 <button mat-stroked-button (click)="toggleAll(false)">
     Collapse All
 </button>
+
+<select [(ngModel)]="order" (change)="pushSortOrder()">
+    <option *ngFor="let option of sortOptions" [ngValue]="option.val">
+        Sort by: {{option.display}}
+    </option>
+</select>
+
+

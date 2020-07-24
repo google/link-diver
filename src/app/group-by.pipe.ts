@@ -9,7 +9,8 @@ import { GroupData } from './group-list/group-list.component';
  * is undefined the pipe puts every link in one big group.
  */
 @Pipe({
-  name: 'groupBy'
+  name: 'groupBy',
+  pure: false
 })
 export class GroupByPipe implements PipeTransform {
 
