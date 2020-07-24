@@ -6,7 +6,8 @@ import { GroupingKeyService } from '../grouping-key.service';
 export interface GroupData {
   key: string,
   list: LinkData[],
-  size: number
+  size: number,
+  hide?: boolean
 }
 
 /**
@@ -36,6 +37,10 @@ export class GroupListComponent implements OnInit {
     this.groupingKeyService.groupingKey$.subscribe((newKey: string) => {
       this.key = newKey;
     });
+  }
+
+  toggle(group: GroupData) {
+    group.hide = !group.hide;
   }
 
 }

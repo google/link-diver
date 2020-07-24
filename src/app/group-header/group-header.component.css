@@ -14,3 +14,7 @@ a {
     padding: 0.75em 10px;
     background-color: #eaeff9;
 }
+
+.header:hover {
+    background-color: #d4e2ff;
+}
