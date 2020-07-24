@@ -16,6 +16,7 @@ import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collaps
 import { GroupByPipe } from './group-by.pipe';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupHeaderComponent } from './group-header/group-header.component';
+import { SortPipe } from './sort.pipe';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { GroupHeaderComponent } from './group-header/group-header.component';
     ExpandCollapseAllComponent,
     GroupByPipe,
     GroupListComponent,
-    GroupHeaderComponent
+    GroupHeaderComponent,
+    SortPipe
   ],
   imports: [
     BrowserModule,
