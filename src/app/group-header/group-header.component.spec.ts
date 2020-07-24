@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegexInputComponent } from './regex-input.component';
+import { GroupHeaderComponent } from './group-header.component';
 
-describe('RegexInputComponent', () => {
-  let component: RegexInputComponent;
-  let fixture: ComponentFixture<RegexInputComponent>;
+describe('GroupHeaderComponent', () => {
+  let component: GroupHeaderComponent;
+  let fixture: ComponentFixture<GroupHeaderComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegexInputComponent ]
+      declarations: [ GroupHeaderComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegexInputComponent);
+    fixture = TestBed.createComponent(GroupHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

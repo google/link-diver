@@ -9,6 +9,6 @@ li {
     white-space: normal;
 }
 
-li:nth-child(odd) {
+li:nth-child(even) {
     background-color: #eee
 }

@@ -7,24 +7,30 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LinkListComponent } from './link-list/link-list.component';
 import { HighlightMatchPipe } from './highlight-match.pipe';
-import { RegexInputComponent } from './regex-input/regex-input.component';
+import { InputBarComponent } from './input-bar/input-bar.component';
 import { FilterByRegexPipe } from './filter-by-regex.pipe';
 import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
 import { ParentLinkComponent } from './parent-link/parent-link.component';
 import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collapse-all.component';
+import { GroupByPipe } from './group-by.pipe';
+import { GroupListComponent } from './group-list/group-list.component';
+import { GroupHeaderComponent } from './group-header/group-header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LinkListComponent,
     HighlightMatchPipe,
-    RegexInputComponent,
+    InputBarComponent,
     FilterByRegexPipe,
     IndivLinkComponent,
     InputPanelComponent,
     ParentLinkComponent,
-    ExpandCollapseAllComponent
+    ExpandCollapseAllComponent,
+    GroupByPipe,
+    GroupListComponent,
+    GroupHeaderComponent
   ],
   imports: [
     BrowserModule,
