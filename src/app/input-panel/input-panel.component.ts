@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LinkService } from '../link.service';
 
 /**
  * A large parent component to hold sub-components that deal with input
@@ -10,9 +11,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InputPanelComponent implements OnInit {
 
-  constructor() { }
+  parent: string;
+
+  constructor(private linkService: LinkService) { }
 
   ngOnInit(): void {
+    this.linkService.parent$.subscribe((str: string) => this.parent = str);
   }
 
 }
