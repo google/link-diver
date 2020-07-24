@@ -1,7 +1,3 @@
-h1 {
-    text-align: center;
-}
-
 .container {
     display: -webkit-flex;
     flex-direction: column;
@@ -14,4 +10,8 @@ app-group-list {
     flex: 1 1 auto;
     overflow-y: auto;
     min-height: 0;
+}
+
+app-input-panel {
+    padding-top: 2%;
 }
