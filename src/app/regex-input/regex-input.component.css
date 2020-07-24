@@ -3,16 +3,25 @@
 }
 
 .search-bar {
-    text-align: center;
     width: 100%;
     padding: 0;
 }
 
 input {
     width: 90%;
+    border-radius: 15px;
+    border-width: 1px;
+    padding: 5px 10px;
+    border-color: black;
+}
+
+input:focus {
+    border-radius: 15px;
+    outline: none;
+    border-width: 2px;
 }
 
 button {
-    width: 9%;
+    width: 9%; 
     margin-left: 1%;
 }
