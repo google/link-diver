@@ -9,14 +9,12 @@
 
 input {
     width: 90%;
-    border-radius: 15px;
     border-width: 1px;
     padding: 5px 10px;
     border-color: black;
 }
 
 input:focus {
-    border-radius: 15px;
     outline: none;
     border-width: 2px;
 }
