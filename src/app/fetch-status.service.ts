@@ -3,7 +3,7 @@ import { HttpClient, HttpResponseBase } from '@angular/common/http';
 
 import { LinkData } from './link.service';
 import { BehaviorSubject, from } from 'rxjs';
-import { mergeAll } from 'rxjs/operators';
+import { mergeAll, catchError, map } from 'rxjs/operators';
 import { defer } from 'rxjs/index';
 
 /**
@@ -89,13 +89,13 @@ export class FetchStatusService {
 
   private async fetchLink(url: string, status$: BehaviorSubject<Status>) {
     await this.http.head(url, { observe: 'response' })
-        .subscribe((response: HttpResponseBase) => {
+        .pipe(map((response: HttpResponseBase) => {
           console.log(response); // TEMP TEMP TEMP TEMP
           status$.next(this.registerStatus(response));
-        }, (error: HttpResponseBase) => {
+        }), catchError((error, caught) => {
           console.log(error);
           status$.next(this.registerStatus(error));
-        });
+        }));
     /* status$.next({
       code: 200, // response.status,
       ok: true // response.ok
