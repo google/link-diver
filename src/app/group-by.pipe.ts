@@ -5,7 +5,8 @@ import { GroupData } from './group-list/group-list.component';
 /**
  * This pipe is responsible for the filtered links and returning an array of
  * GroupData objects which hold the grouping of those links based on the
- * key attribute that is passed in as a parameter.
+ * key attribute that is passed in as a parameter. Note that if the keyAttribute
+ * is undefined the pipe puts every link in one big group.
  */
 @Pipe({
   name: 'groupBy'
