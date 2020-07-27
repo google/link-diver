@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SortOptions } from './sort.pipe';
+import { SortOptions } from './group-sort.pipe';
 
 /**
- * This service is responsible for casting the current regular expression as an
- * obersvable to keep all of the components in sync
+ * This service is responsible far casting various user options as observables.
+ * Such options include the regex to filter, the key to group by, and the order
+ * to sort by.
  */
 @Injectable({
   providedIn: 'root'
 })
-export class RegexService {
+export class OptionsService {
 
   private regexSource = new BehaviorSubject<string>('');
   regexStr = this.regexSource.asObservable();
 
   private sortOrderSource = new BehaviorSubject<SortOptions>(SortOptions.DOM);
   sortOrder$ = this.sortOrderSource.asObservable();
+
+  private groupingKeySource = new BehaviorSubject<string>('');
+  groupingKey$ = this.groupingKeySource.asObservable();
 
   constructor() { }
 
@@ -25,5 +29,9 @@ export class RegexService {
 
   updateOrder(newOrder: SortOptions) {
     this.sortOrderSource.next(newOrder);
+  }
+
+  updateGroupingKey(newKey: string) {
+    this.groupingKeySource.next(newKey);
   }
 }

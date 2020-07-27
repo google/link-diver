@@ -1,8 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,10 +17,9 @@ import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
 import { ParentLinkComponent } from './parent-link/parent-link.component';
 import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collapse-all.component';
-import { GroupByPipe } from './group-by.pipe';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupHeaderComponent } from './group-header/group-header.component';
-import { SortPipe } from './sort.pipe';
+import { GroupSort } from './group-sort.pipe';
 
 @NgModule({
   declarations: [
@@ -30,17 +32,20 @@ import { SortPipe } from './sort.pipe';
     InputPanelComponent,
     ParentLinkComponent,
     ExpandCollapseAllComponent,
-    GroupByPipe,
     GroupListComponent,
     GroupHeaderComponent,
-    SortPipe
+    GroupSort
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     FormsModule,
     MatButtonModule,
-    MatSelectModule
+    MatSelectModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

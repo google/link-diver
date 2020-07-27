@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LinkData, LinkService } from '../link.service';
-import { RegexService } from '../regex.service';
-import { GroupingKeyService } from '../grouping-key.service';
-import { SortOptions } from '../sort.pipe';
+import { SortOptions } from '../group-sort.pipe';
+import { OptionsService } from '../options.service';
 
 export interface GroupData {
   key: string,
@@ -28,20 +27,19 @@ export class GroupListComponent implements OnInit {
   links: LinkData[];
 
   constructor(private linkService: LinkService,
-    private regexService: RegexService,
-    private groupingKeyService: GroupingKeyService) { }
+    private optionsService: OptionsService) { }
 
   ngOnInit(): void {
-    this.regexService.regexStr.subscribe((str: string) => {
-      this.regex = str;
+    this.optionsService.regexStr.subscribe((newRegex: string) => {
+      this.regex = newRegex;
     });
     this.linkService.linkList$.subscribe((newLinks: LinkData[]) => {
       this.links = newLinks;
     });
-    this.groupingKeyService.groupingKey$.subscribe((newKey: string) => {
+    this.optionsService.groupingKey$.subscribe((newKey: string) => {
       this.key = newKey;
     });
-    this.regexService.sortOrder$.subscribe((newOrder: SortOptions) => {
+    this.optionsService.sortOrder$.subscribe((newOrder: SortOptions) => {
       this.order = newOrder;
     });
   }
