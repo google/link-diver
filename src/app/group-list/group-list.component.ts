@@ -48,4 +48,12 @@ export class GroupListComponent implements OnInit {
     group.hide = !group.hide;
   }
 
+  getSizeDescription(group: GroupData) {
+    let str = group.size.toString() + ' Match';
+    if (group.size != 1) {
+      str += 'es';
+    }
+    return str;
+  }
+
 }

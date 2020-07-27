@@ -15,10 +15,8 @@ import { InputBarComponent } from './input-bar/input-bar.component';
 import { FilterByRegexPipe } from './filter-by-regex.pipe';
 import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
-import { ParentLinkComponent } from './parent-link/parent-link.component';
 import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collapse-all.component';
 import { GroupListComponent } from './group-list/group-list.component';
-import { GroupHeaderComponent } from './group-header/group-header.component';
 import { GroupSort } from './group-sort.pipe';
 
 @NgModule({
@@ -30,10 +28,8 @@ import { GroupSort } from './group-sort.pipe';
     FilterByRegexPipe,
     IndivLinkComponent,
     InputPanelComponent,
-    ParentLinkComponent,
     ExpandCollapseAllComponent,
     GroupListComponent,
-    GroupHeaderComponent,
     GroupSort
   ],
   imports: [
