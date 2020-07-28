@@ -15,9 +15,9 @@ interface Status {
 
 /**
  * This service is responsible for checking the status of each link. For each
- * unique link that is passed in in linkList it checks the HTTP status by sending
- * a HEAD request. In addition in throttles the amount of requests that get sent
- * to the HttpClient so it does not get overworked.
+ * unique link that is passed in in linkList it checks the HTTP status by
+ * sending a GET request. In addition in throttles the amount of requests that
+ * get sent to the HttpClient so it does not get overworked.
  */
 @Injectable({
   providedIn: 'root'
@@ -85,8 +85,12 @@ export class FetchStatusService {
 
   /**
     * Sends a new batch of requests to http serivce and handles the response.
-    * @param linkIterator 
-    * @param subjectIterator
+    * @param {Iterator<string>} linkIterator An iterator used to iterate through
+    * all of the links in the statusMap created in initMap().
+    * @param {Iterator<BehaviorSubject<Status>>} subjectIterator An iterator
+    * that iterates through all of the status.
+    * subject and iterates alongside linkIterator.
+    *
     * @return {boolean} Returns true if there are no more links to be fetched.
     * Otherwise returns false.
     */
@@ -96,7 +100,7 @@ export class FetchStatusService {
       const nextLink = linkIterator.next();
       const status$ = subjectIterator.next().value;
       if (nextLink.done) return true;
-      this.http.head(nextLink.value, { observe: 'response' })
+      this.http.get(nextLink.value, {observe: 'response', responseType: 'text'})
           .subscribe((response: HttpResponseBase) => {
             status$.next(this.registerStatus(response));
           }, (error: HttpResponseBase) => {
