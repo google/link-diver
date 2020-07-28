@@ -2,7 +2,7 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpResponseBase } from '@angular/common/http';
 
 import { LinkData } from './link.service';
-import { BehaviorSubject, from } from 'rxjs';
+import { BehaviorSubject, from, Observable, observable } from 'rxjs';
 import { mergeAll, catchError, map } from 'rxjs/operators';
 import { defer } from 'rxjs/index';
 
@@ -82,20 +82,36 @@ export class FetchStatusService {
     const observables = mapArr.map((x) => defer(() => {
       return this.fetchLink(x.link, x.subject);
     }));
-    from(observables)
-        .pipe(mergeAll(this.batchSize))
-        .subscribe();
+
+    from(observables).pipe(mergeAll(5)).subscribe((something) => {
+      something.subscribe((anothersomething) => {
+        console.log(anothersomething.status);
+      });
+    });
+    /* from(observables)
+        .subscribe((observable: Observable<HttpResponseBase>) => {
+          observable.subscribe((httpResponse: HttpResponseBase) => {
+            console.log(httpResponse);
+            console.log(httpResponse.status);
+          }, (error: HttpResponseBase) => {
+            console.log(error);
+            console.log(error.status);
+          });
+        }).pipe(mergeAll(this.batchSize));*/
   }
 
   private async fetchLink(url: string, status$: BehaviorSubject<Status>) {
-    await this.http.head(url, { observe: 'response' })
-        .pipe(map((response: HttpResponseBase) => {
+    const response = this.http.head(url, { observe: 'response' });
+    return response;
+    /*    .pipe(map((response: HttpResponseBase) => {
           console.log(response); // TEMP TEMP TEMP TEMP
           status$.next(this.registerStatus(response));
+          return response;
         }), catchError((error, caught) => {
           console.log(error);
           status$.next(this.registerStatus(error));
-        }));
+          return error;
+        }));*/
     /* status$.next({
       code: 200, // response.status,
       ok: true // response.ok
