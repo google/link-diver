@@ -3,6 +3,10 @@
     <a href={{link.href}} target="_blank"
     [innerHTML]="link.href | highlightMatch: regex"
     (click)="toggle()"></a>
+    <button mat-icon-button aria-label="highlight button" (click)="highlight()">
+        <mat-icon >highlight</mat-icon>
+    </button>
+    
 </div>
 <div *ngIf="expand">
     <ul>

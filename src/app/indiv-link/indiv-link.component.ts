@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { RegexService } from '../regex.service';
-import { LinkData } from '../link.service';
+import { LinkData, LinkService } from '../link.service';
 import { ExpandCollapseAllService } from '../expand-collapse-all.service';
 
 /**
@@ -20,7 +20,8 @@ export class IndivLinkComponent implements OnInit {
   @Input() link: LinkData;
 
   constructor(private regexService: RegexService,
-    private ecaService: ExpandCollapseAllService) { }
+    private ecaService: ExpandCollapseAllService,
+    private linkService: LinkService) { }
 
   ngOnInit(): void {
     this.regexService.regexStr.subscribe((str) => this.regex = str);
@@ -33,4 +34,7 @@ export class IndivLinkComponent implements OnInit {
     this.expand = !this.expand;
   }
 
+  highlight(): void {
+    this.linkService.highlightLink(this.link);
+  }
 }

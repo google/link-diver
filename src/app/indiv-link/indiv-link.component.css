@@ -12,6 +12,11 @@ li {
     padding: 10px;
 }
 
+button {
+    float: right;
+    height: 1em;
+}
+
 .light {
     color: #888;
 }

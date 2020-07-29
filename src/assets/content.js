@@ -16,31 +16,31 @@ const urlRegex = /https?:\/\/[^\s]+/;
 function findLinks() {
   const all = document.querySelectorAll('*');
   const links = [];
-  all.forEach((element) => {
+  all.forEach((element, index) => {
     if (element.getAttribute('href')) {
-      addLinkFromHref(element, links);
+      addLinkFromHref(element, index, links);
     } else if (element.hasAttribute('onclick')) {
-      addLinkFromOnClick(element, links);
+      addLinkFromOnClick(element, index, links);
     } else if (element.hasAttribute('action')) {
       // Only form elements can have an action attribute.
-      addLinkFromAttribute(element, links, 'action');
+      addLinkFromAttribute(element, index, links, 'action');
     } else if (element.tagName === 'IMG') {
-      addLinkFromAttribute(element, links, 'src');
+      addLinkFromAttribute(element, index, links, 'src');
     }
   });
   return links;
 }
 
-function addLinkFromHref(element, links) {
+function addLinkFromHref(element, index, links) {
   if (element.tagName === 'A' || element.tagName === 'AREA') {
     // Avoid bad links, such as javascript:void(0)
     if (urlRegex.test(element.href)) {
-      links.push(getLinkData(element, element.href));
+      links.push(getLinkData(element, index, element.href));
     }
   }
 }
 
-function addLinkFromOnClick(element, links) {
+function addLinkFromOnClick(element, index, links) {
   const jsFunc = element.getAttribute('onclick');
   const specialCase = /window[.]location[.]href=["'](.*)["']/;
   const specialCaseMatches = jsFunc.match(specialCase);
@@ -50,25 +50,26 @@ function addLinkFromOnClick(element, links) {
     if (!urlRegex.test(urlString)) {
       urlString = window.location.origin + urlString;
     }
-    links.push(getLinkData(element, urlString));
+    links.push(getLinkData(element, index, urlString));
   } else if (generalMatches) {
-    links.push(getLinkData(element, generalMatches[0]));
+    links.push(getLinkData(element, index, generalMatches[0]));
   }
 }
 
-function addLinkFromAttribute(element, links, attribute) {
+function addLinkFromAttribute(element, index, links, attribute) {
   let link = element[attribute];
   if (!urlRegex.test(link)) {
     link = window.location.origin + link;
   }
-  links.push(getLinkData(element, link));
+  links.push(getLinkData(element, index, link));
 }
 
-function getLinkData(element, urlString) {
+function getLinkData(element, index, urlString) {
   const url = new URL(urlString);
   return {
     'href': url.href,
     'host': url.host,
+    'domId': index,
     'tagName': element.tagName,
     'hidden': element.hidden
   };

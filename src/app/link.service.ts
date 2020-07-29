@@ -1,7 +1,7 @@
 // eslint-disable-next-line spaced-comment
 /// <reference types="chrome"/>
 
-import { Injectable, EventEmitter, NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 /**
@@ -11,6 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 export interface LinkData {
   href: string;
   host: string;
+  domId: number;
   tagName: string;
   hidden: boolean;
 }
@@ -32,11 +33,13 @@ export class LinkService {
 
   private setLinks(newLinks: LinkData[]): void {
     this.linkListSource.next(newLinks);
+    this.highlightLink(newLinks[3]);
   }
 
   constructor(private ngZone: NgZone) {
 
     chrome.tabs.getCurrent((tab) => {
+      console.log(tab.openerTabId);
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send parent'
       }, (parent: string) => {
@@ -54,4 +57,22 @@ export class LinkService {
       });
     });
   }
+
+  highlightLink(link: LinkData) {
+    /* chrome.windows.getAll({populate: true}, (windows) => {
+      windows.forEach((window) => {
+        window.tabs.forEach((tab) => {
+          chrome.tabs.sendMessage(tab.id, {succes: true});
+        });
+      });
+    });
+    
+    chrome.tabs.getCurrent((tab) => {
+      chrome.tabs.sendMessage(tab.openerTabId, {
+        message: 'highlight link',
+        linkData: link
+      });
+    });*/
+  }
+
 }

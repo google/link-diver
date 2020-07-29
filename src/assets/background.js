@@ -2,10 +2,14 @@
 /// <reference types="chrome"/>
 
 function launchApp(activeTab) {
-  chrome.tabs.create({
+  /* chrome.tabs.create({
     url: chrome.runtime.getURL('index.html'),
     openerTabId: activeTab.id,
     index: activeTab.index + 1
+  });*/
+
+  chrome.windows.create({
+    url: chrome.runtime.getURL('index.html')
   });
 }
 
