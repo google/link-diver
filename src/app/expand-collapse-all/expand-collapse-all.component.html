@@ -4,3 +4,12 @@
 <button mat-stroked-button (click)="toggleAll(false)">
     Collapse All
 </button>
+
+<mat-form-field appearance="fill">
+    <mat-label>Sort By</mat-label>
+    <mat-select [(value)]="order" (selectionChange)="pushSortOrder()">
+        <mat-option *ngFor="let option of sortOptions" [value]="option.val">
+            {{option.display}}
+        </mat-option>
+    </mat-select>
+</mat-form-field>

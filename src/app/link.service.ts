@@ -11,6 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 export interface LinkData {
   href: string;
   host: string;
+  domId: number;
   tagName: string;
   hidden: boolean;
 }

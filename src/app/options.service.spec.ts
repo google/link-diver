@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { RegexService } from './regex.service';
+import { OptionsService } from './options.service';
 
-describe('RegexService', () => {
-  let service: RegexService;
+describe('OptionsService', () => {
+  let service: OptionsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(RegexService);
+    service = TestBed.inject(OptionsService);
   });
 
   it('should be created', () => {

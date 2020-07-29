@@ -3,3 +3,7 @@ button {
     margin: 5px;
     margin-right: 0;
 }
+
+mat-form-field {
+    float: right;
+}
