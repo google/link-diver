@@ -1,14 +1,17 @@
 <div class="title" (click)="toggle()">
-    <div class="arrow" [ngClass]="{'down': expand}"></div>
-    <a href={{link.href}} target="_blank"
-        [innerHTML]="link.href | highlightMatch: regex"
-        (click)="toggle()"></a>
-    <button mat-icon-button aria-label="highlight button" 
-        (click)="highlight();toggle()" 
-        [color]="highlightOn ? 'accent' : 'black'">
-        <mat-icon [inline]="true">highlight</mat-icon>
-    </button>
-    
+    <div class="left-title">
+        <div class="arrow" [ngClass]="{'down': expand}"></div>
+        <a href={{link.href}} target="_blank"
+            [innerHTML]="link.href | highlightMatch: regex"
+            (click)="toggle()"></a>
+    </div>
+    <div class="right-title">
+        <button mat-icon-button aria-label="highlight button" 
+            (click)="highlight();toggle()" 
+            [color]="nextBgColor === highlightColor ? 'black' : 'accent'">
+            <mat-icon>highlight</mat-icon>
+        </button>  
+    </div>
 </div>
 <div *ngIf="expand">
     <ul>

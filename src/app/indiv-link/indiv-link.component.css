@@ -12,27 +12,37 @@ li {
     padding: 10px;
 }
 
-button {
-    position: absolute;
-    right: 10px;
-    top: 5px;
-    height: 1em;
-}
-
-/* mat-icon {
-    justify-content: center;
-    max-height: 100%;
-}*/
-
 .light {
     color: #888;
 }
 
-.title {
+.left-title {
+    display: block;
+    float: left;
+
     padding: 0.5em 5px;
+    margin: 0 auto;
+    overflow-inline: wrap;
+}
+
+.right-title {
+    display: block;
+    float: right;
+    padding-right: 2px;
+    
+    transform: scale(0.66667);
+    height: 2em;
+    width: 2em;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center
+}
+
+.title {
     overflow-inline: hidden;
     overflow: hidden;
-    position: relative;
 }
 
 .title:hover {

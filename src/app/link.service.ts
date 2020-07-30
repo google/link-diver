@@ -25,6 +25,9 @@ export interface LinkData {
 })
 export class LinkService {
 
+  private readonly noConnectionErrorMessage = `Parent site was not found,\
+  please try reloading the parent site and relaunching the extension`;
+
   private parentSource = new BehaviorSubject<string>('');
   parent$ = this.parentSource.asObservable();
 
@@ -48,20 +51,21 @@ export class LinkService {
   }
 
   private requestLinkData() {
-    chrome.tabs.sendMessage(this.parentTabId, {
-      message: 'send parent'
-    }, (parent: string) => {
-      this.ngZone.run(() => {
-        this.parentSource.next(parent);
-      });
-    });
 
     chrome.tabs.sendMessage(this.parentTabId, {
-      message: 'send links'
-    }, (links: LinkData[]) => {
-      this.ngZone.run(() => {
-        this.setLinks(links);
-      });
+      message: 'send link data'
+    }, (response) => {
+      if (response === undefined) {
+        alert(this.noConnectionErrorMessage);
+        console.error(this.noConnectionErrorMessage);
+      } else if (!response.success) {
+        console.error(response.errorMessage);
+      } else {
+        this.ngZone.run(() => {
+          this.parentSource.next(response.parent);
+          this.setLinks(response.linkList);
+        });
+      }
     });
   }
 
@@ -75,11 +79,16 @@ export class LinkService {
         message: 'highlight link',
         linkData: link,
         newColor: newColor
-      }, (prevColor) => {
-        resolve(prevColor);
+      }, (response) => {
+        if (response === undefined) {
+          reject(this.noConnectionErrorMessage);
+        } else if (!response.success) {
+          reject(response.errorMessage);
+        } else {
+          resolve(response.prevColor);
+        }
       });
     });
-
   }
 
 }
