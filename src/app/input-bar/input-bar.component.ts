@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RegexService } from '../regex.service';
-import { GroupingKeyService } from '../grouping-key.service';
+import { OptionsService } from '../options.service';
 
 /**
  * This component is responsible for taking acceptin input from the user,
@@ -15,15 +14,14 @@ export class InputBarComponent implements OnInit {
 
   newInput: string;
 
-  constructor(private regexService: RegexService,
-    private groupingKeyService: GroupingKeyService) { }
+  constructor(private optionsService: OptionsService) { }
 
   ngOnInit(): void { }
 
   pushInput() {
     const options = this.parseInput(this.newInput);
-    this.regexService.updateRegex(options.regex);
-    this.groupingKeyService.updateGroupingKey(options.group);
+    this.optionsService.updateRegex(options.regex);
+    this.optionsService.updateGroupingKey(options.group);
 
   }
 
