@@ -5,11 +5,11 @@
 // from the contents of the active page.
 chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
   if (request.message === 'highlight link') {
-    highlightLink(request.linkData);
+    sendResponse(highlightLink(request.linkData, request.newColor));
   }
 });
 
-function highlightLink(link) {
+function highlightLink(link, newColor) {
   console.log('Highlighting link', link);
   /* const queryString = /* link.tagName + '[href=\"' + link.href + '\"]';
   console.log(queryString);
@@ -24,6 +24,8 @@ function highlightLink(link) {
 
   const element = document.querySelectorAll('*')[link.domId];
   console.log(element);
-  element.style.backgroundColor = '#FDFF47';
+  const prevBgColor = element.style.backgroundColor;
+  element.style.backgroundColor = newColor;
   element.scrollIntoViewIfNeeded();
+  return prevBgColor;
 }

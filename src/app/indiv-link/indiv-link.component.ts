@@ -16,6 +16,9 @@ export class IndivLinkComponent implements OnInit {
 
   regex: string;
   expand: boolean = false;
+  highlightOn: boolean = false;
+
+  private nextBgColor: string = '#FDFF47'
 
   @Input() link: LinkData;
 
@@ -35,6 +38,11 @@ export class IndivLinkComponent implements OnInit {
   }
 
   highlight(): void {
-    this.linkService.highlightLink(this.link);
+    this.highlightOn = !this.highlightOn;
+    this.linkService.highlightLink(this.link, this.nextBgColor)
+        .then((prevColor: string) => {
+          this.nextBgColor = prevColor;
+          console.log(this.nextBgColor);
+        });
   }
 }

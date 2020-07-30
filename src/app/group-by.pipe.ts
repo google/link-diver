@@ -15,6 +15,8 @@ export class GroupByPipe implements PipeTransform {
 
   transform(links: LinkData[], keyAttribute: string): GroupData[] {
 
+    if (!links) return [];
+
     // Groups object into one big map like object where the links are the keys
     const groupedLinks = links.reduce((obj, link) => {
       obj[link[keyAttribute]] = [...obj[link[keyAttribute]] || [], link];

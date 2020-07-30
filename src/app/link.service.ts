@@ -31,48 +31,55 @@ export class LinkService {
   private linkListSource = new BehaviorSubject<LinkData[]>([]);
   linkList$ = this.linkListSource.asObservable();
 
-  private setLinks(newLinks: LinkData[]): void {
-    this.linkListSource.next(newLinks);
-    this.highlightLink(newLinks[3]);
-  }
+  private parentTabId: number;
 
   constructor(private ngZone: NgZone) {
 
-    chrome.tabs.getCurrent((tab) => {
-      console.log(tab.openerTabId);
-      chrome.tabs.sendMessage(tab.openerTabId, {
-        message: 'send parent'
-      }, (parent: string) => {
-        this.ngZone.run(() => {
-          this.parentSource.next(parent);
-        });
-      });
-
-      chrome.tabs.sendMessage(tab.openerTabId, {
-        message: 'send links'
-      }, (links: LinkData[]) => {
-        this.ngZone.run(() => {
-          this.setLinks(links);
-        });
+    chrome.tabs.getCurrent((currTab: chrome.tabs.Tab) => {
+      this.parentTabId = currTab.openerTabId;
+      chrome.windows.create({
+        tabId: currTab.id,
+        left: 50,
+        top: 50
+      }, (window: chrome.windows.Window) => {
+        this.requestLinkData();
       });
     });
   }
 
-  highlightLink(link: LinkData) {
-    /* chrome.windows.getAll({populate: true}, (windows) => {
-      windows.forEach((window) => {
-        window.tabs.forEach((tab) => {
-          chrome.tabs.sendMessage(tab.id, {succes: true});
-        });
+  private requestLinkData() {
+    chrome.tabs.sendMessage(this.parentTabId, {
+      message: 'send parent'
+    }, (parent: string) => {
+      this.ngZone.run(() => {
+        this.parentSource.next(parent);
       });
     });
-    
-    chrome.tabs.getCurrent((tab) => {
-      chrome.tabs.sendMessage(tab.openerTabId, {
-        message: 'highlight link',
-        linkData: link
+
+    chrome.tabs.sendMessage(this.parentTabId, {
+      message: 'send links'
+    }, (links: LinkData[]) => {
+      this.ngZone.run(() => {
+        this.setLinks(links);
       });
-    });*/
+    });
+  }
+
+  private setLinks(newLinks: LinkData[]): void {
+    this.linkListSource.next(newLinks);
+  }
+
+  highlightLink(link: LinkData, newColor: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      chrome.tabs.sendMessage(this.parentTabId, {
+        message: 'highlight link',
+        linkData: link,
+        newColor: newColor
+      }, (prevColor) => {
+        resolve(prevColor);
+      });
+    });
+
   }
 
 }
