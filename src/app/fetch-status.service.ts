@@ -2,8 +2,8 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpResponseBase } from '@angular/common/http';
 
 import { LinkData } from './link.service';
-import { BehaviorSubject, from, Observable, observable } from 'rxjs';
-import { mergeAll, catchError, map } from 'rxjs/operators';
+import { BehaviorSubject, from } from 'rxjs';
+import { mergeAll} from 'rxjs/operators';
 import { defer } from 'rxjs/index';
 
 /**
@@ -26,13 +26,9 @@ interface Status {
 })
 export class FetchStatusService {
 
-  private readonly batchSize = 10;
-  private activeRequests = 0;
-  private newBatch: EventEmitter<any>;
+  private readonly batchSize = 50;
 
-  constructor(private http: HttpClient) {
-    this.newBatch = new EventEmitter();
-  }
+  constructor(private http: HttpClient) { }
 
   fetch(linkList: LinkData[]) {
     const statusMap: Map<string, BehaviorSubject<Status>> = new Map();
@@ -69,8 +65,6 @@ export class FetchStatusService {
     });
   }
 
-  // --Trying something different here
-
   private startFetching(statusMap: any): void {
     const mapArr = Array.from(statusMap.entries()).map(([key, val]) => {
       return {
@@ -78,92 +72,40 @@ export class FetchStatusService {
         subject: val
       };
     });
-    // this.fetchLink(mapArr[0].link, mapArr[0].subject).then();
+
     const observables = mapArr.map((x) => defer(() => {
       return this.fetchLink(x.link, x.subject);
     }));
 
-    from(observables).pipe(mergeAll(5)).subscribe((something) => {
-      something.subscribe((anothersomething) => {
-        console.log(anothersomething.status);
-      });
-    });
-    /* from(observables)
-        .subscribe((observable: Observable<HttpResponseBase>) => {
-          observable.subscribe((httpResponse: HttpResponseBase) => {
-            console.log(httpResponse);
-            console.log(httpResponse.status);
-          }, (error: HttpResponseBase) => {
-            console.log(error);
-            console.log(error.status);
+    from(observables)
+        .pipe(mergeAll(this.batchSize))
+        .subscribe((fetchPackage: any) => {
+          fetchPackage.response.subscribe((httpResponse: HttpResponseBase) => {
+            fetchPackage.statusSubject.next(this.getStatus(httpResponse));
+          }, (errorResponse: HttpResponseBase) => {
+            console.log(this.getStatus(errorResponse));
+            fetchPackage.statusSubject.next(this.getStatus(errorResponse));
           });
-        }).pipe(mergeAll(this.batchSize));*/
+        });
+
   }
 
   private async fetchLink(url: string, status$: BehaviorSubject<Status>) {
-    const response = this.http.head(url, { observe: 'response' });
-    return response;
-    /*    .pipe(map((response: HttpResponseBase) => {
-          console.log(response); // TEMP TEMP TEMP TEMP
-          status$.next(this.registerStatus(response));
-          return response;
-        }), catchError((error, caught) => {
-          console.log(error);
-          status$.next(this.registerStatus(error));
-          return error;
-        }));*/
-    /* status$.next({
-      code: 200, // response.status,
-      ok: true // response.ok
-    });*/
-  }
-  /*
-  /**
-   * Iterates through the previously initialized map in batches sending out http
-   * requests
-   * @param {any} statusMap
-   *
-  private startFetching(statusMap: any): void {
-    const linkIterator = statusMap.keys();
-    const subjectIterator = statusMap.values();
-    const batchSubscription = this.newBatch.subscribe(() => {
-      if (this.fetchBatch(linkIterator, subjectIterator)) {
-        batchSubscription.unsubscribe();
-      }
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const response = this.http.get(url, {
+          observe: 'response',
+          responseType: 'text'
+        });
+        resolve({
+          response: response,
+          statusSubject: status$
+        });
+      }, 0);
     });
-    this.newBatch.emit();
   }
 
-  /**
-    * Sends a new batch of requests to http serivce and handles the response.
-    * @param linkIterator
-    * @param subjectIterator
-    * @return {boolean} Returns true if there are no more links to be fetched.
-    * Otherwise returns false.
-    *
-  private fetchBatch(linkIterator: Iterator<string>,
-      subjectIterator: Iterator<BehaviorSubject<Status>>): boolean {
-    while (this.activeRequests < this.batchSize) {
-      const nextLink = linkIterator.next();
-      const status$ = subjectIterator.next().value;
-      if (nextLink.done) return true;
-      this.http.head(nextLink.value, { observe: 'response' })
-          .subscribe((response: HttpResponseBase) => {
-            status$.next(this.registerStatus(response));
-          }, (error: HttpResponseBase) => {
-            console.log(error);
-            status$.next(this.registerStatus(error));
-          });
-      this.activeRequests ++;
-    }
-    return false;
-  }*/
-
-  private registerStatus(response: HttpResponseBase): Status {
-    /* this.activeRequests --;
-    if (this.activeRequests < this.batchSize) {
-      this.newBatch.emit();
-    }*/
+  private getStatus(response: HttpResponseBase): Status {
     return {
       code: response.status,
       ok: response.ok
