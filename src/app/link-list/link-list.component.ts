@@ -1,11 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { LinkService, LinkData } from '../link.service';
+import { Component, OnInit, Input } from '@angular/core';
 
-import { RegexService } from '../regex.service';
+import { GroupData } from '../group-list/group-list.component';
 
 /**
- * This component is responsible for filtering and displaying all of the links
- * from the parent site
+ * Responsible for displaying all of the links of a group in a list.
  */
 @Component({
   selector: 'app-link-list',
@@ -14,17 +12,11 @@ import { RegexService } from '../regex.service';
 })
 export class LinkListComponent implements OnInit {
 
-  regex: string;
-  links: LinkData[];
+  @Input() group: GroupData;
 
-  constructor(private linkService: LinkService,
-    private regexService: RegexService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    this.regexService.regex$.subscribe((str: string) => this.regex = str);
-    this.linkService.linkList$.subscribe((newLinks: LinkData[]) => {
-      this.links = newLinks;
-    });
   }
 
 }

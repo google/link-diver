@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RegexInputComponent } from './regex-input.component';
+import { InputPanelComponent } from './input-panel.component';
 
-describe('RegexInputComponent', () => {
-  let component: RegexInputComponent;
-  let fixture: ComponentFixture<RegexInputComponent>;
+describe('InputPanelComponent', () => {
+  let component: InputPanelComponent;
+  let fixture: ComponentFixture<InputPanelComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegexInputComponent ]
+      declarations: [ InputPanelComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RegexInputComponent);
+    fixture = TestBed.createComponent(InputPanelComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -12,6 +12,7 @@ import { FetchStatusService } from './fetch-status.service';
 export interface LinkData {
   href: string;
   host: string;
+  domId: number;
   tagName: string;
   hidden: boolean;
   status?: number;
@@ -27,7 +28,10 @@ export interface LinkData {
 })
 export class LinkService {
 
-  linkListSource = new BehaviorSubject<LinkData[]>([]);
+  private parentSource = new BehaviorSubject<string>('');
+  parent$ = this.parentSource.asObservable();
+
+  private linkListSource = new BehaviorSubject<LinkData[]>([]);
   linkList$ = this.linkListSource.asObservable();
 
   private setLinks(newLinks: LinkData[]): void {
@@ -38,6 +42,14 @@ export class LinkService {
     private ngZone: NgZone) {
 
     chrome.tabs.getCurrent((tab) => {
+      chrome.tabs.sendMessage(tab.openerTabId, {
+        message: 'send parent'
+      }, (parent: string) => {
+        this.ngZone.run(() => {
+          this.parentSource.next(parent);
+        });
+      });
+
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send links'
       }, (links: LinkData[]) => {

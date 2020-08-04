@@ -1,17 +1,14 @@
 ul {
     list-style: none;
-    padding: 20px;
-    max-height: 80vh;
-    overflow: hidden;
-    overflow-y: scroll;
+    padding: 0;
+    margin: 0;
 }
 
 li {
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-x: scroll;
+    white-space: normal;
 }
 
-li:nth-child(odd) {
+li:nth-child(even) {
     background-color: #eee
 }

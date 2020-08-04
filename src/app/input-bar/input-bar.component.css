@@ -3,13 +3,20 @@
 }
 
 .search-bar {
-    text-align: center;
     width: 100%;
-    padding: 0 20px;
+    padding: 0;
 }
 
 input {
     width: 90%;
+    border-width: 1px;
+    padding: 5px 10px;
+    border-color: black;
+}
+
+input:focus {
+    outline: none;
+    border-width: 2px;
 }
 
 button {
