@@ -1,4 +1,7 @@
 <span class="bold">Parent: </span> 
 <a href="{{parent}}" target="_blank">{{parent}}</a>
 <app-input-bar></app-input-bar>
+<span id="group-count" *ngIf="groupCount">
+    {{getGroupCountDescription()}}
+</span>
 <app-expand-collapse-all></app-expand-collapse-all>
