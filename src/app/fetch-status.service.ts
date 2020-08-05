@@ -79,15 +79,7 @@ export class FetchStatusService {
 
     from(observables)
         .pipe(mergeAll(this.batchSize))
-        .subscribe((fetchPackage: any) => {
-          fetchPackage.response.subscribe((httpResponse: HttpResponseBase) => {
-            fetchPackage.statusSubject.next(this.getStatus(httpResponse));
-          }, (errorResponse: HttpResponseBase) => {
-            console.log(this.getStatus(errorResponse));
-            fetchPackage.statusSubject.next(this.getStatus(errorResponse));
-          });
-        });
-
+        .subscribe();
   }
 
   private async fetchLink(url: string, status$: BehaviorSubject<Status>) {
@@ -97,10 +89,15 @@ export class FetchStatusService {
           observe: 'response',
           responseType: 'text'
         });
-        resolve({
-          response: response,
-          statusSubject: status$
+
+        response.subscribe((httpResponse: HttpResponseBase) => {
+          status$.next(this.getStatus(httpResponse));
+        }, (errorResponse: HttpResponseBase) => {
+          console.log(this.getStatus(errorResponse));
+          status$.next(this.getStatus(errorResponse));
         });
+
+        resolve();
       }, 0);
     });
   }
