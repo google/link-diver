@@ -11,8 +11,9 @@ import { defer } from 'rxjs/index';
  * or failure
  */
 interface Status {
-  code?: number;
-  ok?: boolean;
+  code: number;
+  ok: boolean;
+  contentType: string;
 }
 
 /**
@@ -60,6 +61,7 @@ export class FetchStatusService {
         if (status) {
           link.status = status.code;
           link.statusOk = status.ok;
+          link.contentType = status.contentType;
         }
       });
     });
@@ -103,9 +105,16 @@ export class FetchStatusService {
   }
 
   private getStatus(response: HttpResponseBase): Status {
+    let contentType = 'none';
+
+    if (response.headers.has('Content-type')) {
+      contentType = response.headers.get('Content-type').split(';', 2)[0];
+    }
+
     return {
       code: response.status,
-      ok: response.ok
+      ok: response.ok,
+      contentType: contentType
     };
   }
 }
