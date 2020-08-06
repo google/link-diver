@@ -6,16 +6,10 @@
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   try {
     if (request.message === 'highlight link') {
-      if (highlightLink(request.linkData)) {
-        sendResponse({
-          success: true
-        });
-      } else {
-        sendResponse({
-          success: false,
-          errorMessage: 'highlight conflict'
-        });
-      }
+      sendResponse({
+        success: true,
+        highlightOn: highlightLink(request.linkData)
+      });
     }
   } catch (e) {
     console.error(e);
@@ -29,17 +23,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
 function highlightLink(link) {
   const element = document.querySelectorAll('*')[link.domId];
-  const prevBgColor = element.style.backgroundColor;
+  const highlightClass = 'link-diver-highlight';
 
-  if (link.highlighted) {
-    element.style.background = link.bgColor;
+  const isHighlighted = element.classList.contains(highlightClass);
+  if (isHighlighted) {
+    element.classList.remove(highlightClass);
   } else {
-    element.style.background = '#FDFF47';
+    element.classList.add(highlightClass);
   }
 
   element.scrollIntoViewIfNeeded();
   // Logging allows user to view source code in the console which can be more
   // helpful than highlighting
   console.log(element);
-  return prevBgColor !== element.style.background;
+  return !isHighlighted;
 }

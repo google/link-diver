@@ -15,7 +15,6 @@ export interface LinkData {
   domId: number;
   tagName: string;
   hidden: boolean;
-  bgColor: string;
   highlighted: boolean;
 }
 
@@ -80,8 +79,8 @@ export class LinkService {
     this.linkListSource.next(newLinks);
   }
 
-  highlightLink(link: LinkData): Promise<string> {
-    return new Promise((resolve, reject) => {
+  highlightLink(link: LinkData): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
       chrome.tabs.sendMessage(this.parentTabId, {
         message: 'highlight link',
         linkData: link
@@ -91,7 +90,7 @@ export class LinkService {
         } else if (!response.success) {
           reject(response.errorMessage);
         } else {
-          resolve();
+          resolve(response.highlightOn);
         }
       });
     });

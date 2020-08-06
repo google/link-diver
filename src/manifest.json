@@ -10,7 +10,8 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": ["assets/content.js", "assets/highlight-links.js"]
+            "js": ["assets/content.js", "assets/highlight-links.js"],
+            "css": ["assets/highlight.css"]
         }
     ],
     "permissions": ["tabs", "contextMenus"]

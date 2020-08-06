@@ -36,15 +36,7 @@ export class IndivLinkComponent implements OnInit {
 
   highlight(): void {
     this.linkService.highlightLink(this.link)
-        .then(() => this.link.highlighted = !this.link.highlighted)
-        .catch((error: string) => {
-          console.log(error);
-          if (error === 'highlight conflict') {
-            this.link.highlighted = true;
-            console.error('This link has already been highlighted');
-          } else {
-            console.error(error);
-          }
-        });
+        .then((newHighlight: boolean) => this.link.highlighted = newHighlight)
+        .catch((error: string) => console.error(error));
   }
 }
