@@ -64,7 +64,7 @@ export class FetchStatusService {
     });
   }
 
-  startFetching(statusMap: Map<string, BehaviorSubject<Status>>): void {
+  private startFetching(statusMap: Map<string, BehaviorSubject<Status>>): void {
     const mapArr = Array.from(statusMap.entries()).map(([key, val]) => {
       return {
         link: key,
