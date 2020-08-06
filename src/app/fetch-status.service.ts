@@ -77,12 +77,12 @@ export class FetchStatusService {
       return this.http.get(x.link, {
         observe: 'response',
         responseType: 'text'
-      }).pipe(map(response => {
+      }).pipe(map((response: HttpResponseBase) => {
         return {
           response,
           statusSubject$,
         };
-      }), catchError(err => {
+      }), catchError((err: HttpResponseBase) => {
         return of({
           response: err,
           statusSubject$,
