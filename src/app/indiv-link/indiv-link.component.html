@@ -8,7 +8,7 @@
     <div class="right-title">
         <button mat-icon-button aria-label="highlight button" 
             (click)="highlight();toggle()" 
-            [color]="nextBgColor === highlightColor ? 'black' : 'accent'">
+            [color]="link.highlighted ? 'accent' : 'black'">
             <mat-icon>highlight</mat-icon>
         </button>  
     </div>

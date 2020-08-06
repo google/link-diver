@@ -14,6 +14,8 @@ export interface LinkData {
   domId: number;
   tagName: string;
   hidden: boolean;
+  bgColor: string;
+  highlighted: boolean;
 }
 
 /**
@@ -73,19 +75,18 @@ export class LinkService {
     this.linkListSource.next(newLinks);
   }
 
-  highlightLink(link: LinkData, newColor: string): Promise<string> {
+  highlightLink(link: LinkData): Promise<string> {
     return new Promise((resolve, reject) => {
       chrome.tabs.sendMessage(this.parentTabId, {
         message: 'highlight link',
-        linkData: link,
-        newColor: newColor
+        linkData: link
       }, (response) => {
         if (response === undefined) {
           reject(this.noConnectionErrorMessage);
         } else if (!response.success) {
           reject(response.errorMessage);
         } else {
-          resolve(response.prevColor);
+          resolve();
         }
       });
     });

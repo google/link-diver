@@ -90,6 +90,8 @@ function getLinkData(element, index, urlString) {
     'host': url.host,
     'domId': index,
     'tagName': element.tagName,
-    'hidden': element.hidden
+    'hidden': element.hidden,
+    'bgColor': element.style.backgroundColor,
+    'highlighted': false
   };
 }

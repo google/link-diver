@@ -17,9 +17,6 @@ export class IndivLinkComponent implements OnInit {
   regex: string;
   expand: boolean = false;
 
-  readonly highlightColor: string = 'rgb(253, 255, 71)'
-  nextBgColor: string = this.highlightColor;
-
   @Input() link: LinkData;
 
   constructor(private optionsService: OptionsService,
@@ -38,8 +35,16 @@ export class IndivLinkComponent implements OnInit {
   }
 
   highlight(): void {
-    this.linkService.highlightLink(this.link, this.nextBgColor)
-        .then((prevColor: string) => this.nextBgColor = prevColor)
-        .catch((error: Error) => console.error(error));
+    this.linkService.highlightLink(this.link)
+        .then(() => this.link.highlighted = !this.link.highlighted)
+        .catch((error: string) => {
+          console.log(error);
+          if (error === 'highlight conflict') {
+            this.link.highlighted = true;
+            console.error('This link has already been highlighted');
+          } else {
+            console.error(error);
+          }
+        });
   }
 }
