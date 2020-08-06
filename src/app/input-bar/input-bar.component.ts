@@ -23,6 +23,10 @@ export class InputBarComponent implements OnInit {
     this.optionsService.updateRegex(options.regex);
     this.optionsService.updateGroupingKey(options.group);
 
+    delete options.regex;
+    delete options.group;
+    this.optionsService.updateFilters(options);
+
   }
 
   parseInput(input: string) {
