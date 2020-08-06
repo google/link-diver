@@ -25,7 +25,7 @@ interface Status {
 })
 export class FetchStatusService {
 
-  private readonly batchSize = 20;
+  private readonly batchSize = 50;
 
   constructor(private http: HttpClient) { }
 
