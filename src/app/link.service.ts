@@ -65,10 +65,14 @@ export class LinkService {
         console.error(response.errorMessage);
       } else {
         this.ngZone.run(() => {
-          this.parentSource.next(response.parent);
           this.setLinks(response.linkList);
         });
       }
+    });
+
+    chrome.tabs.get(this.parentTabId, (parentTab) => {
+      this.title.setTitle(parentTab.title + ' (Link Diver)');
+      this.parentSource.next(parentTab.url);
     });
   }
 
@@ -89,10 +93,6 @@ export class LinkService {
         } else {
           resolve();
         }
-      });
-
-      chrome.tabs.get(tab.openerTabId, (parentTab) => {
-        this.title.setTitle(parentTab.title + ' (Link Diver)');
       });
     });
   }

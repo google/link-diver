@@ -9,8 +9,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       const links = findLinks();
       sendResponse({
         success: true,
-        linkList: links,
-        parent: window.location.href
+        linkList: links
       });
     }
   } catch (e) {
