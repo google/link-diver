@@ -3,6 +3,7 @@
 
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 /**
  * Packages the URL of a link along with other relevant metadata about that link
@@ -38,7 +39,7 @@ export class LinkService {
 
   private parentTabId: number;
 
-  constructor(private ngZone: NgZone) {
+  constructor(private ngZone: NgZone, private title: Title) {
 
     chrome.tabs.getCurrent((currTab: chrome.tabs.Tab) => {
       this.parentTabId = currTab.openerTabId;
@@ -88,6 +89,10 @@ export class LinkService {
         } else {
           resolve();
         }
+      });
+
+      chrome.tabs.get(tab.openerTabId, (parentTab) => {
+        this.title.setTitle(parentTab.title + ' (Link Diver)');
       });
     });
   }
