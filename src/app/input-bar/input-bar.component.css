@@ -1,17 +1,15 @@
-.border-box {
-    box-sizing: border-box;
-}
-
 .search-bar {
     width: 100%;
     padding: 0;
+    display: flex;
+    flex-direction: row;
 }
 
 input {
-    width: 90%;
     border-width: 1px;
     padding: 5px 10px;
     border-color: black;
+    flex: 1 1 auto;
 }
 
 input:focus {
@@ -20,6 +18,5 @@ input:focus {
 }
 
 button {
-    width: 9%;
-    margin-left: 1%;
+    margin-left: 5px;
 }
