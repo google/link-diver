@@ -1,8 +1,9 @@
 // eslint-disable-next-line spaced-comment
 /// <reference types="chrome"/>
 
-import { Injectable, EventEmitter, NgZone } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 
 /**
  * Packages the URL of a link along with other relevant metadata about that link
@@ -35,7 +36,7 @@ export class LinkService {
     this.linkListSource.next(newLinks);
   }
 
-  constructor(private ngZone: NgZone) {
+  constructor(private ngZone: NgZone, private title: Title) {
 
     chrome.tabs.getCurrent((tab) => {
       chrome.tabs.sendMessage(tab.openerTabId, {
@@ -52,6 +53,10 @@ export class LinkService {
         this.ngZone.run(() => {
           this.setLinks(links);
         });
+      });
+
+      chrome.tabs.get(tab.openerTabId, (parentTab) => {
+        this.title.setTitle(parentTab.title + ' (Link Diver)');
       });
     });
   }
