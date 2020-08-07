@@ -32,7 +32,11 @@ function highlightLink(link) {
     element.classList.add(highlightClass);
   }
 
-  element.scrollIntoViewIfNeeded();
+  element.scrollIntoView({
+    behavior: 'smooth',
+    block: 'center',
+    inline: 'center'
+  });
   // Logging allows user to view source code in the console which can be more
   // helpful than highlighting
   console.log(element);
