@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { LinkService } from '../link.service';
-import { DataPassingService, GroupCount } from '../data-passing.service';
 
 /**
  * A large parent component to hold sub-components that deal with input
@@ -13,16 +12,11 @@ import { DataPassingService, GroupCount } from '../data-passing.service';
 export class InputPanelComponent implements OnInit {
 
   parent: string;
-  groupCount: GroupCount;
 
-  constructor(private linkService: LinkService,
-      private dataPassing: DataPassingService) { }
+  constructor(private linkService: LinkService) { }
 
   ngOnInit(): void {
     this.linkService.parent$.subscribe((str: string) => this.parent = str);
-    this.dataPassing.groupCount$.subscribe((newCount: GroupCount) => {
-      this.groupCount = newCount;
-    });
   }
 
 }
