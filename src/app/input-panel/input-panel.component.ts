@@ -16,25 +16,13 @@ export class InputPanelComponent implements OnInit {
   groupCount: GroupCount;
 
   constructor(private linkService: LinkService,
-    private dataPassing: DataPassingService) { }
+      private dataPassing: DataPassingService) { }
 
   ngOnInit(): void {
     this.linkService.parent$.subscribe((str: string) => this.parent = str);
     this.dataPassing.groupCount$.subscribe((newCount: GroupCount) => {
       this.groupCount = newCount;
     });
-  }
-
-  getGroupCountDescription() {
-    let groupStr = `${this.groupCount.numGroups} Group`;
-    let linkStr = `${this.groupCount.numLinks} URL`;
-    if (this.groupCount.numLinks > 1) {
-      linkStr += 's';
-    }
-    if (this.groupCount.numGroups > 1) {
-      groupStr += 's';
-    }
-    return `${groupStr}, ${linkStr}`;
   }
 
 }
