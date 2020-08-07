@@ -2,9 +2,8 @@ import { Injectable} from '@angular/core';
 import { HttpClient, HttpResponseBase } from '@angular/common/http';
 
 import { LinkData } from './link.service';
-import { BehaviorSubject, from } from 'rxjs';
-import { mergeAll} from 'rxjs/operators';
-import { defer } from 'rxjs/index';
+import { BehaviorSubject, from, of } from 'rxjs';
+import { mergeAll, map, catchError } from 'rxjs/operators';
 
 /**
  * Internal interface to pair a status code with a boolean indicating success
@@ -67,7 +66,7 @@ export class FetchStatusService {
     });
   }
 
-  private startFetching(statusMap: any): void {
+  private startFetching(statusMap: Map<string, BehaviorSubject<Status>>): void {
     const mapArr = Array.from(statusMap.entries()).map(([key, val]) => {
       return {
         link: key,
@@ -75,33 +74,30 @@ export class FetchStatusService {
       };
     });
 
-    const observables = mapArr.map((x) => defer(() => {
-      return this.fetchLink(x.link, x.subject);
-    }));
+    const observables = mapArr.map((x) => {
+      const statusSubject$ = x.subject;
+      return this.http.get(x.link, {
+        observe: 'response',
+        responseType: 'text'
+      }).pipe(map((response: HttpResponseBase) => {
+        return {
+          response,
+          statusSubject$,
+        };
+      }), catchError((err: HttpResponseBase) => {
+        return of({
+          response: err,
+          statusSubject$,
+        });
+      }));
+    });
 
     from(observables)
         .pipe(mergeAll(this.batchSize))
-        .subscribe();
-  }
-
-  private async fetchLink(url: string, status$: BehaviorSubject<Status>) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const response = this.http.get(url, {
-          observe: 'response',
-          responseType: 'text'
+        .subscribe((fetchPackage: any) => {
+          fetchPackage.statusSubject$.next(this.getStatus(fetchPackage.response));
         });
 
-        response.subscribe((httpResponse: HttpResponseBase) => {
-          status$.next(this.getStatus(httpResponse));
-        }, (errorResponse: HttpResponseBase) => {
-          console.log(this.getStatus(errorResponse));
-          status$.next(this.getStatus(errorResponse));
-        });
-
-        resolve();
-      }, 0);
-    });
   }
 
   private getStatus(response: HttpResponseBase): Status {
