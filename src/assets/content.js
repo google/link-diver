@@ -90,11 +90,14 @@ function getLinkData(element, index, urlString) {
   return {
     'href': url.href,
     'host': url.host,
+    'tagName': element.tagName,
+    'visible': isVisible(element),
     'domId': index,
     'highlightId': highlightId,
-    'tagName': element.tagName,
-    'hidden': element.hidden,
-    'bgColor': element.style.backgroundColor,
     'highlighted': false
   };
+}
+
+function isVisible(element) {
+  return element.offsetWidth > 0 && element.offsetHeight > 0;
 }

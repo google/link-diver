@@ -15,7 +15,7 @@ export interface LinkData {
   domId: number;
   highlightId: number;
   tagName: string;
-  hidden: boolean;
+  visible: boolean;
   highlighted: boolean;
 }
 
