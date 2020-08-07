@@ -13,6 +13,7 @@ export interface LinkData {
   href: string;
   host: string;
   domId: number;
+  highlightId: number;
   tagName: string;
   hidden: boolean;
   highlighted: boolean;

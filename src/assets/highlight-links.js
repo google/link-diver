@@ -22,7 +22,16 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 function highlightLink(link) {
-  const element = document.querySelectorAll('*')[link.domId];
+  const matches = document.getElementsByClassName(link.highlightId);
+
+  if (matches.length === 0) {
+    alert('Could not find the selected link on the original page. ' +
+        'Link Diver\'s data could be out of date, ' +
+        'please try reloading Link Diver to get the most up to date links.');
+    throw new Error('selected link could not be found on the page');
+  }
+
+  const element = matches[0];
   const highlightClass = 'link-diver-highlight';
 
   const isHighlighted = element.classList.contains(highlightClass);
@@ -30,13 +39,14 @@ function highlightLink(link) {
     element.classList.remove(highlightClass);
   } else {
     element.classList.add(highlightClass);
+    element.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'center'
+    });
+    element.focus();
   }
 
-  element.scrollIntoView({
-    behavior: 'smooth',
-    block: 'center',
-    inline: 'center'
-  });
   // Logging allows user to view source code in the console which can be more
   // helpful than highlighting
   console.log(element);

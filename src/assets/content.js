@@ -84,10 +84,14 @@ function getLinkData(element, index, urlString) {
     url = {host: 'unknown', href: urlString};
   }
 
+  const highlightId = `link-diver-id-${index}`;
+  element.classList.add(highlightId);
+
   return {
     'href': url.href,
     'host': url.host,
     'domId': index,
+    'highlightId': highlightId,
     'tagName': element.tagName,
     'hidden': element.hidden,
     'bgColor': element.style.backgroundColor,
