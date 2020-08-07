@@ -71,6 +71,10 @@ function getLinkData(element, index, urlString) {
     'host': url.host,
     'domId': index,
     'tagName': element.tagName,
-    'hidden': element.hidden
+    'visible': isVisible(element)
   };
+}
+
+function isVisible(element) {
+  return element.offsetWidth > 0 && element.offsetHeight > 0;
 }
