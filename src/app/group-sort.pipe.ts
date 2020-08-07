@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform, NgZone } from '@angular/core';
+import { Pipe, PipeTransform } from '@angular/core';
 import { LinkData } from './link.service';
 import { GroupData } from './group-list/group-list.component';
 import { DataPassingService } from './data-passing.service';
@@ -23,8 +23,7 @@ export enum SortOptions {
 })
 export class GroupSort implements PipeTransform {
 
-  constructor(private dataPassing: DataPassingService,
-    private ngZone: NgZone) { }
+  constructor(private dataPassing: DataPassingService) { }
 
   transform(links: LinkData[], keyAttribute: string,
       sortOrder: SortOptions): GroupData[] {
@@ -58,11 +57,9 @@ export class GroupSort implements PipeTransform {
       };
     });
 
-    this.ngZone.run(() => {
-      this.dataPassing.updateGroupCount({
-        numGroups: groupedArr.length,
-        numLinks: links.length
-      });
+    this.dataPassing.updateGroupCount({
+      numGroups: groupedArr.length,
+      numLinks: links.length
     });
 
     return groupedArr;
