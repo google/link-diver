@@ -71,7 +71,8 @@ function getLinkData(element, index, urlString) {
     'host': url.host,
     'domId': index,
     'tagName': element.tagName,
-    'visible': isVisible(element)
+    'visible': isVisible(element),
+    'content': element.outerHTML
   };
 }
 

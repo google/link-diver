@@ -15,6 +15,7 @@ export interface LinkData {
   domId: number;
   tagName: string;
   visible: boolean;
+  content: string;
 }
 
 /**

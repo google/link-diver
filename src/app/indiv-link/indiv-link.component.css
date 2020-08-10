@@ -5,11 +5,16 @@ a {
 
 ul {
     list-style-type: none;
+    display: inline;
 }
 
 li {
     float: left;
     padding: 10px;
+}
+
+p {
+    padding-left: 40px;
 }
 
 .light {
@@ -22,6 +27,10 @@ li {
 
 .title:hover {
     background-color: #ddd;
+}
+
+.expandable {
+    display: flex;
 }
 
 .arrow {

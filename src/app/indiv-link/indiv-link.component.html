@@ -4,10 +4,18 @@
     [innerHTML]="link.href | highlightMatch: regex"
     (click)="toggle()"></a>
 </div>
-<div *ngIf="expand">
+<div class="expandable" *ngIf="expand">
     <ul>
         <li><span class="light">Host: </span>{{link.host}}</li>
         <li><span class="light">Visible: </span>{{link.visible}}</li>
         <li><span class="light">Tag source: </span>{{link.tagName}}</li>
     </ul>
 </div>
+<!--<div *ngIf="expand">
+    <P *ngIf="true">
+        {{link.content}}
+    </P>
+</div>-->
+<P *ngIf="expand">
+    <code>{{link.content}}</code>
+</P>
