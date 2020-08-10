@@ -1,3 +1,13 @@
+<button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Menu for additional settings">
+    <mat-icon>more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu" (click)="refresh()">
+    <button mat-menu-item>
+        <mat-icon>refresh</mat-icon>
+        <span>Refresh</span>
+    </button>
+</mat-menu>
+
 <button mat-stroked-button (click)="toggleAll(true)">
     Expand All
 </button>

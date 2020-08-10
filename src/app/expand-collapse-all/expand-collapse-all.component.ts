@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ExpandCollapseAllService } from '../expand-collapse-all.service';
 import { SortOptions } from '../group-sort.pipe';
 import { OptionsService } from '../options.service';
+import { LinkService } from '../link.service';
 
 /**
  * Contains two buttons allowing the user to expand each link or collapse each
@@ -23,7 +24,8 @@ export class ExpandCollapseAllComponent implements OnInit {
   ];
 
   constructor(private ecaService: ExpandCollapseAllService,
-    private optionsService: OptionsService) { }
+    private optionsService: OptionsService,
+    private linkService: LinkService) { }
 
   ngOnInit(): void { }
 
@@ -33,6 +35,10 @@ export class ExpandCollapseAllComponent implements OnInit {
 
   pushSortOrder() {
     this.optionsService.updateOrder(this.order);
+  }
+
+  refresh() {
+    this.linkSerivce.
   }
 
 }
