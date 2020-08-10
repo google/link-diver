@@ -6,6 +6,13 @@
         <mat-icon>refresh</mat-icon>
         <span>Refresh</span>
     </button>
+    <button mat-menu-item (click)="toggle()">
+        <mat-icon>code</mat-icon>
+        <span>
+            <span [innerHTML]="showFullContent ? 'Hide' : 'Show'"></span>
+            Full HTML Content
+        </span>
+    </button>
 </mat-menu>
 
 <button mat-stroked-button (click)="toggleAll(true)">

@@ -15,7 +15,8 @@ import { OptionsService } from '../options.service';
 export class IndivLinkComponent implements OnInit {
 
   regex: string;
-  expand: boolean = false;
+  expand: boolean;
+  showFullContent: boolean;
 
   @Input() link: LinkData;
 
@@ -26,6 +27,9 @@ export class IndivLinkComponent implements OnInit {
     this.optionsService.regexStr.subscribe((str) => this.regex = str);
     this.ecaService.expandCollapseAll$.subscribe((expand: boolean) => {
       this.expand = expand;
+    });
+    this.optionsService.showFullContent$.subscribe((showFull: boolean) => {
+      this.showFullContent = showFull;
     });
   }
 

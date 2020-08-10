@@ -15,6 +15,7 @@ import { LinkService } from '../link.service';
 })
 export class ExpandCollapseAllComponent implements OnInit {
 
+  showFullContent: boolean = false;
   order: SortOptions;
   sortOptions = [
     {val: SortOptions.DOM, display: 'DOM'},
@@ -39,6 +40,11 @@ export class ExpandCollapseAllComponent implements OnInit {
 
   refresh() {
     this.linkService.requestLinkData();
+  }
+
+  toggle() {
+    this.showFullContent = !this.showFullContent;
+    this.optionsService.updateShowFullContent(this.showFullContent);
   }
 
 }

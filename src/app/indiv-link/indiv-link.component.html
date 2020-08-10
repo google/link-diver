@@ -11,11 +11,6 @@
         <li><span class="light">Tag source: </span>{{link.tagName}}</li>
     </ul>
 </div>
-<!--<div *ngIf="expand">
-    <P *ngIf="true">
-        {{link.content}}
-    </P>
-</div>-->
-<P *ngIf="expand">
+<P *ngIf="expand && showFullContent">
     <code>{{link.content}}</code>
 </P>

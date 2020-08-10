@@ -25,6 +25,9 @@ export class OptionsService {
   private filterOptionsSource = new BehaviorSubject<LinkData>(undefined);
   filters$ = this.filterOptionsSource.asObservable();
 
+  private showFullContentSource = new BehaviorSubject<boolean>(false);
+  showFullContent$ = this.showFullContentSource.asObservable();
+
   constructor() { }
 
   updateRegex(newRegex: string) {
@@ -41,5 +44,9 @@ export class OptionsService {
 
   updateFilters(newFilters: LinkData) {
     this.filterOptionsSource.next(newFilters);
+  }
+
+  updateShowFullContent(newShowFull: boolean) {
+    this.showFullContentSource.next(newShowFull);
   }
 }
