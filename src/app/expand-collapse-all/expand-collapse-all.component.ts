@@ -38,7 +38,7 @@ export class ExpandCollapseAllComponent implements OnInit {
   }
 
   refresh() {
-    this.linkSerivce.
+    this.linkService.requestLinkData();
   }
 
 }

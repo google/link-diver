@@ -36,8 +36,7 @@ export class LinkService {
     this.linkListSource.next(newLinks);
   }
 
-  constructor(private ngZone: NgZone, private title: Title) {
-
+  requestLinkData() {
     chrome.tabs.getCurrent((tab) => {
       chrome.tabs.sendMessage(tab.openerTabId, {
         message: 'send parent'
@@ -59,5 +58,9 @@ export class LinkService {
         this.title.setTitle(parentTab.title + ' (Link Diver)');
       });
     });
+  }
+
+  constructor(private ngZone: NgZone, private title: Title) {
+    this.requestLinkData();
   }
 }
