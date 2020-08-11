@@ -23,6 +23,12 @@ export class InputBarComponent implements OnInit {
     this.optionsService.updateRegex(options.regex);
     this.optionsService.updateGroupingKey(options.group);
 
+    // we delete any options that are not filter by metadata keys so that
+    // only filter keys are left for the filter pipe to manage.
+    delete options.regex;
+    delete options.group;
+    this.optionsService.updateFilters(options);
+
   }
 
   parseInput(input: string) {

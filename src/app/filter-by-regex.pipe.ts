@@ -10,12 +10,21 @@ import { LinkData } from './link.service';
 })
 export class FilterByRegexPipe implements PipeTransform {
 
-  transform(links: LinkData[], regexStr: string): LinkData[] {
-    if (!regexStr) {
-      return links;
+  transform(links: LinkData[], regexStr: string,
+      filters: LinkData): LinkData[] {
+
+    if (filters) {
+      Object.keys(filters).forEach((key) => {
+        links = links.filter((link) => link[key] == filters[key]);
+      });
     }
-    const regex = new RegExp(regexStr);
-    return links.filter((link) => regex.test(link.href));
+
+    if (regexStr) {
+      const regex = new RegExp(regexStr);
+      links = links.filter((link) => regex.test(link.href));
+    }
+
+    return links;
   }
 
 }
