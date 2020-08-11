@@ -17,6 +17,7 @@ export interface LinkData {
   hidden: boolean;
   status?: number;
   statusOk?: boolean;
+  contentType?: string;
 }
 
 /**

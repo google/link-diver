@@ -11,7 +11,9 @@
 <div *ngIf="expand">
     <ul>
         <li><span class="light">Host: </span>{{link.host}}</li>
-        <li><span class="light">Visible: </span>{{!link.hidden}}</li>
         <li><span class="light">Tag source: </span>{{link.tagName}}</li>
+        <li *ngIf="link.contentType">
+            <span class="light">Content Type: </span>{{link.contentType}}
+        </li>
     </ul>
 </div>
