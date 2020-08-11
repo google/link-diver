@@ -86,7 +86,7 @@ export class LinkService {
         message: 'highlight link',
         linkData: link
       }, (response) => {
-        if (response === undefined) {
+        if (!response) {
           reject(this.noConnectionErrorMessage);
         } else if (!response.success) {
           reject(response.errorMessage);

@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     console.error(e);
     sendResponse({
       success: false,
-      errorMessage: 'Error highlighting links: ' + e.message
+      errorMessage: e.message
     });
   }
 
@@ -25,10 +25,7 @@ function highlightLink(link) {
   const matches = document.getElementsByClassName(link.highlightId);
 
   if (matches.length === 0) {
-    alert('Could not find the selected link on the original page. ' +
-        'Link Diver\'s data could be out of date, ' +
-        'please try reloading Link Diver to get the most up to date links.');
-    throw new Error('selected link could not be found on the page');
+    throw new Error('link not found');
   }
 
   const element = matches[0];

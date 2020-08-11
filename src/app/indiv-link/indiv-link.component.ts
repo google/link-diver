@@ -37,6 +37,13 @@ export class IndivLinkComponent implements OnInit {
   highlight(): void {
     this.linkService.highlightLink(this.link)
         .then((newHighlight: boolean) => this.link.highlighted = newHighlight)
-        .catch((error: string) => console.error(error));
+        .catch((error: string) => {
+          if (error === 'link not found') {
+            alert('Could not find the selected link on the original page. ' +
+            'Link Diver\'s data could be out of date, ' +
+            'please try reloading Link Diver to get the most current links.');
+          }
+          console.error('Error Highlighting Link: ' + error);
+        });
   }
 }
