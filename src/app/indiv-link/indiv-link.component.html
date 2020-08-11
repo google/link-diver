@@ -1,13 +1,31 @@
 <div class="title" (click)="toggle()">
-    <div class="arrow" [ngClass]="{'down': expand}"></div>
-    <a href={{link.href}} target="_blank"
-    [innerHTML]="link.href | highlightMatch: regex"
-    (click)="toggle()"></a>
+    <div class="left-title">
+        <div class="arrow" [ngClass]="{'down': expand}"></div>
+        <a href={{link.href}} target="_blank"
+            [innerHTML]="link.href | highlightMatch: regex"
+            (click)="toggle()"></a>        
+    </div>
+    <div class="right-title">
+        <span *ngIf="link.status !== null" 
+            [ngClass]="{'status': true,'red': !link.statusOk}">
+            {{link.status}}
+        </span>
+        <div class="button-wrapper">
+            <button mat-icon-button aria-label="highlight button" 
+                (click)="highlight();toggle()" 
+                [color]="link.highlighted ? 'accent' : 'black'">
+                <mat-icon>highlight</mat-icon>
+            </button>  
+        </div>
+    </div>
 </div>
 <div *ngIf="expand">
     <ul>
         <li><span class="light">Host: </span>{{link.host}}</li>
-        <li><span class="light">Visible: </span>{{!link.hidden}}</li>
+        <li><span class="light">Visible: </span>{{link.visible}}</li>
         <li><span class="light">Tag source: </span>{{link.tagName}}</li>
+        <li *ngIf="link.contentType">
+            <span class="light">Content Type: </span>{{link.contentType}}
+        </li>
     </ul>
 </div>

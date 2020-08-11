@@ -24,6 +24,7 @@ export class GroupListComponent implements OnInit {
   order: SortOptions;
   regex: string;
   key: string;
+  filters: LinkData;
   links: LinkData[];
 
   constructor(private linkService: LinkService,
@@ -41,6 +42,9 @@ export class GroupListComponent implements OnInit {
     });
     this.optionsService.sortOrder$.subscribe((newOrder: SortOptions) => {
       this.order = newOrder;
+    });
+    this.optionsService.filters$.subscribe((newFilters: LinkData) => {
+      this.filters = newFilters;
     });
   }
 
