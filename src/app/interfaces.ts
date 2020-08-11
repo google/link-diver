@@ -15,6 +15,9 @@ export interface LinkData {
     contentType?: string;
 }
 
+/**
+ * Packages all of the data needed to properly display a group of links
+ */
 export interface GroupData {
     key: string,
     list: LinkData[],
@@ -22,11 +25,18 @@ export interface GroupData {
     hide?: boolean
 }
 
+/**
+ * Stores the number of groups and number of links found in a query so that it
+ * can be displayed by the GroupCountComponent.
+ */
 export interface GroupCount {
     numGroups: number;
     numLinks: number;
 }
 
+/**
+ * Enumerates the different ways to sort the list of links.
+ */
 export enum SortOptions {
     DOM,
     DOMReverse,
