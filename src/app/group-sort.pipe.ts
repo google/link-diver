@@ -25,6 +25,8 @@ export class GroupSort implements PipeTransform {
   transform(links: LinkData[], keyAttribute: string,
       sortOrder: SortOptions): GroupData[] {
 
+    if (!links) return [];
+
     switch (sortOrder) {
       case SortOptions.LexicoAscend:
         links.sort(this.lexicographicComp);

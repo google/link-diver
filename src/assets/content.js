@@ -3,11 +3,20 @@
 
 // Listens for a request from LinkService and respondes with all of the links
 // from the contents of the active page.
-chrome.runtime.onMessage.addListener( function(request, sender, sendResponse) {
-  if (request.message === 'send links') {
-    sendResponse(findLinks());
-  } else if (request.message === 'send parent') {
-    sendResponse(window.location.href);
+chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+  try {
+    if (request.message === 'send link data') {
+      const links = findLinks();
+      sendResponse({
+        success: true,
+        linkList: links
+      });
+    }
+  } catch (e) {
+    sendResponse({
+      success: false,
+      errorMessage: e.message
+    });
   }
 });
 
@@ -65,13 +74,27 @@ function addLinkFromAttribute(element, index, links, attribute) {
 }
 
 function getLinkData(element, index, urlString) {
-  const url = new URL(urlString);
+  let url;
+
+  try {
+    url = new URL(urlString);
+  } catch (e) {
+    console.error('Found bad URL: ' + urlString);
+    console.log(element);
+    url = {host: 'unknown', href: urlString};
+  }
+
+  const highlightId = `link-diver-id-${index}`;
+  element.classList.add(highlightId);
+
   return {
     'href': url.href,
     'host': url.host,
-    'domId': index,
     'tagName': element.tagName,
-    'visible': isVisible(element)
+    'visible': isVisible(element),
+    'domId': index,
+    'highlightId': highlightId,
+    'highlighted': false
   };
 }
 
