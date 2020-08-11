@@ -3,6 +3,7 @@
 
 import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { FetchStatusService } from './fetch-status.service';
 import { Title } from '@angular/platform-browser';
 
 /**
@@ -13,10 +14,13 @@ export interface LinkData {
   href: string;
   host: string;
   domId: number;
-  highlightId: number;
-  tagName: string;
   visible: boolean;
+  tagName: string;
   highlighted: boolean;
+  highlightId: number;
+  status?: number;
+  statusOk?: boolean;
+  contentType?: string;
 }
 
 /**
@@ -39,7 +43,8 @@ export class LinkService {
 
   private parentTabId: number;
 
-  constructor(private ngZone: NgZone, private title: Title) {
+  constructor(private fetchService: FetchStatusService,
+    private ngZone: NgZone, private title: Title) {
 
     chrome.tabs.getCurrent((currTab: chrome.tabs.Tab) => {
       this.parentTabId = currTab.openerTabId;
@@ -66,6 +71,7 @@ export class LinkService {
       } else {
         this.ngZone.run(() => {
           this.setLinks(response.linkList);
+          this.fetchService.fetch(response.linkList);
         });
       }
     });

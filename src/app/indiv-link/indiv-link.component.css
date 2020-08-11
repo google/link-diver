@@ -29,7 +29,10 @@ li {
     display: block;
     float: right;
     padding-right: 2px;
-    
+}
+
+.button-wrapper {
+    float: right;
     transform: scale(0.66667);
     height: 2em;
     width: 2em;
@@ -37,7 +40,7 @@ li {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    align-items: center
+    align-items: center;
 }
 
 .title {
@@ -63,4 +66,9 @@ li {
 .down {
     transform: rotate(90deg);
     transition: transform .25s;
+}
+
+.status {
+    float: left;
+    padding: 0.5em 0;
 }
