@@ -1,17 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SortOptions } from './group-sort.pipe';
-import { LinkData } from './link.service';
+import { SortOptions, GroupCount, LinkData } from './interfaces';
 
 /**
- * This service is responsible far casting various user options as observables.
- * Such options include the regex to filter, the key to group by, and the order
- * to sort by.
+ * This service is generally responsible for passing any sort of data between
+ * components that are not directly related.
  */
 @Injectable({
   providedIn: 'root'
 })
-export class OptionsService {
+export class CrossComponentDataService {
 
   private regexSource = new BehaviorSubject<string>('');
   regexStr = this.regexSource.asObservable();
@@ -24,6 +22,12 @@ export class OptionsService {
 
   private filterOptionsSource = new BehaviorSubject<LinkData>(undefined);
   filters$ = this.filterOptionsSource.asObservable();
+
+  private groupCountSource = new BehaviorSubject<GroupCount>(undefined);
+  groupCount$ = this.groupCountSource.asObservable();
+
+  private expandCollapseSource = new BehaviorSubject<boolean>(false);
+  expandCollapseAll$ = this.expandCollapseSource.asObservable();
 
   constructor() { }
 
@@ -42,4 +46,13 @@ export class OptionsService {
   updateFilters(newFilters: LinkData) {
     this.filterOptionsSource.next(newFilters);
   }
+
+  updateGroupCount(newCount: GroupCount) {
+    this.groupCountSource.next(newCount);
+  }
+
+  expandCollapseAll(expand: boolean) {
+    this.expandCollapseSource.next(expand);
+  }
+
 }

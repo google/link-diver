@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
-import { GroupCount, DataPassingService } from '../data-passing.service';
-import { OptionsService } from '../options.service';
+import { CrossComponentDataService } from '../cross-component-data.service';
+import { GroupCount } from '../interfaces';
 
 @Component({
   selector: 'app-group-count',
@@ -13,18 +13,17 @@ export class GroupCountComponent implements OnInit {
   groupCount: GroupCount;
   groupingOn: boolean;
 
-  constructor(private dataPassing: DataPassingService,
-      private optionsService: OptionsService,
+  constructor(private ccdService: CrossComponentDataService,
       private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
     this.changeDetector.detach();
-    this.dataPassing.groupCount$.subscribe((newCount: GroupCount) => {
+    this.ccdService.groupCount$.subscribe((newCount: GroupCount) => {
       this.groupCount = newCount;
       this.changeDetector.detectChanges();
     });
-    this.optionsService.groupingKey$.subscribe((newKey: string) => {
+    this.ccdService.groupingKey$.subscribe((newKey: string) => {
       this.groupingOn = !!newKey;
     });
   }

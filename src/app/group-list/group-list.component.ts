@@ -1,14 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { LinkData, LinkService } from '../link.service';
-import { SortOptions } from '../group-sort.pipe';
-import { OptionsService } from '../options.service';
-
-export interface GroupData {
-  key: string,
-  list: LinkData[],
-  size: number,
-  hide?: boolean
-}
+import { LinkService } from '../link.service';
+import { CrossComponentDataService } from '../cross-component-data.service';
+import { LinkData, SortOptions, GroupData } from '../interfaces';
 
 /**
  * This component is responsible for putting the links through the filtering and
@@ -28,22 +21,22 @@ export class GroupListComponent implements OnInit {
   links: LinkData[];
 
   constructor(private linkService: LinkService,
-    private optionsService: OptionsService) { }
+    private ccdService: CrossComponentDataService) { }
 
   ngOnInit(): void {
-    this.optionsService.regexStr.subscribe((newRegex: string) => {
+    this.ccdService.regexStr.subscribe((newRegex: string) => {
       this.regex = newRegex;
     });
     this.linkService.linkList$.subscribe((newLinks: LinkData[]) => {
       this.links = newLinks;
     });
-    this.optionsService.groupingKey$.subscribe((newKey: string) => {
+    this.ccdService.groupingKey$.subscribe((newKey: string) => {
       this.key = newKey;
     });
-    this.optionsService.sortOrder$.subscribe((newOrder: SortOptions) => {
+    this.ccdService.sortOrder$.subscribe((newOrder: SortOptions) => {
       this.order = newOrder;
     });
-    this.optionsService.filters$.subscribe((newFilters: LinkData) => {
+    this.ccdService.filters$.subscribe((newFilters: LinkData) => {
       this.filters = newFilters;
     });
   }
