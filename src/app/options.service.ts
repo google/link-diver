@@ -25,8 +25,8 @@ export class OptionsService {
   private filterOptionsSource = new BehaviorSubject<LinkData>(undefined);
   filters$ = this.filterOptionsSource.asObservable();
 
-  private showFullContentSource = new BehaviorSubject<boolean>(false);
-  showFullContent$ = this.showFullContentSource.asObservable();
+  private showDOMSource = new BehaviorSubject<boolean>(false);
+  showDOMSource$ = this.showDOMSource.asObservable();
 
   constructor() { }
 
@@ -46,7 +46,7 @@ export class OptionsService {
     this.filterOptionsSource.next(newFilters);
   }
 
-  updateShowFullContent(newShowFull: boolean) {
-    this.showFullContentSource.next(newShowFull);
+  updateShowDOMSource(newShowSource: boolean) {
+    this.showDOMSource.next(newShowSource);
   }
 }

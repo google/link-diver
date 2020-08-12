@@ -16,7 +16,7 @@ export class IndivLinkComponent implements OnInit {
 
   regex: string;
   expand: boolean;
-  showFullContent: boolean;
+  showDOMSource: boolean;
 
   @Input() link: LinkData;
 
@@ -29,8 +29,8 @@ export class IndivLinkComponent implements OnInit {
     this.ecaService.expandCollapseAll$.subscribe((expand: boolean) => {
       this.expand = expand;
     });
-    this.optionsService.showFullContent$.subscribe((showFull: boolean) => {
-      this.showFullContent = showFull;
+    this.optionsService.showDOMSource$.subscribe((showSource: boolean) => {
+      this.showDOMSource = showSource;
     });
   }
 

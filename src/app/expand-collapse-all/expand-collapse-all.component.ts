@@ -15,7 +15,7 @@ import { LinkService } from '../link.service';
 })
 export class ExpandCollapseAllComponent implements OnInit {
 
-  showFullContent: boolean = false;
+  showDOMSource: boolean = false;
   order: SortOptions;
   sortOptions = [
     {val: SortOptions.DOM, display: 'DOM'},
@@ -43,8 +43,8 @@ export class ExpandCollapseAllComponent implements OnInit {
   }
 
   toggle() {
-    this.showFullContent = !this.showFullContent;
-    this.optionsService.updateShowFullContent(this.showFullContent);
+    this.showDOMSource = !this.showDOMSource;
+    this.optionsService.updateShowDOMSource(this.showDOMSource);
   }
 
 }
