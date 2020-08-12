@@ -15,7 +15,6 @@ import { LinkData, SortOptions, GroupData } from '../interfaces';
 export class GroupListComponent implements OnInit {
 
   order: SortOptions;
-  regex: string;
   key: string;
   filters: LinkData;
   links: LinkData[];
@@ -24,9 +23,6 @@ export class GroupListComponent implements OnInit {
     private ccdService: CrossComponentDataService) { }
 
   ngOnInit(): void {
-    this.ccdService.regexStr.subscribe((newRegex: string) => {
-      this.regex = newRegex;
-    });
     this.linkService.linkList$.subscribe((newLinks: LinkData[]) => {
       this.links = newLinks;
     });

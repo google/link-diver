@@ -1,5 +1,5 @@
 <ul>
-    <li *ngFor="let group of links | filterByRegex: regex : filters
+    <li *ngFor="let group of links | filterByRegex: filters
             | groupSort: key : order">
         <div class="header" *ngIf="key" (click)="toggle(group)">
             <span class="larger">{{group.key}}</span>

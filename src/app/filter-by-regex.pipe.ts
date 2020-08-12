@@ -10,21 +10,56 @@ import { LinkData } from './interfaces';
 })
 export class FilterByRegexPipe implements PipeTransform {
 
-  transform(links: LinkData[], regexStr: string,
-      filters: LinkData): LinkData[] {
+  transform(links: LinkData[], filters: any): LinkData[] {
 
-    if (filters) {
-      Object.keys(filters).forEach((key) => {
-        links = links.filter((link) => link[key] == filters[key]);
+    if (filters.regex) {
+      const regex = new RegExp(filters.regex);
+      links = links.filter((link) => regex.test(link.href));
+    }
+
+    if (filters.not) {
+      const negation = new RegExp(filters.not);
+      links = links.filter((link) => !negation.test(link.href));
+    }
+
+    if (filters.host) {
+      const hostRegex = new RegExp(filters.host);
+      links = links.filter((link) => hostRegex.test(link.host));
+    }
+
+    if (filters.visible !== undefined) {
+      const includeVisible = this.parseBool(filters.visible);
+      console.log(includeVisible);
+      links = links.filter((link) => link.visible === includeVisible);
+    }
+
+    if (filters.tagName) {
+      links = links.filter((link) => {
+        return link.tagName === filters.tagName.toUpperCase();
       });
     }
 
-    if (regexStr) {
-      const regex = new RegExp(regexStr);
-      links = links.filter((link) => regex.test(link.href));
+    if (filters.status !== undefined) {
+      const status = parseInt(filters.status);
+      links = links.filter((link) => link.status === status);
+    }
+
+    if (filters.statusOk !== undefined) {
+      const includeOk = this.parseBool(filters.statusOk);
+      links = links.filter((link) => link.statusOk === includeOk);
+    }
+
+    if (filters.contentType) {
+      links = links.filter((link) => {
+        return link.contentType.includes(filters.contentType);
+      });
     }
 
     return links;
   }
 
+  private parseBool(boolStr: string): boolean {
+    const falseStrings = ['false', 'f', '0'];
+    return !falseStrings.includes(boolStr.toLowerCase());
+  }
 }

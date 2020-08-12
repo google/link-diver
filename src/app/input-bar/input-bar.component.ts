@@ -25,7 +25,6 @@ export class InputBarComponent implements OnInit {
 
     // we delete any options that are not filter by metadata keys so that
     // only filter keys are left for the filter pipe to manage.
-    delete options.regex;
     delete options.group;
     this.ccdService.updateFilters(options);
 
@@ -33,7 +32,11 @@ export class InputBarComponent implements OnInit {
 
   parseInput(input: string) {
     try {
-      return JSON.parse(input);
+      if (input) {
+        return JSON.parse(input);
+      } else {
+        return {};
+      }
     } catch (e) {
       // By deault we assume user is just inputting a regex
       return {regex: input};
