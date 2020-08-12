@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { LinkData } from './link.service';
+import { LinkData } from './interfaces';
 
 /**
  * This pipe filters the list of links for the ones that have a match with a

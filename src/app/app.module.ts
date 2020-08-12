@@ -20,6 +20,7 @@ import { InputPanelComponent } from './input-panel/input-panel.component';
 import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collapse-all.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupSort } from './group-sort.pipe';
+import { GroupCountComponent } from './group-count/group-count.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { GroupSort } from './group-sort.pipe';
     InputPanelComponent,
     ExpandCollapseAllComponent,
     GroupListComponent,
-    GroupSort
+    GroupSort,
+    GroupCountComponent
   ],
   imports: [
     BrowserModule,

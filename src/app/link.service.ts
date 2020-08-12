@@ -5,23 +5,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { FetchStatusService } from './fetch-status.service';
 import { Title } from '@angular/platform-browser';
-
-/**
- * Packages the URL of a link along with other relevant metadata about that link
- * used throughout the app
- */
-export interface LinkData {
-  href: string;
-  host: string;
-  domId: number;
-  visible: boolean;
-  tagName: string;
-  highlighted: boolean;
-  highlightId: number;
-  status?: number;
-  statusOk?: boolean;
-  contentType?: string;
-}
+import { LinkData } from './interfaces';
 
 /**
  * This service is responsible for retreving links from the content script and

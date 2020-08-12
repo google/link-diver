@@ -1,9 +1,9 @@
 import { Injectable} from '@angular/core';
 import { HttpClient, HttpResponseBase } from '@angular/common/http';
 
-import { LinkData } from './link.service';
 import { BehaviorSubject, from, of } from 'rxjs';
 import { mergeAll, map, catchError } from 'rxjs/operators';
+import { LinkData } from './interfaces';
 
 /**
  * Internal interface to pair a status code with a boolean indicating success

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ExpandCollapseAllService } from '../expand-collapse-all.service';
-import { SortOptions } from '../group-sort.pipe';
-import { OptionsService } from '../options.service';
+import { CrossComponentDataService } from '../cross-component-data.service';
+import { SortOptions } from '../interfaces';
 
 /**
  * Contains two buttons allowing the user to expand each link or collapse each
@@ -22,17 +21,16 @@ export class ExpandCollapseAllComponent implements OnInit {
     {val: SortOptions.LexicoDescend, display: 'Z-A'}
   ];
 
-  constructor(private ecaService: ExpandCollapseAllService,
-    private optionsService: OptionsService) { }
+  constructor(private ccdService: CrossComponentDataService) { }
 
   ngOnInit(): void { }
 
   toggleAll(expand: boolean) {
-    this.ecaService.expandCollapseAll(expand);
+    this.ccdService.expandCollapseAll(expand);
   }
 
   pushSortOrder() {
-    this.optionsService.updateOrder(this.order);
+    this.ccdService.updateOrder(this.order);
   }
 
 }
