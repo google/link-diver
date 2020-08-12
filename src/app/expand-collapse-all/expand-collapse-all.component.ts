@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { LinkService } from '../link.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
 import { SortOptions } from '../interfaces';
 
@@ -13,6 +14,7 @@ import { SortOptions } from '../interfaces';
 })
 export class ExpandCollapseAllComponent implements OnInit {
 
+  showDOMSource: boolean = false;
   order: SortOptions;
   sortOptions = [
     {val: SortOptions.DOM, display: 'DOM'},
@@ -21,7 +23,8 @@ export class ExpandCollapseAllComponent implements OnInit {
     {val: SortOptions.LexicoDescend, display: 'Z-A'}
   ];
 
-  constructor(private ccdService: CrossComponentDataService) { }
+  constructor(private ccdService: CrossComponentDataService,
+    private linkService: LinkService) { }
 
   ngOnInit(): void { }
 
@@ -31,6 +34,15 @@ export class ExpandCollapseAllComponent implements OnInit {
 
   pushSortOrder() {
     this.ccdService.updateOrder(this.order);
+  }
+
+  refresh() {
+    this.linkService.requestLinkData();
+  }
+
+  toggle() {
+    this.showDOMSource = !this.showDOMSource;
+    this.ccdService.updateShowDOMSource(this.showDOMSource);
   }
 
 }

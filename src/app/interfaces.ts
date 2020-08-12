@@ -8,6 +8,7 @@ export interface LinkData {
     domId: number;
     visible: boolean;
     tagName: string;
+    source: string;
     highlighted: boolean;
     highlightId: number;
     status?: number;

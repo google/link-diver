@@ -19,7 +19,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="expand">
+<div class="expandable" *ngIf="expand">
     <ul>
         <li><span class="light">Host: </span>{{link.host}}</li>
         <li><span class="light">Visible: </span>{{link.visible}}</li>
@@ -29,3 +29,6 @@
         </li>
     </ul>
 </div>
+<P *ngIf="expand && showDOMSource">
+    <code>{{link.source}}</code>
+</P>

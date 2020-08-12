@@ -92,6 +92,7 @@ function getLinkData(element, index, urlString) {
     'host': url.host,
     'tagName': element.tagName,
     'visible': isVisible(element),
+    'source': element.outerHTML,
     'domId': index,
     'highlightId': highlightId,
     'highlighted': false

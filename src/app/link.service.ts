@@ -42,7 +42,7 @@ export class LinkService {
     });
   }
 
-  private requestLinkData() {
+  requestLinkData() {
 
     chrome.tabs.sendMessage(this.parentTabId, {
       message: 'send link data'

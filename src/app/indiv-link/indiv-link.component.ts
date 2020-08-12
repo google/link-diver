@@ -15,7 +15,8 @@ import { LinkData } from '../interfaces';
 export class IndivLinkComponent implements OnInit {
 
   regex: string;
-  expand: boolean = false;
+  expand: boolean;
+  showDOMSource: boolean;
 
   @Input() link: LinkData;
 
@@ -26,6 +27,9 @@ export class IndivLinkComponent implements OnInit {
     this.ccdService.regexStr.subscribe((str) => this.regex = str);
     this.ccdService.expandCollapseAll$.subscribe((expand: boolean) => {
       this.expand = expand;
+    });
+    this.ccdService.showDOMSource$.subscribe((showSource: boolean) => {
+      this.showDOMSource = showSource;
     });
   }
 
