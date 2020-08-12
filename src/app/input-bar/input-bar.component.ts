@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { OptionsService } from '../options.service';
+import { CrossComponentDataService } from '../cross-component-data.service';
 
 /**
  * This component is responsible for taking acceptin input from the user,
@@ -14,20 +14,20 @@ export class InputBarComponent implements OnInit {
 
   newInput: string;
 
-  constructor(private optionsService: OptionsService) { }
+  constructor(private ccdService: CrossComponentDataService) { }
 
   ngOnInit(): void { }
 
   pushInput() {
     const options = this.parseInput(this.newInput);
-    this.optionsService.updateRegex(options.regex);
-    this.optionsService.updateGroupingKey(options.group);
+    this.ccdService.updateRegex(options.regex);
+    this.ccdService.updateGroupingKey(options.group);
 
     // we delete any options that are not filter by metadata keys so that
     // only filter keys are left for the filter pipe to manage.
     delete options.regex;
     delete options.group;
-    this.optionsService.updateFilters(options);
+    this.ccdService.updateFilters(options);
 
   }
 

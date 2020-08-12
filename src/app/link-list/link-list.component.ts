@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-
-import { GroupData } from '../group-list/group-list.component';
+import { GroupData } from '../interfaces';
 
 /**
  * Responsible for displaying all of the links of a group in a list.

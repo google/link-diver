@@ -1,13 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { LinkData } from './link.service';
-import { GroupData } from './group-list/group-list.component';
-
-export enum SortOptions {
-  DOM,
-  DOMReverse,
-  LexicoAscend,
-  LexicoDescend
-}
+import { CrossComponentDataService } from './cross-component-data.service';
+import { LinkData, SortOptions, GroupData } from './interfaces';
 
 /**
  * This pipe is responsible for intaking the filtered links and returning
@@ -21,6 +14,8 @@ export enum SortOptions {
   name: 'groupSort'
 })
 export class GroupSort implements PipeTransform {
+
+  constructor(private ccdService: CrossComponentDataService) { }
 
   transform(links: LinkData[], keyAttribute: string,
       sortOrder: SortOptions): GroupData[] {
@@ -55,6 +50,12 @@ export class GroupSort implements PipeTransform {
         size: groupedLinks[key].length
       };
     });
+
+    this.ccdService.updateGroupCount({
+      numGroups: groupedArr.length,
+      numLinks: links.length
+    });
+
     return groupedArr;
   }
 

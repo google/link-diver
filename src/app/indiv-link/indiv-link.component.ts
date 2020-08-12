@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LinkData, LinkService } from '../link.service';
-import { ExpandCollapseAllService } from '../expand-collapse-all.service';
-import { OptionsService } from '../options.service';
+import { LinkService } from '../link.service';
+import { CrossComponentDataService } from '../cross-component-data.service';
+import { LinkData } from '../interfaces';
 
 /**
  * Responsible for displaying information about one individual link within
@@ -20,16 +20,15 @@ export class IndivLinkComponent implements OnInit {
 
   @Input() link: LinkData;
 
-  constructor(private optionsService: OptionsService,
-    private ecaService: ExpandCollapseAllService,
+  constructor(private ccdService: CrossComponentDataService,
     private linkService: LinkService) { }
 
   ngOnInit(): void {
-    this.optionsService.regexStr.subscribe((str) => this.regex = str);
-    this.ecaService.expandCollapseAll$.subscribe((expand: boolean) => {
+    this.ccdService.regexStr.subscribe((str) => this.regex = str);
+    this.ccdService.expandCollapseAll$.subscribe((expand: boolean) => {
       this.expand = expand;
     });
-    this.optionsService.showDOMSource$.subscribe((showSource: boolean) => {
+    this.ccdService.showDOMSource$.subscribe((showSource: boolean) => {
       this.showDOMSource = showSource;
     });
   }
