@@ -41,7 +41,10 @@ function findLinks() {
 }
 
 function addLinkFromHref(element, index, links) {
-  if (element.tagName === 'A' || element.tagName === 'AREA') {
+  if (element.tagName === 'A' ||
+      element.tagName === 'AREA' ||
+      element.rel === 'canonical') {
+
     // Avoid bad links, such as javascript:void(0)
     if (urlRegex.test(element.href)) {
       links.push(getLinkData(element, index, element.href));
@@ -95,7 +98,8 @@ function getLinkData(element, index, urlString) {
     'source': element.outerHTML,
     'domId': index,
     'highlightId': highlightId,
-    'highlighted': false
+    'highlighted': false,
+    'canonical': element.rel && element.rel === 'canonical'
   };
 }
 

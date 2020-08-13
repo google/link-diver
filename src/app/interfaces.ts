@@ -9,6 +9,7 @@ export interface LinkData {
     visible: boolean;
     tagName: string;
     source: string;
+    canonical: boolean;
     highlighted: boolean;
     highlightId: number;
     status?: number;
