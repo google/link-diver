@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CrossComponentDataService } from '../cross-component-data.service';
-import { FilterKeys, FilterOption } from '../interfaces';
+import { FilterKeys, FilterOption, GroupByKeys } from '../interfaces';
 
 /**
  * This component is responsible for taking acceptin input from the user,
@@ -21,8 +21,8 @@ export class InputBarComponent implements OnInit {
 
   pushInput(): void {
     const options = this.parseInput(this.newInput);
-    this.ccdService.updateGroupingKey(options.groupBy);
     this.ccdService.updateFilters(options.filters);
+    this.ccdService.updateGroupingKey(options.groupBy);
 
     // We need to scan filters for regex so we can highlight matches
     options.filters.forEach((filter: FilterOption<any>) => {
@@ -36,7 +36,7 @@ export class InputBarComponent implements OnInit {
 
   parseInput(input: string) {
     const filters: FilterOption<any>[] = [];
-    let groupBy = '';
+    let groupBy: GroupByKeys = undefined;
 
     if (!input) {
       return {
@@ -64,7 +64,12 @@ export class InputBarComponent implements OnInit {
               'spaces between the brackets and the grouping key.');
           return undefined;
         } else {
-          groupBy = splitInput[i + 1];
+          for (const key in GroupByKeys) {
+            if (GroupByKeys[key] === splitInput[i + 1]) {
+              groupBy = GroupByKeys[key];
+              break;
+            }
+          }
           i += 2;
         }
       }

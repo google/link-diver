@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LinkService } from '../link.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
-import { LinkData, SortOptions, GroupData, FilterOption } from '../interfaces';
+import { LinkData, SortOptions, GroupData, FilterOption, GroupByKeys } from '../interfaces';
 
 /**
  * This component is responsible for putting the links through the filtering and
@@ -15,7 +15,7 @@ import { LinkData, SortOptions, GroupData, FilterOption } from '../interfaces';
 export class GroupListComponent implements OnInit {
 
   order: SortOptions;
-  key: string;
+  key: GroupByKeys;
   filters: FilterOption<any>[];
   links: LinkData[];
 
@@ -26,7 +26,7 @@ export class GroupListComponent implements OnInit {
     this.linkService.linkList$.subscribe((newLinks: LinkData[]) => {
       this.links = newLinks;
     });
-    this.ccdService.groupingKey$.subscribe((newKey: string) => {
+    this.ccdService.groupingKey$.subscribe((newKey: GroupByKeys) => {
       this.key = newKey;
     });
     this.ccdService.sortOrder$.subscribe((newOrder: SortOptions) => {

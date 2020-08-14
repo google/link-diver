@@ -28,6 +28,16 @@ export enum FilterKeys {
     ContentType = 'content_type:'
 }
 
+export enum GroupByKeys {
+    URL = 'url',
+    Host = 'host',
+    Visible = 'visible',
+    TagName = 'tag',
+    StatusCode = 'status_code',
+    StatusOk = 'status_ok',
+    ContentType = 'content_type'
+}
+
 /**
  * Defines a filter criteria to use in the filter pipe.
  */
