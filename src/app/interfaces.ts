@@ -18,6 +18,9 @@ export interface LinkData {
     contentType?: string;
 }
 
+/**
+ * This defines the different keys the use can input to filter
+ */
 export enum FilterKeys {
     Regex = 'regexp:',
     Host = 'host:',
@@ -28,6 +31,9 @@ export enum FilterKeys {
     ContentType = 'content_type:'
 }
 
+/**
+ * This defines the diiferent keys the use can input to group by.
+ */
 export enum GroupByKeys {
     URL = 'url',
     Host = 'host',
