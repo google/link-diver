@@ -2,8 +2,6 @@
  
 Link Diver is a chrome extension to speed up understanding the links that can be extracted from web pages, which is a complicated task in modern websites that make heavy use of anchoring and javascript in a sophisticated layout. The main goal is to make it easier for a human to “dive” into web sites just like a web crawler. This should greatly help to efficiently identify patterns in outlinks, problematic URLs, and in general the path that a hypothetical web spider would follow through a website.
  
-*This is not an officially supported Google product*
- 
 ## Installation Instructions
  
 For installation instruction please refer to the latest release which can be found [here](https://github.com/google/link-diver/releases):
@@ -33,7 +31,7 @@ Link Diver will also filter links for you based on a regular expression you prov
 If you are only interested in filtering by a regular expression, simply write your expression into the textbox at the top of the page and press enter. Link Diver will then only display to you links that contain that regular expression somewhere in the link and will highlight the matches in red for each link. If however you want to filter in combination with other parameters, you will have to enter your regular expression in JSON format, like so:
 > {"regex":"^https://www[.]google[.]com"}.
  
-To filter links by one of (or a combination of) their metadata attributes, you will also have to use a JSON format. (A more user friendly syntax is coming in the next release). Simply make the JSON key the metadata attribute you want to filter by, make the value the result you desire. For example if I wanted to filter for links coming from an anchor tag, I would type:
+To filter links by one of (or a combination of) their metadata attributes, you will also have to use a JSON format. Simply make the JSON key the metadata attribute you want to filter by, make the value the result you desire. For example if I wanted to filter for links coming from an anchor tag, I would type:
 > {"tagName":"A"}
  
 The following are all metadata you can filter by:
@@ -47,6 +45,8 @@ The following are all metadata you can filter by:
  
 Please note that to filter by an attribute of type boolean, such as visible or statusOk, you will have to indicate whether you want true or false results by making the value 0 or 1. For example to filter for links that are not visible and had a successful status code you could do:
 > {"visible":"0", "statusOk":"1"}
+
+***This syntax is not meant to be final, we will be updating the input syntax to be more user friendly in the next release***
  
 ### Grouping
  
@@ -56,6 +56,8 @@ In addition to filtering, you can also include "group" as a key in the input JSO
 In addition to the aforementioned metadata attributes you could also group by href if you wanted duplicate URLs to be grouped together.
  
 Similarly to how you can collapse and expand individual links, you can also collapse and expand groups by clicking anywhere on the blue group header.
+
+***This syntax is not meant to be final, we will be updating the input syntax to be more user friendly in the next release***
  
 ### Sorting
  
@@ -76,4 +78,6 @@ Last but not least, Link Diver has the ability to highlight and scroll to links 
 This feature is highly experimental, we invite your feedback on this, but please be aware that this is not capable of making links that are marked as not visible appear on the page; it can only scroll to links that are already visible. Even then, sometimes the link is not truly visible and might not appear as highlighted on the original page.
  
 Additionally, please note that this feature might not work exactly as expected if you are highlighting the same page with multiple instances of the extension, as instructions from the two instances could conflict.
+
+*This is not an officially supported Google product*
  
