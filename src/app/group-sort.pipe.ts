@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { CrossComponentDataService } from './cross-component-data.service';
-import { LinkData, SortOptions, GroupData } from './interfaces';
+import { LinkData, SortOptions, GroupData, GroupByKeys } from './interfaces';
 
 /**
  * This pipe is responsible for intaking the filtered links and returning
@@ -17,7 +17,7 @@ export class GroupSort implements PipeTransform {
 
   constructor(private ccdService: CrossComponentDataService) { }
 
-  transform(links: LinkData[], keyAttribute: string,
+  transform(links: LinkData[], groupByKey: GroupByKeys,
       sortOrder: SortOptions): GroupData[] {
 
     if (!links) return [];
@@ -34,6 +34,31 @@ export class GroupSort implements PipeTransform {
         break;
       case SortOptions.DOMReverse:
         links.sort((a, b) => b.domId - a.domId);
+    }
+
+    let keyAttribute;
+    switch (groupByKey) {
+      case GroupByKeys.URL:
+        keyAttribute = 'href';
+        break;
+      case GroupByKeys.Host:
+        keyAttribute = 'host';
+        break;
+      case GroupByKeys.Visible:
+        keyAttribute = 'visible';
+        break;
+      case GroupByKeys.TagName:
+        keyAttribute = 'tagName';
+        break;
+      case GroupByKeys.StatusCode:
+        keyAttribute = 'status';
+        break;
+      case GroupByKeys.StatusOk:
+        keyAttribute = 'statusOk';
+        break;
+      case GroupByKeys.ContentType:
+        keyAttribute = 'contentType';
+        break;
     }
 
     // Groups object into one big map like object where the links are the keys
