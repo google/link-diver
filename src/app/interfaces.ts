@@ -19,7 +19,7 @@ export interface LinkData {
 }
 
 /**
- * This defines the different keys the use can input to filter
+ * This defines the different keys the user can input to filter.
  */
 export enum FilterKeys {
     Regex = 'regexp:',
@@ -45,7 +45,7 @@ export enum GroupByKeys {
 }
 
 /**
- * Defines a filter criteria to use in the filter pipe.
+ * This defines a filter criteria to use in the filter pipe.
  */
 export interface FilterOption<T> {
     filterKey: FilterKeys;
