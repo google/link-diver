@@ -27,7 +27,7 @@ export class InputBarComponent implements OnInit {
     // We need to scan filters for regex so we can highlight matches
     options.filters.forEach((filter: FilterOption<any>) => {
       if (filter.filterKey === FilterKeys.Regex && !filter.negation) {
-        const regex = new RegExp(`(${filter.valueAsStr})`, 'g');
+        const regex = new RegExp(`(${filter.inputString})`, 'g');
         this.ccdService.updateRegex(regex);
       }
     });
@@ -59,7 +59,7 @@ export class InputBarComponent implements OnInit {
             filters.push(newFilter);
           }
         } else if (i + 2 >= splitInput.length || splitInput[i + 2] !== '}') {
-          // To group we require the syntax { grouping_key }
+          // To group we require the syntax '{ grouping_key }'
           console.error('Invalid input, to group links make sure there are ' +
               'spaces between the brackets and the grouping key.');
           return undefined;
@@ -81,11 +81,20 @@ export class InputBarComponent implements OnInit {
     };
   }
 
+  /**
+   * Parses a full filter argument, parses it and constructs a FilterOption
+   * object filled with the relevant data.
+   *
+   * @param { string } str The full filter argument as a string
+   * @param { boolean } onlyArg Whether it's the only argument and we should
+   * accept it as a regex filter if there is no modifier
+   * @returns { FilterOption<any> } The constructed FilterOption object
+   */
   private parseArgument(str: string, onlyArg: boolean): FilterOption<any> {
     // By default we assume a regex unless we find a modifier
     const filterOption = {
       filterKey: undefined,
-      valueAsStr: str,
+      inputString: str,
       value: undefined,
       negation: false
     };
@@ -93,18 +102,20 @@ export class InputBarComponent implements OnInit {
     this.parseNegation(filterOption);
 
     for (const key in FilterKeys) {
-      if (filterOption.valueAsStr.startsWith(FilterKeys[key])) {
+      if (filterOption.inputString.startsWith(FilterKeys[key])) {
         this.parseModifier(filterOption, FilterKeys[key]);
         break;
       }
     }
 
+    // If the argument had no valid modifier
     if (!filterOption.filterKey) {
       if (onlyArg) {
+        // We allow a regular expression without a modifier if it's the only arg
         filterOption.filterKey = FilterKeys.Regex;
-        filterOption.value = new RegExp(filterOption.valueAsStr);
+        filterOption.value = new RegExp(filterOption.inputString);
       } else {
-        console.error('Invaild Input: \'' + filterOption.valueAsStr +
+        console.error('Invaild Input: \'' + filterOption.inputString +
             '\' does not start with a valid modifier');
         return undefined;
       }
@@ -113,39 +124,56 @@ export class InputBarComponent implements OnInit {
     return filterOption;
   }
 
+  /**
+   * Takes in a raw FilterOption object and checks if there is a negation
+   * modifier prefixing the input. If there is it trims the modifier off of the
+   * input string and sets negation to true.
+   *
+   * @param { FilterOption<any> } filter The raw FilterOption to be parsed
+   */
   private parseNegation(filter: FilterOption<any>) {
     const negation = 'not:';
-    if (filter.valueAsStr.startsWith(negation)) {
-      filter.valueAsStr = filter.valueAsStr.substring(negation.length);
+    if (filter.inputString.startsWith(negation)) {
+      filter.inputString = filter.inputString.substring(negation.length);
       filter.negation = true;
     }
   }
 
+  /**
+   * Takes in a raw FilterOption object, assigns the filterKey and value
+   * according to the FilterKey provided, and trims the leading modifer from
+   * the input string.
+   *
+   * @param { FilterOption<any> } filter The raw FilterOption object to be
+   * assigned
+   * @param { FilterKeys } key The type of FilterKey that matches the input
+   * string modifier
+   */
   private parseModifier(filter: FilterOption<any>, key: FilterKeys) {
     filter.filterKey = key;
-    filter.valueAsStr = filter.valueAsStr.substring(key.length);
+    filter.inputString = filter.inputString.substring(key.length);
     switch (key) {
       // Tag Name is capitalized natively
       case FilterKeys.TagName:
-        filter.value = filter.valueAsStr.toUpperCase();
+        filter.value = filter.inputString.toUpperCase();
         break;
       // Conent Type is just the input string
       case FilterKeys.ContentType:
-        filter.value = filter.valueAsStr;
+        filter.value = filter.inputString;
         break;
       // Cases where value should be a boolean
       case FilterKeys.Visible:
       case FilterKeys.StatusOk:
-        filter.value = this.parseBool(filter.valueAsStr);
+        filter.value = this.parseBool(filter.inputString);
         break;
       // Cases where value should be an int
       case FilterKeys.StatusCode:
-        filter.value = parseInt(filter.valueAsStr);
+        filter.value = parseInt(filter.inputString);
         break;
       // Cases where value should be a regular expression
       case FilterKeys.Regex:
       case FilterKeys.Host:
-        filter.value = new RegExp(filter.valueAsStr);
+        filter.value = new RegExp(filter.inputString);
         break;
     }
   }

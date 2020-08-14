@@ -43,7 +43,7 @@ export enum GroupByKeys {
  */
 export interface FilterOption<T> {
     filterKey: FilterKeys;
-    valueAsStr: string;
+    inputString: string;
     value: T;
     negation: boolean;
 }
