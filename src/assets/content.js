@@ -33,7 +33,7 @@ function findLinks() {
     } else if (element.hasAttribute('action')) {
       // Only form elements can have an action attribute.
       addLinkFromAttribute(element, index, links, 'action');
-    } else if (element.tagName === 'IMG') {
+    } else if (element.tagName === 'IMG' || element.tagName === 'VIDEO') {
       addLinkFromAttribute(element, index, links, 'src');
     }
   });
@@ -43,7 +43,7 @@ function findLinks() {
 function addLinkFromHref(element, index, links) {
   if (element.tagName === 'A' ||
       element.tagName === 'AREA' ||
-      element.rel === 'canonical') {
+      element.tagName === 'LINK') {
 
     // Avoid bad links, such as javascript:void(0)
     if (urlRegex.test(element.href)) {
@@ -90,16 +90,20 @@ function getLinkData(element, index, urlString) {
   const highlightId = `link-diver-id-${index}`;
   element.classList.add(highlightId);
 
+  let tagName = element.tagName;
+  if (element.rel) {
+    tagName += `/${element.rel}`;
+  }
+
   return {
     'href': url.href,
     'host': url.host,
-    'tagName': element.tagName,
+    'tagName': tagName,
     'visible': isVisible(element),
     'source': element.outerHTML,
     'domId': index,
     'highlightId': highlightId,
-    'highlighted': false,
-    'canonical': element.rel && element.rel === 'canonical'
+    'highlighted': false
   };
 }
 
