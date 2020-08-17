@@ -26,9 +26,6 @@ export class FilterByRegexPipe implements PipeTransform {
         case FilterKeys.Host:
           links = links.filter((link) => not !== val.test(link.host));
           break;
-        case FilterKeys.TagName:
-          links = links.filter((link) => not !== (val === link.tagName));
-          break;
         case FilterKeys.StatusCode:
           links = links.filter((link) => not !== (val === link.status));
           break;
@@ -37,6 +34,9 @@ export class FilterByRegexPipe implements PipeTransform {
           break;
         case FilterKeys.StatusOk:
           links = links.filter((link) => not !== (val === link.statusOk));
+          break;
+        case FilterKeys.TagName:
+          links = links.filter((link) => not !== (link.tagName.includes(val)));
           break;
         case FilterKeys.ContentType:
           links = links.filter((link) => not !== (link.contentType.includes(val)));

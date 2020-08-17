@@ -90,7 +90,7 @@ function getLinkData(element, index, urlString) {
   return {
     'href': url.href,
     'host': url.host,
-    'tagName': element.tagName,
+    'tagName': element.tagName.toLowerCase(),
     'visible': isVisible(element),
     'source': element.outerHTML,
     'domId': index,

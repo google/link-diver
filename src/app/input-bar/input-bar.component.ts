@@ -153,11 +153,8 @@ export class InputBarComponent implements OnInit {
     filter.filterKey = key;
     filter.inputString = filter.inputString.substring(key.length);
     switch (key) {
-      // Tag Name is capitalized natively
+      // Cases where the value we want to compare is just a string
       case FilterKeys.TagName:
-        filter.value = filter.inputString.toUpperCase();
-        break;
-      // Conent Type is just the input string
       case FilterKeys.ContentType:
         filter.value = filter.inputString;
         break;
