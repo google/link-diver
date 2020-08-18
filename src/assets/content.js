@@ -94,6 +94,8 @@ function getLinkData(element, index, instanceId, urlString) {
   const highlightId = `link-diver-id-${instanceId}-${index}`;
   element.classList.add(highlightId);
 
+  const highlightClass = 'link-diver-highlight';
+
   return {
     'href': url.href,
     'host': url.host,
@@ -102,7 +104,7 @@ function getLinkData(element, index, instanceId, urlString) {
     'source': htmlSource,
     'domId': index,
     'highlightId': highlightId,
-    'highlighted': false
+    'highlighted': element.classList.contains(highlightClass)
   };
 }
 
