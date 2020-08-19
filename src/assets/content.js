@@ -20,36 +20,43 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+// Used to identify url in inline javascript functions that simulate a link.
 const urlRegex = /https?:\/\/[^\s]+/;
+// Instance counts let's us identitfy the instance of the extension in the
+// highlihgt-id so that we can only highlight the releveant link in the case
+// of a conflict.
+let instanceCount = 0;
 
 function findLinks() {
   const all = document.querySelectorAll('*');
+  const instanceId = instanceCount;
+  instanceCount += 1;
   const links = [];
   all.forEach((element, index) => {
     if (element.getAttribute('href')) {
-      addLinkFromHref(element, index, links);
+      addLinkFromHref(element, index, instanceId, links);
     } else if (element.hasAttribute('onclick')) {
-      addLinkFromOnClick(element, index, links);
+      addLinkFromOnClick(element, index, instanceId, links);
     } else if (element.hasAttribute('action')) {
       // Only form elements can have an action attribute.
-      addLinkFromAttribute(element, index, links, 'action');
+      addLinkFromAttribute(element, index, instanceId, links, 'action');
     } else if (element.tagName === 'IMG') {
-      addLinkFromAttribute(element, index, links, 'src');
+      addLinkFromAttribute(element, index, instanceId, links, 'src');
     }
   });
   return links;
 }
 
-function addLinkFromHref(element, index, links) {
+function addLinkFromHref(element, index, instanceId, links) {
   if (element.tagName === 'A' || element.tagName === 'AREA') {
     // Avoid bad links, such as javascript:void(0)
     if (urlRegex.test(element.href)) {
-      links.push(getLinkData(element, index, element.href));
+      links.push(getLinkData(element, index, instanceId, element.href));
     }
   }
 }
 
-function addLinkFromOnClick(element, index, links) {
+function addLinkFromOnClick(element, index, instanceId, links) {
   const jsFunc = element.getAttribute('onclick');
   const specialCase = /window[.]location[.]href=["'](.*)["']/;
   const specialCaseMatches = jsFunc.match(specialCase);
@@ -59,21 +66,21 @@ function addLinkFromOnClick(element, index, links) {
     if (!urlRegex.test(urlString)) {
       urlString = window.location.origin + urlString;
     }
-    links.push(getLinkData(element, index, urlString));
+    links.push(getLinkData(element, index, instanceId, urlString));
   } else if (generalMatches) {
-    links.push(getLinkData(element, index, generalMatches[0]));
+    links.push(getLinkData(element, index, instanceId, generalMatches[0]));
   }
 }
 
-function addLinkFromAttribute(element, index, links, attribute) {
+function addLinkFromAttribute(element, index, instanceId, links, attribute) {
   let link = element[attribute];
   if (!urlRegex.test(link)) {
     link = window.location.origin + link;
   }
-  links.push(getLinkData(element, index, link));
+  links.push(getLinkData(element, index, instanceId, link));
 }
 
-function getLinkData(element, index, urlString) {
+function getLinkData(element, index, instanceId, urlString) {
   let url;
 
   try {
@@ -84,18 +91,24 @@ function getLinkData(element, index, urlString) {
     url = {host: 'unknown', href: urlString};
   }
 
-  const highlightId = `link-diver-id-${index}`;
+  const htmlSource = element.outerHTML;
+
+  // The instance id allows us to avoid conflicts if multiple instances are
+  // opened and assign highlightIds to the DOM elements
+  const highlightId = `link-diver-id-${instanceId}-${index}`;
   element.classList.add(highlightId);
+
+  const highlightClass = 'link-diver-highlight';
 
   return {
     'href': url.href,
     'host': url.host,
     'tagName': element.tagName,
     'visible': isVisible(element),
-    'source': element.outerHTML,
+    'source': htmlSource,
     'domId': index,
     'highlightId': highlightId,
-    'highlighted': false
+    'highlighted': element.classList.contains(highlightClass)
   };
 }
 
