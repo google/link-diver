@@ -45,4 +45,8 @@ export class ExpandCollapseAllComponent implements OnInit {
     this.ccdService.updateShowDOMSource(this.showDOMSource);
   }
 
+  exportLinks() {
+    this.linkService.downloadLinks();
+  }
+
 }
