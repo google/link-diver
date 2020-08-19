@@ -10,7 +10,7 @@ export interface LinkData {
     tagName: string;
     source: string;
     highlighted: boolean;
-    highlightId: number;
+    highlightId: string;
     status?: number;
     statusOk?: boolean;
     contentType?: string;
