@@ -20,7 +20,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+// Used to identify url in inline javascript functions that simulate a link.
 const urlRegex = /https?:\/\/[^\s]+/;
+// Instance counts let's us identitfy the instance of the extension in the
+// highlihgt-id so that we can only highlight the releveant link in the case
+// of a conflict.
 let instanceCount = 0;
 
 function findLinks() {
