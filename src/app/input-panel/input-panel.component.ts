@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LinkService } from '../link.service';
+import { ChromeAPIService } from '../link.service';
 
 /**
  * A large parent component to hold sub-components that deal with input
@@ -13,10 +13,10 @@ export class InputPanelComponent implements OnInit {
 
   parent: string;
 
-  constructor(private linkService: LinkService) { }
+  constructor(private chromeAPIService: ChromeAPIService) { }
 
   ngOnInit(): void {
-    this.linkService.parent$.subscribe((str: string) => this.parent = str);
+    this.chromeAPIService.parent$.subscribe((str: string) => this.parent = str);
   }
 
 }
