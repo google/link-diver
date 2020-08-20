@@ -18,7 +18,7 @@ import { InputBarComponent } from './input-bar/input-bar.component';
 import { FilterPipe } from './filter.pipe';
 import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
-import { OptionsComponent } from './expand-collapse-all/expand-collapse-all.component';
+import { OptionsComponent } from './options/options.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupSort } from './group-sort.pipe';
 import { GroupCountComponent } from './group-count/group-count.component';
