@@ -1,8 +1,8 @@
-import { FilterByRegexPipe } from './filter-by-regex.pipe';
+import { FilterPipe } from './filter-by-regex.pipe';
 
-describe('FilterByRegexPipe', () => {
+describe('FilterPipe', () => {
   it('create an instance', () => {
-    const pipe = new FilterByRegexPipe();
+    const pipe = new FilterPipe();
     expect(pipe).toBeTruthy();
   });
 });

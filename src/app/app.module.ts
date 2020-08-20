@@ -15,7 +15,7 @@ import { AppComponent } from './app.component';
 import { LinkListComponent } from './link-list/link-list.component';
 import { HighlightMatchPipe } from './highlight-match.pipe';
 import { InputBarComponent } from './input-bar/input-bar.component';
-import { FilterByRegexPipe } from './filter-by-regex.pipe';
+import { FilterPipe } from './filter-by-regex.pipe';
 import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
 import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collapse-all.component';
@@ -29,7 +29,7 @@ import { GroupCountComponent } from './group-count/group-count.component';
     LinkListComponent,
     HighlightMatchPipe,
     InputBarComponent,
-    FilterByRegexPipe,
+    FilterPipe,
     IndivLinkComponent,
     InputPanelComponent,
     ExpandCollapseAllComponent,
