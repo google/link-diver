@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChromeAPIService } from '../link.service';
+import { ChromeAPIService } from '../chrome-api.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
 import { SortOptions } from '../interfaces';
 

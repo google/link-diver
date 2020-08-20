@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChromeAPIService } from '../link.service';
+import { ChromeAPIService } from '../chrome-api.service';
 
 /**
  * A large parent component to hold sub-components that deal with input

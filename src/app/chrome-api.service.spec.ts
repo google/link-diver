@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ChromeAPIService } from './link.service';
+import { ChromeAPIService } from './chrome-api.service';
 
 describe('ChromeAPIService', () => {
   let service: ChromeAPIService;
