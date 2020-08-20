@@ -16,6 +16,7 @@ describe('LinkListComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(LinkListComponent);
     component = fixture.componentInstance;
+    component.group = {key: 'fake', list: [], size: 0};
     fixture.detectChanges();
   });
 

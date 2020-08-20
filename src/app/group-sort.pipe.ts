@@ -13,7 +13,7 @@ import { LinkData, SortOptions, GroupData } from './interfaces';
 @Pipe({
   name: 'groupSort'
 })
-export class GroupSort implements PipeTransform {
+export class GroupSortPipe implements PipeTransform {
 
   constructor(private ccdService: CrossComponentDataService) { }
 
