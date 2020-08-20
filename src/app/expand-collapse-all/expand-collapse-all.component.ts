@@ -8,11 +8,11 @@ import { SortOptions } from '../interfaces';
  * link
  */
 @Component({
-  selector: 'app-expand-collapse-all',
+  selector: 'app-options',
   templateUrl: './expand-collapse-all.component.html',
   styleUrls: ['./expand-collapse-all.component.css']
 })
-export class ExpandCollapseAllComponent implements OnInit {
+export class OptionsComponent implements OnInit {
 
   showDOMSource: boolean = false;
   order: SortOptions;
