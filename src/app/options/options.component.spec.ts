@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { OptionsComponent } from './expand-collapse-all.component';
+import { OptionsComponent } from './options.component';
 
 describe('OptionsComponent', () => {
   let component: OptionsComponent;

@@ -9,8 +9,8 @@ import { SortOptions } from '../interfaces';
  */
 @Component({
   selector: 'app-options',
-  templateUrl: './expand-collapse-all.component.html',
-  styleUrls: ['./expand-collapse-all.component.css']
+  templateUrl: './options.component.html',
+  styleUrls: ['./options.component.css']
 })
 export class OptionsComponent implements OnInit {
 
