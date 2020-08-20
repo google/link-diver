@@ -24,7 +24,8 @@ describe('FetchStatusService', () => {
     inject([HttpTestingController, FetchStatusService],
         (httpMock: HttpTestingController, fetchService: FetchStatusService) => {
           expect(fetchService).toBeTruthy();
-          
+          // Add more tests
+          expect();
         });
   });
 });

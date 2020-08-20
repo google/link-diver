@@ -2,9 +2,8 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ExpandCollapseAllComponent } from './expand-collapse-all.component';
 import { LinkService } from '../link.service';
-import { MatMenu, MatMenuModule } from '@angular/material/menu';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ExpandCollapseAllComponent', () => {
   let component: ExpandCollapseAllComponent;
@@ -17,16 +16,16 @@ describe('ExpandCollapseAllComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        MatMenuModule,
-        MatFormFieldModule,
-        MatButtonModule
+        MatMenuModule
       ],
       declarations: [
-        ExpandCollapseAllComponent,
-        MatMenu
+        ExpandCollapseAllComponent
       ],
       providers: [
         { provide: LinkService, useValue: fakeLinkService}
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
       ]
     })
     .compileComponents();
