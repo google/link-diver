@@ -14,7 +14,7 @@ describe('GroupListComponent', () => {
   const mockTemplate = {
     href: 'https://www.mocklink.com/page',
     host: 'www.mocklink.com',
-    domId: 25,
+    domId: 0,
     visible: true,
     tagName: 'A',
   };
@@ -23,7 +23,7 @@ describe('GroupListComponent', () => {
   for (let i = 0; i < 3; i ++) {
     mockList.push({
       href: mockTemplate.href + i.toString(),
-      host: mockTemplate,
+      host: mockTemplate.host,
       domId: mockTemplate.domId + i,
       visible: mockTemplate.visible,
       tagName: mockTemplate.tagName

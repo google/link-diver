@@ -11,7 +11,7 @@ import { LinkData } from './interfaces';
 export class FilterByRegexPipe implements PipeTransform {
 
   transform(links: LinkData[], regexStr: string,
-      filters: LinkData): LinkData[] {
+      filters: any): LinkData[] {
 
     if (filters) {
       Object.keys(filters).forEach((key) => {
