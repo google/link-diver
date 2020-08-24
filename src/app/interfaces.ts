@@ -35,6 +35,7 @@ export enum FilterKeys {
  * This defines the different keys the use can input to group by.
  */
 export enum GroupByKeys {
+    None = 'none',
     URL = 'url',
     Host = 'host',
     Visible = 'visible',

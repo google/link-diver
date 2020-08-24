@@ -18,6 +18,7 @@ export class GroupListComponent implements OnInit {
   key: GroupByKeys;
   filters: FilterOption<any>[];
   links: LinkData[];
+  showHeader: boolean = true;
 
   constructor(private linkService: LinkService,
     private ccdService: CrossComponentDataService) { }
@@ -28,6 +29,7 @@ export class GroupListComponent implements OnInit {
     });
     this.ccdService.groupingKey$.subscribe((newKey: GroupByKeys) => {
       this.key = newKey;
+      this.showHeader = newKey !== GroupByKeys.None;
     });
     this.ccdService.sortOrder$.subscribe((newOrder: SortOptions) => {
       this.order = newOrder;

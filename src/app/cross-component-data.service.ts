@@ -17,8 +17,8 @@ export class CrossComponentDataService {
   private sortOrderSource = new BehaviorSubject<SortOptions>(SortOptions.DOM);
   sortOrder$ = this.sortOrderSource.asObservable();
 
-  private groupingKeySource = new BehaviorSubject<GroupByKeys>(undefined);
-  groupingKey$ = this.groupingKeySource.asObservable();
+  private groupKeySource = new BehaviorSubject<GroupByKeys>(GroupByKeys.None);
+  groupingKey$ = this.groupKeySource.asObservable();
 
   private filterOptionsSource = new BehaviorSubject<FilterOption<any>[]>([]);
   filters$ = this.filterOptionsSource.asObservable();
@@ -43,7 +43,7 @@ export class CrossComponentDataService {
   }
 
   updateGroupingKey(newKey: GroupByKeys) {
-    this.groupingKeySource.next(newKey);
+    this.groupKeySource.next(newKey);
   }
 
   updateFilters(newFilters: FilterOption<any>[]) {

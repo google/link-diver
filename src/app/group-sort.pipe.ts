@@ -38,6 +38,9 @@ export class GroupSort implements PipeTransform {
 
     let keyAttribute;
     switch (groupByKey) {
+      case GroupByKeys.None:
+        keyAttribute = '';
+        break;
       case GroupByKeys.URL:
         keyAttribute = 'href';
         break;
