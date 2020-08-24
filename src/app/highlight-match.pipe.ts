@@ -9,11 +9,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class HighlightMatchPipe implements PipeTransform {
   transform(link: string, regexArr: RegExp[]): string {
-    /* if (regex) {
-      return link.replace(regex, `<span class="red">$1</span>`);
-    } else {
-      return link;
-    }*/
     regexArr.forEach((regex: RegExp) => {
       link = link.replace(regex, `<span class="red">$1</span>`);
     });
