@@ -53,6 +53,7 @@ export interface FilterOption<T> {
     inputString: string;
     value: T;
     negation: boolean;
+    validInput: boolean;
 }
 
 /**

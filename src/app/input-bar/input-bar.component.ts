@@ -35,9 +35,9 @@ export class InputBarComponent implements OnInit {
 
   }
 
-  parseInput(input: string) {
+  private parseInput(input: string) {
     const filters: FilterOption<any>[] = [];
-    let groupBy: GroupByKeys = undefined;
+    let groupBy: GroupByKeys = GroupByKeys.None;
 
     if (!input) {
       return {
@@ -56,14 +56,14 @@ export class InputBarComponent implements OnInit {
       for (let i = 0; i < splitInput.length; i++) {
         if (splitInput[i] !== '{') {
           const newFilter = this.parseArgument(splitInput[i], false);
-          if (newFilter) {
+          if (newFilter.validInput) {
             filters.push(newFilter);
           }
         } else if (i + 2 >= splitInput.length || splitInput[i + 2] !== '}') {
           // To group we require the syntax '{ grouping_key }'
           console.error('Invalid input, to group links make sure there are ' +
               'spaces between the brackets and the grouping key.');
-          return undefined;
+          break;
         } else {
           for (const key in GroupByKeys) {
             if (GroupByKeys[key] === splitInput[i + 1]) {
@@ -97,7 +97,8 @@ export class InputBarComponent implements OnInit {
       filterKey: undefined,
       inputString: str,
       value: undefined,
-      negation: false
+      negation: false,
+      validInput: true
     };
 
     this.parseNegation(filterOption);
@@ -118,7 +119,7 @@ export class InputBarComponent implements OnInit {
       } else {
         console.error('Invaild Input: \'' + filterOption.inputString +
             '\' does not start with a valid modifier');
-        return undefined;
+        filterOption.validInput = false;
       }
     }
 
