@@ -11,8 +11,8 @@ import { SortOptions, GroupCount, FilterOption, GroupByKeys } from './interfaces
 })
 export class CrossComponentDataService {
 
-  private regexSource = new BehaviorSubject<RegExp>(undefined);
-  regex$ = this.regexSource.asObservable();
+  private regexArrSource = new BehaviorSubject<RegExp[]>([]);
+  regexArr$ = this.regexArrSource.asObservable();
 
   private sortOrderSource = new BehaviorSubject<SortOptions>(SortOptions.DOM);
   sortOrder$ = this.sortOrderSource.asObservable();
@@ -34,8 +34,8 @@ export class CrossComponentDataService {
 
   constructor() { }
 
-  updateRegex(newRegex: RegExp) {
-    this.regexSource.next(newRegex);
+  updateRegex(newRegexArr: RegExp[]) {
+    this.regexArrSource.next(newRegexArr);
   }
 
   updateOrder(newOrder: SortOptions) {

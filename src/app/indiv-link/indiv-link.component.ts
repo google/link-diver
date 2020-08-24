@@ -14,7 +14,7 @@ import { LinkData } from '../interfaces';
 })
 export class IndivLinkComponent implements OnInit {
 
-  regex: RegExp;
+  regexArr: RegExp[];
   expand: boolean;
   showDOMSource: boolean;
 
@@ -24,8 +24,8 @@ export class IndivLinkComponent implements OnInit {
     private linkService: LinkService) { }
 
   ngOnInit(): void {
-    this.ccdService.regex$.subscribe((newRegex: RegExp) => {
-      this.regex = newRegex;
+    this.ccdService.regexArr$.subscribe((newRegexArr: RegExp[]) => {
+      this.regexArr = newRegexArr;
     });
     this.ccdService.expandCollapseAll$.subscribe((expand: boolean) => {
       this.expand = expand;

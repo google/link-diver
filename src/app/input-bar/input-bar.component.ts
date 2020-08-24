@@ -25,12 +25,13 @@ export class InputBarComponent implements OnInit {
     this.ccdService.updateGroupingKey(options.groupBy);
 
     // We need to scan filters for regex so we can highlight matches
+    const newRegexArr: RegExp[] = [];
     options.filters.forEach((filter: FilterOption<any>) => {
       if (filter.filterKey === FilterKeys.Regex && !filter.negation) {
-        const regex = new RegExp(`(${filter.inputString})`, 'g');
-        this.ccdService.updateRegex(regex);
+        newRegexArr.push(new RegExp(`(${filter.inputString})`, 'g'));
       }
     });
+    this.ccdService.updateRegex(newRegexArr);
 
   }
 
