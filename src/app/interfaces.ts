@@ -32,7 +32,7 @@ export enum FilterKeys {
 }
 
 /**
- * This defines the diiferent keys the use can input to group by.
+ * This defines the different keys the use can input to group by.
  */
 export enum GroupByKeys {
     URL = 'url',
