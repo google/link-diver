@@ -87,7 +87,7 @@ export class LinkService {
     });
   }
 
-  downloadLinks() {
+  downloadLinksAsCsvFile() {
     const data = new Blob([this.linksToString()], {type: 'text/csv'});
     const textFile = window.URL.createObjectURL(data);
 

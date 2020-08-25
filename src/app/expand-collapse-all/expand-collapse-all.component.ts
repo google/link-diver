@@ -46,7 +46,7 @@ export class ExpandCollapseAllComponent implements OnInit {
   }
 
   exportLinks() {
-    this.linkService.downloadLinks();
+    this.linkService.downloadLinksAsCsvFile();
   }
 
 }
