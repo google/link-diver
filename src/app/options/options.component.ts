@@ -46,7 +46,7 @@ export class OptionsComponent implements OnInit {
   }
 
   exportLinks() {
-    this.linkService.downloadLinksAsCsvFile();
+    this.chromeLinkService.downloadLinksAsCsvFile();
   }
 
 }
