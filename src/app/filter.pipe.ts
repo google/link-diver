@@ -6,9 +6,9 @@ import { LinkData, FilterOption, FilterKeys } from './interfaces';
  * given regular expression
  */
 @Pipe({
-  name: 'filterByRegex'
+  name: 'filter'
 })
-export class FilterByRegexPipe implements PipeTransform {
+export class FilterPipe implements PipeTransform {
 
   transform(links: LinkData[], filters: FilterOption<any>[]): LinkData[] {
 

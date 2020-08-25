@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LinkService } from '../link.service';
+import { ChromeLinkService } from '../chrome-link.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
 import { LinkData, SortOptions, GroupData, FilterOption, GroupByKeys } from '../interfaces';
 
@@ -20,11 +20,11 @@ export class GroupListComponent implements OnInit {
   links: LinkData[];
   showHeader: boolean = true;
 
-  constructor(private linkService: LinkService,
+  constructor(private chromeLinkService: ChromeLinkService,
     private ccdService: CrossComponentDataService) { }
 
   ngOnInit(): void {
-    this.linkService.linkList$.subscribe((newLinks: LinkData[]) => {
+    this.chromeLinkService.linkList$.subscribe((newLinks: LinkData[]) => {
       this.links = newLinks;
     });
     this.ccdService.groupingKey$.subscribe((newKey: GroupByKeys) => {

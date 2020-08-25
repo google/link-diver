@@ -13,7 +13,8 @@
         <div class="button-wrapper">
             <button mat-icon-button aria-label="highlight button" 
                 (click)="highlight();toggle()" 
-                [color]="link.highlighted ? 'accent' : 'black'">
+                [disabled]="!link.visible"
+                [color]="link.highlighted ? 'accent' : 'basic'">
                 <mat-icon>highlight</mat-icon>
             </button>  
         </div>
