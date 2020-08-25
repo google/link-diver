@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ChromeLinkService } from '../chrome-api.service';
+import { ChromeLinkService } from '../chrome-link.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
 import { LinkData } from '../interfaces';
 
