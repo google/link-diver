@@ -14,7 +14,7 @@ import { LinkData } from './interfaces';
 @Injectable({
   providedIn: 'root'
 })
-export class LinkService {
+export class ChromeLinkService {
 
   private readonly noConnectionErrorMessage = `Parent site was not found,\
   please try reloading the parent site and relaunching the extension`;

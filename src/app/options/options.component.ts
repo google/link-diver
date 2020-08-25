@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LinkService } from '../link.service';
+import { ChromeLinkService } from '../chrome-link.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
 import { SortOptions } from '../interfaces';
 
@@ -8,11 +8,11 @@ import { SortOptions } from '../interfaces';
  * link
  */
 @Component({
-  selector: 'app-expand-collapse-all',
-  templateUrl: './expand-collapse-all.component.html',
-  styleUrls: ['./expand-collapse-all.component.css']
+  selector: 'app-options',
+  templateUrl: './options.component.html',
+  styleUrls: ['./options.component.css']
 })
-export class ExpandCollapseAllComponent implements OnInit {
+export class OptionsComponent implements OnInit {
 
   showDOMSource: boolean = false;
   order: SortOptions;
@@ -24,7 +24,7 @@ export class ExpandCollapseAllComponent implements OnInit {
   ];
 
   constructor(private ccdService: CrossComponentDataService,
-    private linkService: LinkService) { }
+    private chromeLinkService: ChromeLinkService) { }
 
   ngOnInit(): void { }
 
@@ -37,7 +37,7 @@ export class ExpandCollapseAllComponent implements OnInit {
   }
 
   refresh() {
-    this.linkService.requestLinkData();
+    this.chromeLinkService.requestLinkData();
   }
 
   toggle() {

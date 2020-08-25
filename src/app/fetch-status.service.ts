@@ -103,7 +103,7 @@ export class FetchStatusService {
   private getStatus(response: HttpResponseBase): Status {
     let contentType = 'none';
 
-    if (response.headers.has('Content-type')) {
+    if (response.headers && response.headers.has('Content-type')) {
       contentType = response.headers.get('Content-type').split(';', 2)[0];
     }
 

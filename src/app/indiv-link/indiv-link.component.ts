@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { LinkService } from '../link.service';
+import { ChromeLinkService } from '../chrome-link.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
 import { LinkData } from '../interfaces';
 
@@ -21,7 +21,7 @@ export class IndivLinkComponent implements OnInit {
   @Input() link: LinkData;
 
   constructor(private ccdService: CrossComponentDataService,
-    private linkService: LinkService) { }
+    private chromeLinkService: ChromeLinkService) { }
 
   ngOnInit(): void {
     this.ccdService.regexStr.subscribe((str) => this.regex = str);
@@ -38,7 +38,7 @@ export class IndivLinkComponent implements OnInit {
   }
 
   highlight(): void {
-    this.linkService.highlightLink(this.link)
+    this.chromeLinkService.highlightLink(this.link)
         .then((newHighlight: boolean) => this.link.highlighted = newHighlight)
         .catch((error: string) => {
           if (error === 'link not found') {
