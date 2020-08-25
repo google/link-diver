@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { ChromeAPIService } from './chrome-api.service';
+import { ChromeLinkService } from './chrome-api.service';
 
-describe('ChromeAPIService', () => {
-  let service: ChromeAPIService;
+describe('ChromeLinkService', () => {
+  let service: ChromeLinkService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(ChromeAPIService);
+    service = TestBed.inject(ChromeLinkService);
   });
 
   it('should be created', () => {

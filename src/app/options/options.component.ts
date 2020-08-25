@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChromeAPIService } from '../chrome-api.service';
+import { ChromeLinkService } from '../chrome-api.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
 import { SortOptions } from '../interfaces';
 
@@ -24,7 +24,7 @@ export class OptionsComponent implements OnInit {
   ];
 
   constructor(private ccdService: CrossComponentDataService,
-    private chromeAPIService: ChromeAPIService) { }
+    private chromeLinkService: ChromeLinkService) { }
 
   ngOnInit(): void { }
 
@@ -37,7 +37,7 @@ export class OptionsComponent implements OnInit {
   }
 
   refresh() {
-    this.chromeAPIService.requestLinkData();
+    this.chromeLinkService.requestLinkData();
   }
 
   toggle() {
