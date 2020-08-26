@@ -1,6 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { CrossComponentDataService } from '../cross-component-data.service';
-import { GroupCount } from '../interfaces';
+import { GroupCount, GroupByKeys } from '../interfaces';
 
 @Component({
   selector: 'app-group-count',
@@ -23,8 +23,8 @@ export class GroupCountComponent implements OnInit {
       this.groupCount = newCount;
       this.changeDetector.detectChanges();
     });
-    this.ccdService.groupingKey$.subscribe((newKey: string) => {
-      this.groupingOn = !!newKey;
+    this.ccdService.groupingKey$.subscribe((newKey: GroupByKeys) => {
+      this.groupingOn = newKey !== GroupByKeys.None;
     });
   }
 
