@@ -17,7 +17,7 @@ export class FilterPipe implements PipeTransform {
     }
 
     filters.forEach((filter: FilterOption<any>) => {
-      const not = filter.negation;
+      const not = filter.isNegation;
       const val = filter.value;
       switch (filter.filterKey) {
         case FilterKeys.Regex:

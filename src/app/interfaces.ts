@@ -52,8 +52,8 @@ export interface FilterOption<T> {
     filterKey: FilterKeys;
     inputString: string;
     value: T;
-    negation: boolean;
-    validInput: boolean;
+    isNegation: boolean;
+    isValidInput: boolean;
 }
 
 /**
