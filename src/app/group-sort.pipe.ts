@@ -106,6 +106,15 @@ export class GroupSort implements PipeTransform {
     return groupedArr;
   }
 
+  /**
+   * Comparison function for arbitrary objects that compares lexicographically
+   * based on the attributes of the object corresponding to key.
+   * @param { any } first
+   * @param { any } second
+   * @param { string } key The key denoting which attribute should be used for
+   * the comparison.
+   * @return { number }
+   */
   private lexicographicComp(first: any, second: any, key: string): number {
     if (first[key] < second[key]) {
       return -1;
@@ -116,6 +125,12 @@ export class GroupSort implements PipeTransform {
     }
   }
 
+  /**
+   * Assigns the value of rewrite to each link in links based on the
+   * rewrite rules in grouping.
+   * @param { LinkData[] } links
+   * @param { GroupingOptions } grouping
+   */
   private assignRewrites(links: LinkData[], grouping: GroupingOptions): void {
     links.forEach((link: LinkData) => {
       link.rewrite = link.href.match(grouping.regex)[0];

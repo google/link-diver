@@ -24,11 +24,6 @@ export class InputBarComponent implements OnInit {
     this.ccdService.updateFilters(options.filters);
     this.ccdService.updateGroupingOptions(options.grouping);
 
-    // TEMP
-    console.log(options.filters);
-    console.log(options.grouping);
-    // TEMP
-
     // We need to scan filters for regex so we can highlight matches
     const newRegexArr: RegExp[] = [];
     options.filters.forEach((filter: FilterOption<any>) => {
@@ -65,6 +60,7 @@ export class InputBarComponent implements OnInit {
       if (currInputArg === '{') {
         grouping = this.parseGrouping(stackInput);
         if (grouping.groupBy === GroupByKeys.Rewrite) {
+          // An empty inputString tells us to not highlight this regex filter
           filters.push({
             filterKey: FilterKeys.Regex,
             inputString: '',
@@ -87,6 +83,14 @@ export class InputBarComponent implements OnInit {
     };
   }
 
+  /**
+   * Takes a stack of inputs starting immediately after the opening bracket and
+   * parses each one, incoroprating it into a GroupingOptions object until it
+   * finds the closing bracket.
+   * @param { string[] } stackInput The input tokens as a stack of strings
+   * starting right after the opening bracket.
+   * @return { GroupingOptions } The constructed GroupingOptions object.
+   */
   private parseGrouping(stackInput: string[]): GroupingOptions {
     const grouping: GroupingOptions = {
       groupBy: GroupByKeys.None,

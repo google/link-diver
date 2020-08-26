@@ -58,12 +58,19 @@ export enum GroupByKeys {
     ContentType = 'content_type'
 }
 
+/**
+ * Defines modifiers that can be added to the group input to add to the
+ * GroupingOptions.
+ */
 export enum GroupingModifiers {
     Regex = 'regexp:',
     Rewrite = 'rewrite:',
     Sort = 'sort:'
 }
 
+/**
+ * Enumerates the different ways groups themselves can be sorted.
+ */
 export enum GroupOrders {
     None,
     LexicoAscend,
@@ -72,6 +79,10 @@ export enum GroupOrders {
     SizeDescend
 }
 
+/**
+ * Defines the settings used to group links by metadata or by a custom rewrite
+ * rule.
+ */
 export interface GroupingOptions {
     groupBy: GroupByKeys;
     sort: GroupOrders;
@@ -105,5 +116,5 @@ export enum SortOptions {
     DOM,
     DOMReverse,
     LexicoAscend,
-    LexicoDescend,
+    LexicoDescend
 }
