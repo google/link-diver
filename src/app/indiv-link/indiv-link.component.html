@@ -2,7 +2,7 @@
     <div class="left-title">
         <div class="arrow" [ngClass]="{'down': expand}"></div>
         <a href={{link.href}} target="_blank"
-            [innerHTML]="link.href | highlightMatch: regexArr"
+            [innerHTML]="link.href | highlightMatch: regex"
             (click)="toggle()"></a>        
     </div>
     <div class="right-title">

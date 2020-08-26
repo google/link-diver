@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SortOptions, GroupCount, FilterOption, GroupByKeys } from './interfaces';
+import { SortOptions, GroupCount, LinkData } from './interfaces';
 
 /**
  * This service is generally responsible for passing any sort of data between
@@ -11,16 +11,16 @@ import { SortOptions, GroupCount, FilterOption, GroupByKeys } from './interfaces
 })
 export class CrossComponentDataService {
 
-  private regexArrSource = new BehaviorSubject<RegExp[]>([]);
-  regexArr$ = this.regexArrSource.asObservable();
+  private regexSource = new BehaviorSubject<string>('');
+  regexStr = this.regexSource.asObservable();
 
   private sortOrderSource = new BehaviorSubject<SortOptions>(SortOptions.DOM);
   sortOrder$ = this.sortOrderSource.asObservable();
 
-  private groupKeySource = new BehaviorSubject<GroupByKeys>(GroupByKeys.None);
-  groupingKey$ = this.groupKeySource.asObservable();
+  private groupingKeySource = new BehaviorSubject<string>('');
+  groupingKey$ = this.groupingKeySource.asObservable();
 
-  private filterOptionsSource = new BehaviorSubject<FilterOption<any>[]>([]);
+  private filterOptionsSource = new BehaviorSubject<LinkData>(undefined);
   filters$ = this.filterOptionsSource.asObservable();
 
   private showDOMSource = new BehaviorSubject<boolean>(false);
@@ -34,19 +34,19 @@ export class CrossComponentDataService {
 
   constructor() { }
 
-  updateRegex(newRegexArr: RegExp[]) {
-    this.regexArrSource.next(newRegexArr);
+  updateRegex(newRegex: string) {
+    this.regexSource.next(newRegex);
   }
 
   updateOrder(newOrder: SortOptions) {
     this.sortOrderSource.next(newOrder);
   }
 
-  updateGroupingKey(newKey: GroupByKeys) {
-    this.groupKeySource.next(newKey);
+  updateGroupingKey(newKey: string) {
+    this.groupingKeySource.next(newKey);
   }
 
-  updateFilters(newFilters: FilterOption<any>[]) {
+  updateFilters(newFilters: LinkData) {
     this.filterOptionsSource.next(newFilters);
   }
 
