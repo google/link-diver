@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ChromeLinkService } from '../chrome-link.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
-import { LinkData, SortOptions, GroupData, FilterOption, GroupByKeys } from '../interfaces';
+import { LinkData, SortOptions, GroupData } from '../interfaces';
 
 /**
  * This component is responsible for putting the links through the filtering and
@@ -15,26 +15,28 @@ import { LinkData, SortOptions, GroupData, FilterOption, GroupByKeys } from '../
 export class GroupListComponent implements OnInit {
 
   order: SortOptions;
-  key: GroupByKeys;
-  filters: FilterOption<any>[];
+  regex: string;
+  key: string;
+  filters: LinkData;
   links: LinkData[];
-  showHeader: boolean = true;
 
   constructor(private chromeLinkService: ChromeLinkService,
     private ccdService: CrossComponentDataService) { }
 
   ngOnInit(): void {
+    this.ccdService.regexStr.subscribe((newRegex: string) => {
+      this.regex = newRegex;
+    });
     this.chromeLinkService.linkList$.subscribe((newLinks: LinkData[]) => {
       this.links = newLinks;
     });
-    this.ccdService.groupingKey$.subscribe((newKey: GroupByKeys) => {
+    this.ccdService.groupingKey$.subscribe((newKey: string) => {
       this.key = newKey;
-      this.showHeader = newKey !== GroupByKeys.None;
     });
     this.ccdService.sortOrder$.subscribe((newOrder: SortOptions) => {
       this.order = newOrder;
     });
-    this.ccdService.filters$.subscribe((newFilters: FilterOption<any>[]) => {
+    this.ccdService.filters$.subscribe((newFilters: LinkData) => {
       this.filters = newFilters;
     });
   }
