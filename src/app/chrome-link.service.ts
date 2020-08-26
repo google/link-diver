@@ -87,4 +87,24 @@ export class ChromeLinkService {
     });
   }
 
+  downloadLinksAsCsvFile() {
+    const data = new Blob([this.linksToString()], {type: 'text/csv'});
+    const textFile = window.URL.createObjectURL(data);
+
+    chrome.downloads.download({
+      url: textFile,
+      saveAs: true
+    });
+  }
+
+  private linksToString() {
+    const links = this.linkListSource.getValue();
+    let text = 'url, visible, tag, status, content_type\n';
+    links.forEach((link) => {
+      text += `${link.href}, ${link.visible}, ${link.tagName}, `;
+      text += `${link.status}, ${link.contentType}\n`;
+    });
+    return text;
+  }
+
 }

@@ -32,7 +32,7 @@ export class InputBarComponent implements OnInit {
     // We need to scan filters for regex so we can highlight matches
     const newRegexArr: RegExp[] = [];
     options.filters.forEach((filter: FilterOption<any>) => {
-      if (filter.filterKey === FilterKeys.Regex && !filter.negation) {
+      if (filter.filterKey === FilterKeys.Regex && !filter.isNegation) {
         newRegexArr.push(new RegExp(`(${filter.inputString})`, 'g'));
       }
     });
@@ -56,31 +56,24 @@ export class InputBarComponent implements OnInit {
     // We put each space seperated token in a stack
     const stackInput = input.trim().split(' ').reverse();
 
-    if (stackInput.length === 1) {
-      const newFilter = this.parseArgument(stackInput[0], true);
-      if (newFilter) {
-        filters.push(newFilter);
-      }
-    } else {
-      let currInputArg: string;
-      while (stackInput.length > 0) {
-        currInputArg = stackInput.pop();
-        if (currInputArg === '{') {
-          grouping = this.parseGrouping(stackInput);
-          if (grouping.groupBy === GroupByKeys.Rewrite) {
-            filters.push({
-              filterKey: FilterKeys.Regex,
-              inputString: grouping.regexStr,
-              value: grouping.regex,
-              negation: false,
-              validInput: true
-            });
-          }
-        } else {
-          const newFilter = this.parseArgument(currInputArg, false);
-          if (newFilter.validInput) {
-            filters.push(newFilter);
-          }
+    let currInputArg: string;
+    while (stackInput.length > 0) {
+      currInputArg = stackInput.pop();
+      if (currInputArg === '{') {
+        grouping = this.parseGrouping(stackInput);
+        if (grouping.groupBy === GroupByKeys.Rewrite) {
+          filters.push({
+            filterKey: FilterKeys.Regex,
+            inputString: grouping.regexStr,
+            value: grouping.regex,
+            isNegation: false,
+            isValidInput: true
+          });
+        }
+      } else {
+        const newFilter = this.parseArgument(currInputArg);
+        if (newFilter.isValidInput) {
+          filters.push(newFilter);
         }
       }
     }
@@ -138,22 +131,20 @@ export class InputBarComponent implements OnInit {
   }
 
   /**
-   * Parses a full filter argument, parses it and constructs a FilterOption
+   * Takes a full filter argument, parses it and constructs a FilterOption
    * object filled with the relevant data.
    *
    * @param { string } str The full filter argument as a string
-   * @param { boolean } onlyArg Whether it's the only argument and we should
-   * accept it as a regex filter if there is no modifier
    * @return { FilterOption<any> } The constructed FilterOption object
    */
-  private parseArgument(str: string, onlyArg: boolean): FilterOption<any> {
+  private parseArgument(str: string): FilterOption<any> {
     // By default we assume a regex unless we find a modifier
     const filterOption = {
-      filterKey: undefined,
+      filterKey: FilterKeys.Regex,
       inputString: str,
       value: undefined,
-      negation: false,
-      validInput: true
+      isNegation: false,
+      isValidInput: true
     };
 
     this.parseNegation(filterOption);
@@ -166,16 +157,10 @@ export class InputBarComponent implements OnInit {
     }
 
     // If the argument had no valid modifier
-    if (!filterOption.filterKey) {
-      if (onlyArg) {
-        // We allow a regular expression without a modifier if it's the only arg
-        filterOption.filterKey = FilterKeys.Regex;
-        filterOption.value = new RegExp(filterOption.inputString);
-      } else {
-        console.error('Invaild Input: \'' + filterOption.inputString +
-            '\' does not start with a valid modifier');
-        filterOption.validInput = false;
-      }
+    if (!filterOption.value) {
+      // We assume a lack of modifier indicates a regex filter
+      filterOption.filterKey = FilterKeys.Regex;
+      filterOption.value = new RegExp(filterOption.inputString);
     }
 
     return filterOption;
@@ -192,7 +177,7 @@ export class InputBarComponent implements OnInit {
     const negation = 'not:';
     if (filter.inputString.startsWith(negation)) {
       filter.inputString = filter.inputString.substring(negation.length);
-      filter.negation = true;
+      filter.isNegation = true;
     }
   }
 
