@@ -101,7 +101,7 @@ function getLinkData(element, index, instanceId, urlString) {
   element.classList.add(highlightId);
 
 
-  let tagName = element.tagName;
+  let tagName = element.tagName.toLowerCase();
   if (element.rel) {
     tagName += `/${element.rel}`;
   }
