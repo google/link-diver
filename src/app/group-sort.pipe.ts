@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { CrossComponentDataService } from './cross-component-data.service';
-import { LinkData, SortOptions, GroupData, GroupByKeys } from './interfaces';
+import { LinkData, SortOptions, GroupData, GroupByKeys, GroupingOptions } from './interfaces';
 
 /**
  * This pipe is responsible for intaking the filtered links and returning
@@ -17,7 +17,7 @@ export class GroupSort implements PipeTransform {
 
   constructor(private ccdService: CrossComponentDataService) { }
 
-  transform(links: LinkData[], groupByKey: GroupByKeys,
+  transform(links: LinkData[], grouping: GroupingOptions,
       sortOrder: SortOptions): GroupData[] {
 
     if (!links) return [];
@@ -37,7 +37,7 @@ export class GroupSort implements PipeTransform {
     }
 
     let keyAttribute;
-    switch (groupByKey) {
+    switch (grouping.groupBy) {
       case GroupByKeys.None:
         keyAttribute = '';
         break;
@@ -61,6 +61,10 @@ export class GroupSort implements PipeTransform {
         break;
       case GroupByKeys.ContentType:
         keyAttribute = 'contentType';
+        break;
+      case GroupByKeys.Rewrite:
+        keyAttribute = 'rewrite';
+        this.assignRewrites(links, grouping);
         break;
     }
 
@@ -95,6 +99,15 @@ export class GroupSort implements PipeTransform {
     } else {
       return 0;
     }
+  }
+
+  private assignRewrites(links: LinkData[], grouping: GroupingOptions): void {
+    links.forEach((link: LinkData) => {
+      link.rewrite = link.href.match(grouping.regex)[0];
+      if (grouping.rewrite) {
+        link.rewrite = link.rewrite.replace(grouping.regex, grouping.rewrite);
+      }
+    });
   }
 
 }

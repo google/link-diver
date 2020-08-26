@@ -16,6 +16,7 @@ export interface LinkData {
     status?: number;
     statusOk?: boolean;
     contentType?: string;
+    rewrite?: string;
 }
 
 /**
@@ -32,10 +33,22 @@ export enum FilterKeys {
 }
 
 /**
+ * This defines a filter criteria to use in the filter pipe.
+ */
+export interface FilterOption<T> {
+    filterKey: FilterKeys;
+    inputString: string;
+    value: T;
+    negation: boolean;
+    validInput: boolean;
+}
+
+/**
  * This defines the different keys the use can input to group by.
  */
 export enum GroupByKeys {
     None = 'none',
+    Rewrite = 'rewrite',
     URL = 'url',
     Host = 'host',
     Visible = 'visible',
@@ -45,15 +58,18 @@ export enum GroupByKeys {
     ContentType = 'content_type'
 }
 
-/**
- * This defines a filter criteria to use in the filter pipe.
- */
-export interface FilterOption<T> {
-    filterKey: FilterKeys;
-    inputString: string;
-    value: T;
-    negation: boolean;
-    validInput: boolean;
+export enum GroupingModifiers {
+    Regex = 'regexp:',
+    Rewrite = 'rewrite:',
+    Sort = 'sort:'
+}
+
+export interface GroupingOptions {
+    groupBy: GroupByKeys;
+    sort?: SortOptions;
+    regex?: RegExp;
+    regexStr?: string;
+    rewrite?: string;
 }
 
 /**
