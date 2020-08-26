@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SortOptions, GroupCount, FilterOption, GroupByKeys, GroupingOptions } from './interfaces';
+import { SortOptions, GroupCount, FilterOption, GroupByKeys, GroupingOptions, GroupOrders } from './interfaces';
 
 /**
  * This service is generally responsible for passing any sort of data between
@@ -18,7 +18,8 @@ export class CrossComponentDataService {
   sortOrder$ = this.sortOrderSource.asObservable();
 
   private groupingSource = new BehaviorSubject<GroupingOptions>({
-    groupBy: GroupByKeys.None
+    groupBy: GroupByKeys.None,
+    sort: GroupOrders.None
   });
   grouping$ = this.groupingSource.asObservable();
 

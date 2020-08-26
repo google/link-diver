@@ -64,9 +64,17 @@ export enum GroupingModifiers {
     Sort = 'sort:'
 }
 
+export enum GroupOrders {
+    None,
+    LexicoAscend,
+    LexicoDescend,
+    SizeAscend,
+    SizeDescend
+}
+
 export interface GroupingOptions {
     groupBy: GroupByKeys;
-    sort?: SortOptions;
+    sort: GroupOrders;
     regex?: RegExp;
     rewrite?: string;
 }
@@ -97,6 +105,5 @@ export enum SortOptions {
     DOM,
     DOMReverse,
     LexicoAscend,
-    LexicoDescend
+    LexicoDescend,
 }
-

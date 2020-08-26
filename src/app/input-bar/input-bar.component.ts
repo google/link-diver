@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CrossComponentDataService } from '../cross-component-data.service';
-import { FilterKeys, FilterOption, GroupByKeys, GroupingOptions, GroupingModifiers, SortOptions } from '../interfaces';
+import { FilterKeys, FilterOption, GroupByKeys, GroupingOptions, GroupingModifiers, GroupOrders } from '../interfaces';
 
 /**
  * This component is responsible for taking acceptin input from the user,
@@ -33,7 +33,7 @@ export class InputBarComponent implements OnInit {
     const newRegexArr: RegExp[] = [];
     options.filters.forEach((filter: FilterOption<any>) => {
       if (filter.filterKey === FilterKeys.Regex &&
-          filter.inputString !== 'rewrite-filter' &&
+          filter.inputString !== '' &&
           !filter.isNegation) {
         newRegexArr.push(new RegExp(`(${filter.inputString})`, 'g'));
       }
@@ -45,7 +45,8 @@ export class InputBarComponent implements OnInit {
   private parseInput(input: string) {
     const filters: FilterOption<any>[] = [];
     let grouping: GroupingOptions = {
-      groupBy: GroupByKeys.None
+      groupBy: GroupByKeys.None,
+      sort: GroupOrders.None
     };
 
     if (!input) {
@@ -66,7 +67,7 @@ export class InputBarComponent implements OnInit {
         if (grouping.groupBy === GroupByKeys.Rewrite) {
           filters.push({
             filterKey: FilterKeys.Regex,
-            inputString: 'rewrite-filter',
+            inputString: '',
             value: grouping.regex,
             isNegation: false,
             isValidInput: true
@@ -87,7 +88,11 @@ export class InputBarComponent implements OnInit {
   }
 
   private parseGrouping(stackInput: string[]): GroupingOptions {
-    const grouping: GroupingOptions = { groupBy: GroupByKeys.None };
+    const grouping: GroupingOptions = {
+      groupBy: GroupByKeys.None,
+      sort: GroupOrders.None
+    };
+
     let currGroupArg: string;
     while (stackInput.length > 0) {
       currGroupArg = stackInput.pop();
@@ -98,13 +103,21 @@ export class InputBarComponent implements OnInit {
         switch (currGroupArg) {
           case 'asc':
           case 'ascending':
-          case 'up':
-            grouping.sort = SortOptions.LexicoAscend;
+          case 'lexico-asc':
+            grouping.sort = GroupOrders.LexicoAscend;
             break;
           case 'desc':
           case 'descending':
-          case 'down':
-            grouping.sort = SortOptions.LexicoDescend;
+          case 'lexico-desc':
+            grouping.sort = GroupOrders.LexicoDescend;
+            break;
+          case 'size':
+          case 'size-asc':
+            grouping.sort = GroupOrders.SizeAscend;
+            break;
+          case 'size-desc':
+            grouping.sort = GroupOrders.SizeDescend;
+            break;
         }
       } else if (currGroupArg.startsWith(GroupingModifiers.Regex)) {
         currGroupArg = currGroupArg.substring(GroupingModifiers.Regex.length);
@@ -128,7 +141,10 @@ export class InputBarComponent implements OnInit {
     // To group we require the syntax '{ grouping_key }'
     console.error('Invalid input, to group links make sure there are ' +
     'spaces between the brackets and the grouping key.');
-    return { groupBy: GroupByKeys.None };
+    return {
+      groupBy: GroupByKeys.None,
+      sort: GroupOrders.None
+    };
   }
 
   /**

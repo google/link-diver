@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { CrossComponentDataService } from './cross-component-data.service';
-import { LinkData, SortOptions, GroupData, GroupByKeys, GroupingOptions } from './interfaces';
+import { LinkData, SortOptions, GroupData, GroupByKeys, GroupingOptions, GroupOrders } from './interfaces';
 
 /**
  * This pipe is responsible for intaking the filtered links and returning
@@ -82,6 +82,17 @@ export class GroupSort implements PipeTransform {
         size: groupedLinks[key].length
       };
     });
+
+    switch (grouping.sort) {
+      case GroupOrders.LexicoAscend:
+      case GroupOrders.LexicoDescend:
+      case GroupOrders.SizeAscend:
+        groupedArr.sort((a, b) => a.size - b.size);
+        break;
+      case GroupOrders.SizeDescend:
+        groupedArr.sort((a, b) => b.size - a.size);
+        break;
+    }
 
     this.ccdService.updateGroupCount({
       numGroups: groupedArr.length,
