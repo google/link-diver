@@ -28,36 +28,59 @@ On top of displaying each link to you, the Link Diver will send http get request
  
 Link Diver will also filter links for you based on a regular expression you provide or by some of the metadata mentioned earlier.
  
-If you are only interested in filtering by a regular expression, simply write your expression into the textbox at the top of the page and press enter. Link Diver will then only display to you links that contain that regular expression somewhere in the link and will highlight the matches in red for each link. If however you want to filter in combination with other parameters, you will have to enter your regular expression in JSON format, like so:
-> {"regex":"^https://www[.]google[.]com"}.
+If you are only interested in filtering by a regular expression, simply write your expression into the textbox at the top of the page and press enter. Link Diver will then only display to you links that contain that regular expression somewhere in the link and will highlight the matches in red for each link. If however you want to filter in combination with other parameters, you will have to use the regexp modifier, like so:
+> regexp:^https://www[.]google[.]com
  
-To filter links by one of (or a combination of) their metadata attributes, you will also have to use a JSON format. Simply make the JSON key the metadata attribute you want to filter by, make the value the result you desire. For example if I wanted to filter for links coming from an anchor tag, I would type:
-> {"tagName":"A"}
+To filter links by one of (or a combination of) their metadata attributes, you can use a similar format. Each metadata attribute has it's own modifier which are listed below. Simply write the modifier of the metadata attribute you want to filter by, followed by a comma and the value you want. For example if I wanted to filter for links coming from an anchor tag, I would type:
+> tag:A
+
+To use a combination of these filtering arguments simply seperate the arguments with a space. For example to filter for links that are not visible and had a successful status code in combination with a regular expression you could do:
+> regexp:^https://www[.]google[.]com visible:false status_ok:true
  
-The following are all metadata you can filter by:
+The following are all of the modifieres you can use to filter:
  
+- regexp (Regular Expression)
 - host (Host)
 - visible (Visible)
-- tagName (Tag Source)
-- contentType (Content Type)
-- status (Status Code)
-- statusOk (Whether or not the status code is indicative of a succes or an error)
+- tag (Tag Source)
+- content_type (Content Type)
+- status_code (Status Code)
+- status_ok (Whether or not the status code is indicative of a succes or an error)
  
-Please note that to filter by an attribute of type boolean, such as visible or statusOk, you will have to indicate whether you want true or false results by making the value 0 or 1. For example to filter for links that are not visible and had a successful status code you could do:
-> {"visible":"0", "statusOk":"1"}
+Please note that to filter by host uses a regular expression to match your input to the links' host, so you do not have to write out the full host.
 
-***This syntax is not meant to be final, we will be updating the input syntax to be more user friendly in the next release***
+Similarly filter by content_type will filter for any links that contain the value you supply, so again you don't have to write out the full content type. Therefore if you wanted to filter for links with content type of image you could do:
+> content_type:image
+
+But if you only wanted png images you could write out the full content type instead:
+> content_type:image/png
+
+### Negation
+
+In addition to filtering for all of the criteria listed above, you can alos filter for links that don't match a given critera. To do this simply prepend the 'not:' modifier in front of the filtering argument. For example to filter for links that do not come from an anchor tag, input the following:
+> not:tag:a
+
+As another example to filter for links that do not contain a match for the regular expression 'github[.]com', you would input:
+> not:regexp:github[.]com
  
 ### Grouping
  
-In addition to filtering, you can also include "group" as a key in the input JSON to have Link Diver group the links by one of the metadata attributes mentioned in the Filtering section. You can group by any of the metadata attributes mentioned there. For example to group by host and filter for 200 status code, you would input:
-> {"group":"host", "status":"200"}
+In addition to filtering, you can also have Link Diver group the links by one of the metadata attributes mentioned in the Filtering section. To group, wrap the attribute you want to group by with brackets and make sure to put spaces inbetween the brackets and the key. For example to group by host and filter for 200 status code, you would input:
+> status_code:200 { host }
  
-In addition to the aforementioned metadata attributes you could also group by href if you wanted duplicate URLs to be grouped together.
+In addition to the aforementioned metadata attributes you could also group by url if you wanted duplicate URLs to be grouped together.
+
+Below is a list of all the keys you can use to group the links by.
+
+- url
+- host
+- visible
+- tag
+- status_code
+- status_ok
+- content_type
  
 Similarly to how you can collapse and expand individual links, you can also collapse and expand groups by clicking anywhere on the blue group header.
-
-***This syntax is not meant to be final, we will be updating the input syntax to be more user friendly in the next release***
  
 ### Sorting
  
