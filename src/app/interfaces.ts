@@ -68,7 +68,6 @@ export interface GroupingOptions {
     groupBy: GroupByKeys;
     sort?: SortOptions;
     regex?: RegExp;
-    regexStr?: string;
     rewrite?: string;
 }
 

@@ -32,7 +32,9 @@ export class InputBarComponent implements OnInit {
     // We need to scan filters for regex so we can highlight matches
     const newRegexArr: RegExp[] = [];
     options.filters.forEach((filter: FilterOption<any>) => {
-      if (filter.filterKey === FilterKeys.Regex && !filter.isNegation) {
+      if (filter.filterKey === FilterKeys.Regex &&
+          filter.inputString !== 'rewrite-filter' &&
+          !filter.isNegation) {
         newRegexArr.push(new RegExp(`(${filter.inputString})`, 'g'));
       }
     });
@@ -64,7 +66,7 @@ export class InputBarComponent implements OnInit {
         if (grouping.groupBy === GroupByKeys.Rewrite) {
           filters.push({
             filterKey: FilterKeys.Regex,
-            inputString: grouping.regexStr,
+            inputString: 'rewrite-filter',
             value: grouping.regex,
             isNegation: false,
             isValidInput: true
@@ -108,7 +110,6 @@ export class InputBarComponent implements OnInit {
         currGroupArg = currGroupArg.substring(GroupingModifiers.Regex.length);
         grouping.groupBy = GroupByKeys.Rewrite;
         grouping.regex = new RegExp(currGroupArg);
-        grouping.regexStr = currGroupArg;
       } else if (currGroupArg.startsWith(GroupingModifiers.Rewrite)) {
         currGroupArg = currGroupArg.substring(GroupingModifiers.Rewrite.length);
         grouping.rewrite = currGroupArg;
