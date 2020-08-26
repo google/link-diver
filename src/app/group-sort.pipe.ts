@@ -24,10 +24,10 @@ export class GroupSort implements PipeTransform {
 
     switch (sortOrder) {
       case SortOptions.LexicoAscend:
-        links.sort(this.lexicographicComp);
+        links.sort((a, b) => this.lexicographicComp(a, b, 'href'));
         break;
       case SortOptions.LexicoDescend:
-        links.sort((a, b) => -1 * this.lexicographicComp(a, b));
+        links.sort((a, b) => -1 * this.lexicographicComp(a, b, 'href'));
         break;
       case SortOptions.DOM:
         links.sort((a, b) => a.domId - b.domId);
@@ -85,7 +85,11 @@ export class GroupSort implements PipeTransform {
 
     switch (grouping.sort) {
       case GroupOrders.LexicoAscend:
+        groupedArr.sort((a, b) => this.lexicographicComp(a, b, 'key'));
+        break;
       case GroupOrders.LexicoDescend:
+        groupedArr.sort((a, b) => -1 * this.lexicographicComp(a, b, 'key'));
+        break;
       case GroupOrders.SizeAscend:
         groupedArr.sort((a, b) => a.size - b.size);
         break;
@@ -102,10 +106,10 @@ export class GroupSort implements PipeTransform {
     return groupedArr;
   }
 
-  private lexicographicComp(first: LinkData, second: LinkData): number {
-    if (first.href < second.href) {
+  private lexicographicComp(first: any, second: any, key: string): number {
+    if (first[key] < second[key]) {
       return -1;
-    } else if (first.href > second.href) {
+    } else if (first[key] > second[key]) {
       return 1;
     } else {
       return 0;
