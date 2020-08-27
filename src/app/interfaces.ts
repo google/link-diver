@@ -41,6 +41,7 @@ export interface FilterOption<T> {
     value: T;
     isNegation: boolean;
     isValidInput: boolean;
+    isHighlightableRegex: boolean;
 }
 
 /**

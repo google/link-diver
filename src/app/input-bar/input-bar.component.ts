@@ -27,9 +27,7 @@ export class InputBarComponent implements OnInit {
     // We need to scan filters for regex so we can highlight matches
     const newRegexArr: RegExp[] = [];
     options.filters.forEach((filter: FilterOption<any>) => {
-      if (filter.filterKey === FilterKeys.Regex &&
-          filter.inputString !== '' &&
-          !filter.isNegation) {
+      if (filter.isHighlightableRegex) {
         newRegexArr.push(new RegExp(`(${filter.inputString})`, 'g'));
       }
     });
@@ -58,15 +56,17 @@ export class InputBarComponent implements OnInit {
     while (stackInput.length > 0) {
       currInputArg = stackInput.pop();
       if (currInputArg === '{') {
-        grouping = this.parseGrouping(stackInput);
+        grouping = this.consumeAndParseGrouping(stackInput);
         if (grouping.groupBy === GroupByKeys.Rewrite) {
-          // An empty inputString tells us to not highlight this regex filter
+          // We want to implicitly filter (but not highlight) any regexs that
+          // are part of a rewrite rule
           filters.push({
             filterKey: FilterKeys.Regex,
             inputString: '',
             value: grouping.regex,
             isNegation: false,
-            isValidInput: true
+            isValidInput: true,
+            isHighlightableRegex: false
           });
         }
       } else {
@@ -91,7 +91,7 @@ export class InputBarComponent implements OnInit {
    * starting right after the opening bracket.
    * @return { GroupingOptions } The constructed GroupingOptions object.
    */
-  private parseGrouping(stackInput: string[]): GroupingOptions {
+  private consumeAndParseGrouping(stackInput: string[]): GroupingOptions {
     const grouping: GroupingOptions = {
       groupBy: GroupByKeys.None,
       sort: GroupOrders.None
@@ -103,24 +103,31 @@ export class InputBarComponent implements OnInit {
       if (currGroupArg === '}') {
         return grouping;
       } else if (currGroupArg.startsWith(GroupingModifiers.Sort)) {
+        const original = new RegExp(currGroupArg);
         currGroupArg = currGroupArg.substring(GroupingModifiers.Sort.length);
         switch (currGroupArg) {
           case 'asc':
           case 'ascending':
           case 'lexico-asc':
+          case 'lex-asc':
             grouping.sort = GroupOrders.LexicoAscend;
+            this.newInput = this.newInput.replace(original, 'sort:lex-asc');
             break;
           case 'desc':
           case 'descending':
           case 'lexico-desc':
+          case 'lex-desc':
             grouping.sort = GroupOrders.LexicoDescend;
+            this.newInput = this.newInput.replace(original, 'sort:lex-desc');
             break;
           case 'size':
           case 'size-asc':
             grouping.sort = GroupOrders.SizeAscend;
+            this.newInput = this.newInput.replace(original, 'sort:size-asc');
             break;
           case 'size-desc':
             grouping.sort = GroupOrders.SizeDescend;
+            this.newInput = this.newInput.replace(original, 'sort:size-desc');
             break;
         }
       } else if (currGroupArg.startsWith(GroupingModifiers.Regex)) {
@@ -165,7 +172,8 @@ export class InputBarComponent implements OnInit {
       inputString: str,
       value: undefined,
       isNegation: false,
-      isValidInput: true
+      isValidInput: true,
+      isHighlightableRegex: false
     };
 
     this.parseNegation(filterOption);
@@ -182,6 +190,7 @@ export class InputBarComponent implements OnInit {
       // We assume a lack of modifier indicates a regex filter
       filterOption.filterKey = FilterKeys.Regex;
       filterOption.value = new RegExp(filterOption.inputString);
+      filterOption.isHighlightableRegex = !filterOption.isNegation;
     }
 
     return filterOption;
@@ -232,6 +241,7 @@ export class InputBarComponent implements OnInit {
         break;
       // Cases where value should be a regular expression
       case FilterKeys.Regex:
+        filter.isHighlightableRegex = !filter.isNegation;
       case FilterKeys.Host:
         filter.value = new RegExp(filter.inputString);
         break;
