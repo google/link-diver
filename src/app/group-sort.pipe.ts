@@ -79,7 +79,8 @@ export class GroupSort implements PipeTransform {
       return {
         key: key,
         list: groupedLinks[key],
-        size: groupedLinks[key].length
+        size: groupedLinks[key].length,
+        sizeProportion: groupedLinks[key].length / links.length
       };
     });
 

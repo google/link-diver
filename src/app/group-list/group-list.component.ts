@@ -44,10 +44,11 @@ export class GroupListComponent implements OnInit {
   }
 
   getSizeDescription(group: GroupData) {
-    let str = group.size.toString() + ' Match';
-    if (group.size != 1) {
+    let str = `${group.size.toString()} Match`;
+    if (group.size !== 1) {
       str += 'es';
     }
+    str += ` (${(group.sizeProportion * 100).toFixed(2)}%)`;
     return str;
   }
 

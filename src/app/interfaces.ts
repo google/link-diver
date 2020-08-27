@@ -97,6 +97,7 @@ export interface GroupData {
     key: string,
     list: LinkData[],
     size: number,
+    sizeProportion: number,
     hide?: boolean
 }
 
