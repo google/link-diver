@@ -76,19 +76,28 @@ export class FetchStatusService {
 
     const observables = mapArr.map((x) => {
       const statusSubject$ = x.subject;
-      return this.http.get(x.link, {
+      return this.http.head(x.link, {
         observe: 'response',
-        responseType: 'text'
       }).pipe(map((response: HttpResponseBase) => {
         return {
           response,
           statusSubject$,
         };
-      }), catchError((err: HttpResponseBase) => {
-        return of({
-          response: err,
-          statusSubject$,
-        });
+      }), catchError(() => {
+        return this.http.get(x.link, {
+          observe: 'response',
+          responseType: 'text'
+        }).pipe(map((response: HttpResponseBase) => {
+          return {
+            response,
+            statusSubject$,
+          };
+        }), catchError((err: HttpResponseBase) => {
+          return of({
+            response: err,
+            statusSubject$,
+          });
+        }));
       }));
     });
 
