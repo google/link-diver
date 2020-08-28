@@ -16,7 +16,7 @@ export class IndivLinkComponent implements OnInit {
 
   regexArr: RegExp[];
   expand: boolean;
-  showDOMSource: boolean;
+  showElementSource: boolean;
 
   @Input() link: LinkData;
 
@@ -30,8 +30,8 @@ export class IndivLinkComponent implements OnInit {
     this.ccdService.expandCollapseAll$.subscribe((expand: boolean) => {
       this.expand = expand;
     });
-    this.ccdService.showDOMSource$.subscribe((showSource: boolean) => {
-      this.showDOMSource = showSource;
+    this.ccdService.showElementSource$.subscribe((showSource: boolean) => {
+      this.showElementSource = showSource;
     });
   }
 

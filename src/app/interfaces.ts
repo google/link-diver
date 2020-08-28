@@ -84,4 +84,3 @@ export enum SortOptions {
     LexicoAscend,
     LexicoDescend
 }
-

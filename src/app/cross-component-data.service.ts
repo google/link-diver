@@ -23,8 +23,8 @@ export class CrossComponentDataService {
   private filterOptionsSource = new BehaviorSubject<FilterOption<any>[]>([]);
   filters$ = this.filterOptionsSource.asObservable();
 
-  private showDOMSource = new BehaviorSubject<boolean>(false);
-  showDOMSource$ = this.showDOMSource.asObservable();
+  private showElementSource = new BehaviorSubject<boolean>(false);
+  showElementSource$ = this.showElementSource.asObservable();
 
   private groupCountSource = new BehaviorSubject<GroupCount>(undefined);
   groupCount$ = this.groupCountSource.asObservable();
@@ -50,8 +50,8 @@ export class CrossComponentDataService {
     this.filterOptionsSource.next(newFilters);
   }
 
-  updateShowDOMSource(newShowSource: boolean) {
-    this.showDOMSource.next(newShowSource);
+  updateShowElementSource(newShowSource: boolean) {
+    this.showElementSource.next(newShowSource);
   }
 
   updateGroupCount(newCount: GroupCount) {
