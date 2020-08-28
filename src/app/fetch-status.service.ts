@@ -66,6 +66,16 @@ export class FetchStatusService {
     });
   }
 
+  /**
+   * Goes through every link is statusMap, fetches its status and content type
+   * and pushes them to the corresponding BehaviorSubject in the map entry.
+   * Uses HEAD requests to get the status, but in the case of an error, it tries
+   * sending a GET request in case there is a discrepency.
+   * @param { Map<string, BehaviorSubject<Status>> } statusMap A map that
+   * coontains the each link to be fetched as the key and behavior subject that
+   * each corresponding LinkData is subscribed to that will receive the status
+   * and content type.
+   */
   private startFetching(statusMap: Map<string, BehaviorSubject<Status>>): void {
     const mapArr = Array.from(statusMap.entries()).map(([key, val]) => {
       return {
@@ -76,19 +86,28 @@ export class FetchStatusService {
 
     const observables = mapArr.map((x) => {
       const statusSubject$ = x.subject;
-      return this.http.get(x.link, {
+      return this.http.head(x.link, {
         observe: 'response',
-        responseType: 'text'
       }).pipe(map((response: HttpResponseBase) => {
         return {
           response,
           statusSubject$,
         };
-      }), catchError((err: HttpResponseBase) => {
-        return of({
-          response: err,
-          statusSubject$,
-        });
+      }), catchError(() => {
+        return this.http.get(x.link, {
+          observe: 'response',
+          responseType: 'text'
+        }).pipe(map((response: HttpResponseBase) => {
+          return {
+            response,
+            statusSubject$,
+          };
+        }), catchError((err: HttpResponseBase) => {
+          return of({
+            response: err,
+            statusSubject$,
+          });
+        }));
       }));
     });
 
