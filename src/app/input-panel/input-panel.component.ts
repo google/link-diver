@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChromeLinkService } from '../chrome-link.service';
+import { CrossComponentDataService } from '../cross-component-data.service';
 
 /**
  * A large parent component to hold sub-components that deal with input
@@ -13,10 +13,10 @@ export class InputPanelComponent implements OnInit {
 
   parent: string;
 
-  constructor(private chromeLinkService: ChromeLinkService) { }
+  constructor(private ccdService: CrossComponentDataService) { }
 
   ngOnInit(): void {
-    this.chromeLinkService.parent$.subscribe((str: string) => this.parent = str);
+    this.ccdService.parent$.subscribe((str: string) => this.parent = str);
   }
 
 }

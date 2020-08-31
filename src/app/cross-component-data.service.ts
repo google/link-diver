@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SortOptions, GroupCount, FilterOption, GroupByKeys, GroupingOptions, GroupOrders } from './interfaces';
+import { SortOptions, GroupCount, FilterOption, GroupByKeys, LinkData, GroupingOptions, GroupOrders } from './interfaces';
 
 /**
  * This service is generally responsible for passing any sort of data between
@@ -10,6 +10,9 @@ import { SortOptions, GroupCount, FilterOption, GroupByKeys, GroupingOptions, Gr
   providedIn: 'root'
 })
 export class CrossComponentDataService {
+
+  private linkListSource = new BehaviorSubject<LinkData[]>([]);
+  linkList$ = this.linkListSource.asObservable();
 
   private regexArrSource = new BehaviorSubject<RegExp[]>([]);
   regexArr$ = this.regexArrSource.asObservable();
@@ -26,8 +29,8 @@ export class CrossComponentDataService {
   private filterOptionsSource = new BehaviorSubject<FilterOption<any>[]>([]);
   filters$ = this.filterOptionsSource.asObservable();
 
-  private showDOMSource = new BehaviorSubject<boolean>(false);
-  showDOMSource$ = this.showDOMSource.asObservable();
+  private showElementSource = new BehaviorSubject<boolean>(false);
+  showElementSource$ = this.showElementSource.asObservable();
 
   private groupCountSource = new BehaviorSubject<GroupCount>(undefined);
   groupCount$ = this.groupCountSource.asObservable();
@@ -35,7 +38,14 @@ export class CrossComponentDataService {
   private expandCollapseSource = new BehaviorSubject<boolean>(false);
   expandCollapseAll$ = this.expandCollapseSource.asObservable();
 
+  private parentSource = new BehaviorSubject<string>('');
+  parent$ = this.parentSource.asObservable();
+
   constructor() { }
+
+  updateLinks(newLinks: LinkData[]) {
+    this.linkListSource.next(newLinks);
+  }
 
   updateRegex(newRegexArr: RegExp[]) {
     this.regexArrSource.next(newRegexArr);
@@ -53,8 +63,8 @@ export class CrossComponentDataService {
     this.filterOptionsSource.next(newFilters);
   }
 
-  updateShowDOMSource(newShowSource: boolean) {
-    this.showDOMSource.next(newShowSource);
+  updateShowElementSource(newShowSource: boolean) {
+    this.showElementSource.next(newShowSource);
   }
 
   updateGroupCount(newCount: GroupCount) {
@@ -63,6 +73,10 @@ export class CrossComponentDataService {
 
   expandCollapseAll(expand: boolean) {
     this.expandCollapseSource.next(expand);
+  }
+
+  updateParent(newParent: string) {
+    this.parentSource.next(newParent);
   }
 
 }

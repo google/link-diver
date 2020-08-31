@@ -4,13 +4,18 @@
 <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="refresh()">
         <mat-icon>refresh</mat-icon>
-        <span>Refresh</span>
+        <span>Reextract Links</span>
     </button>
-    <button mat-menu-item (click)="toggle()">
+    <button mat-menu-item (click)="toggleElementSource()">
         <mat-icon>code</mat-icon>
         <span>
-            <span [innerHTML]="showDOMSource ? 'Hide' : 'Show'"></span>
-            DOM Element Source
+            {{showElementSource ? 'Hide' : 'Show'}} DOM Element Source
+        </span>
+    </button>
+    <button mat-menu-item (click)="toggleFetchOnLaunch()">
+        <mat-icon>http</mat-icon>
+        <span>
+            {{fetchOnLaunch ? 'Disable' : 'Enable'}} Auto Fetch on Launch
         </span>
     </button>
     <button mat-menu-item (click)="exportLinks()">
@@ -19,6 +24,9 @@
     </button>
 </mat-menu>
 
+<button mat-stroked-button [disabled]="isFetching" (click)="fetch()">
+    Fetch Links
+</button>
 <button mat-stroked-button (click)="toggleAll(true)">
     Expand All
 </button>
