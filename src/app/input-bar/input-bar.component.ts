@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CrossComponentDataService } from '../cross-component-data.service';
-import { FilterKeys, FilterOption, GroupByKeys } from '../interfaces';
+import { FilterKeys, FilterOption, GroupByKeys, GroupingOptions, GroupingModifiers, GroupOrders } from '../interfaces';
 
 /**
  * This component is responsible for taking acceptin input from the user,
@@ -22,12 +22,12 @@ export class InputBarComponent implements OnInit {
   pushInput(): void {
     const options = this.parseInput(this.newInput);
     this.ccdService.updateFilters(options.filters);
-    this.ccdService.updateGroupingKey(options.groupBy);
+    this.ccdService.updateGroupingOptions(options.grouping);
 
     // We need to scan filters for regex so we can highlight matches
     const newRegexArr: RegExp[] = [];
     options.filters.forEach((filter: FilterOption<any>) => {
-      if (filter.filterKey === FilterKeys.Regex && !filter.isNegation) {
+      if (filter.isHighlightableRegex) {
         newRegexArr.push(new RegExp(`(${filter.inputString})`, 'g'));
       }
     });
@@ -37,46 +37,129 @@ export class InputBarComponent implements OnInit {
 
   private parseInput(input: string) {
     const filters: FilterOption<any>[] = [];
-    let groupBy: GroupByKeys = GroupByKeys.None;
+    let grouping: GroupingOptions = {
+      groupBy: GroupByKeys.None,
+      sort: GroupOrders.None
+    };
 
     if (!input) {
       return {
         filters,
-        groupBy
+        grouping
       };
     }
-    const splitInput = input.trim().split(' ');
 
-    for (let i = 0; i < splitInput.length; i++) {
-      if (splitInput[i] !== '{') {
-        const newFilter = this.parseArgument(splitInput[i]);
+    // We put each space seperated token in a stack
+    const stackInput = input.trim().split(' ').reverse();
+
+    let currInputArg: string;
+    while (stackInput.length > 0) {
+      currInputArg = stackInput.pop();
+      if (currInputArg === '{') {
+        grouping = this.consumeAndParseGrouping(stackInput);
+        if (grouping.groupBy === GroupByKeys.Rewrite) {
+          // We want to implicitly filter (but not highlight) any regexs that
+          // are part of a rewrite rule
+          filters.push({
+            filterKey: FilterKeys.Regex,
+            inputString: '',
+            value: grouping.regex,
+            isNegation: false,
+            isValidInput: true,
+            isHighlightableRegex: false
+          });
+        }
+      } else {
+        const newFilter = this.parseArgument(currInputArg);
         if (newFilter.isValidInput) {
           filters.push(newFilter);
         }
-      } else if (i + 2 >= splitInput.length || splitInput[i + 2] !== '}') {
-        // To group we require the syntax '{ grouping_key }'
-        console.error('Invalid input, to group links make sure there are ' +
-            'spaces between the brackets and the grouping key.');
-        break;
-      } else {
-        for (const key in GroupByKeys) {
-          if (GroupByKeys[key] === splitInput[i + 1]) {
-            groupBy = GroupByKeys[key];
-            break;
-          }
-        }
-        i += 2;
       }
     }
 
     return {
       filters,
-      groupBy
+      grouping
     };
   }
 
   /**
-   * Parses a full filter argument, parses it and constructs a FilterOption
+   * Takes a stack of inputs starting immediately after the opening bracket and
+   * parses each one, incoroprating it into a GroupingOptions object until it
+   * finds the closing bracket.
+   * @param { string[] } stackInput The input tokens as a stack of strings
+   * starting right after the opening bracket.
+   * @return { GroupingOptions } The constructed GroupingOptions object.
+   */
+  private consumeAndParseGrouping(stackInput: string[]): GroupingOptions {
+    const grouping: GroupingOptions = {
+      groupBy: GroupByKeys.None,
+      sort: GroupOrders.None
+    };
+
+    let currGroupArg: string;
+    while (stackInput.length > 0) {
+      currGroupArg = stackInput.pop();
+      if (currGroupArg === '}') {
+        return grouping;
+      } else if (currGroupArg.startsWith(GroupingModifiers.Sort)) {
+        const original = new RegExp(currGroupArg);
+        currGroupArg = currGroupArg.substring(GroupingModifiers.Sort.length);
+        switch (currGroupArg) {
+          case 'asc':
+          case 'ascending':
+          case 'lexico-asc':
+          case 'lex-asc':
+            grouping.sort = GroupOrders.LexicoAscend;
+            this.newInput = this.newInput.replace(original, 'sort:lex-asc');
+            break;
+          case 'desc':
+          case 'descending':
+          case 'lexico-desc':
+          case 'lex-desc':
+            grouping.sort = GroupOrders.LexicoDescend;
+            this.newInput = this.newInput.replace(original, 'sort:lex-desc');
+            break;
+          case 'size':
+          case 'size-asc':
+            grouping.sort = GroupOrders.SizeAscend;
+            this.newInput = this.newInput.replace(original, 'sort:size-asc');
+            break;
+          case 'size-desc':
+            grouping.sort = GroupOrders.SizeDescend;
+            this.newInput = this.newInput.replace(original, 'sort:size-desc');
+            break;
+        }
+      } else if (currGroupArg.startsWith(GroupingModifiers.Regex)) {
+        currGroupArg = currGroupArg.substring(GroupingModifiers.Regex.length);
+        grouping.groupBy = GroupByKeys.Rewrite;
+        grouping.regex = new RegExp(currGroupArg);
+      } else if (currGroupArg.startsWith(GroupingModifiers.Rewrite)) {
+        currGroupArg = currGroupArg.substring(GroupingModifiers.Rewrite.length);
+        grouping.rewrite = currGroupArg;
+      } else {
+        for (const key in GroupByKeys) {
+          if (GroupByKeys[key] === currGroupArg &&
+              grouping.groupBy === GroupByKeys.None &&
+              currGroupArg !== GroupByKeys.Rewrite) {
+            grouping.groupBy = GroupByKeys[key];
+            break;
+          }
+        }
+      }
+    }
+
+    // To group we require the syntax '{ grouping_key }'
+    console.error('Invalid input, to group links make sure there are ' +
+    'spaces between the brackets and the grouping key.');
+    return {
+      groupBy: GroupByKeys.None,
+      sort: GroupOrders.None
+    };
+  }
+
+  /**
+   * Takes a full filter argument, parses it and constructs a FilterOption
    * object filled with the relevant data.
    *
    * @param { string } str The full filter argument as a string
@@ -89,7 +172,8 @@ export class InputBarComponent implements OnInit {
       inputString: str,
       value: undefined,
       isNegation: false,
-      isValidInput: true
+      isValidInput: true,
+      isHighlightableRegex: false
     };
 
     this.parseNegation(filterOption);
@@ -106,6 +190,7 @@ export class InputBarComponent implements OnInit {
       // We assume a lack of modifier indicates a regex filter
       filterOption.filterKey = FilterKeys.Regex;
       filterOption.value = new RegExp(filterOption.inputString);
+      filterOption.isHighlightableRegex = !filterOption.isNegation;
     }
 
     return filterOption;
@@ -156,6 +241,7 @@ export class InputBarComponent implements OnInit {
         break;
       // Cases where value should be a regular expression
       case FilterKeys.Regex:
+        filter.isHighlightableRegex = !filter.isNegation;
       case FilterKeys.Host:
         filter.value = new RegExp(filter.inputString);
         break;
