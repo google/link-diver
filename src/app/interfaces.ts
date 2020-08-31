@@ -16,6 +16,7 @@ export interface LinkData {
     status?: number;
     statusOk?: boolean;
     contentType?: string;
+    rewrite?: string;
 }
 
 /**
@@ -32,10 +33,23 @@ export enum FilterKeys {
 }
 
 /**
+ * This defines a filter criteria to use in the filter pipe.
+ */
+export interface FilterOption<T> {
+    filterKey: FilterKeys;
+    inputString: string;
+    value: T;
+    isNegation: boolean;
+    isValidInput: boolean;
+    isHighlightableRegex: boolean;
+}
+
+/**
  * This defines the different keys the use can input to group by.
  */
 export enum GroupByKeys {
     None = 'none',
+    Rewrite = 'rewrite',
     URL = 'url',
     Host = 'host',
     Visible = 'visible',
@@ -46,14 +60,35 @@ export enum GroupByKeys {
 }
 
 /**
- * This defines a filter criteria to use in the filter pipe.
+ * Defines modifiers that can be added to the group input to add to the
+ * GroupingOptions.
  */
-export interface FilterOption<T> {
-    filterKey: FilterKeys;
-    inputString: string;
-    value: T;
-    isNegation: boolean;
-    isValidInput: boolean;
+export enum GroupingModifiers {
+    Regex = 'regexp:',
+    Rewrite = 'rewrite:',
+    Sort = 'sort:'
+}
+
+/**
+ * Enumerates the different ways groups themselves can be sorted.
+ */
+export enum GroupOrders {
+    None,
+    LexicoAscend,
+    LexicoDescend,
+    SizeAscend,
+    SizeDescend
+}
+
+/**
+ * Defines the settings used to group links by metadata or by a custom rewrite
+ * rule.
+ */
+export interface GroupingOptions {
+    groupBy: GroupByKeys;
+    sort: GroupOrders;
+    regex?: RegExp;
+    rewrite?: string;
 }
 
 /**
@@ -63,6 +98,7 @@ export interface GroupData {
     key: string,
     list: LinkData[],
     size: number,
+    sizeProportion: number,
     hide?: boolean
 }
 
