@@ -48,7 +48,6 @@ export class ChromeLinkService {
       } else {
         this.ngZone.run(() => {
           this.ccdService.updateLinks(response.linkList);
-          // this.linkListSource.next(response.linkList);
         });
       }
     });
@@ -56,7 +55,6 @@ export class ChromeLinkService {
     chrome.tabs.get(this.parentTabId, (parentTab) => {
       this.title.setTitle(parentTab.title + ' (Link Diver)');
       this.ccdService.updateParent(parentTab.url);
-      // this.parentSource.next(parentTab.url);
     });
   }
 
