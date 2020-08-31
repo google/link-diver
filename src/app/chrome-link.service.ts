@@ -2,9 +2,9 @@
 /// <reference types="chrome"/>
 
 import { Injectable, NgZone } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
 import { Title } from '@angular/platform-browser';
 import { LinkData } from './interfaces';
+import { CrossComponentDataService } from './cross-component-data.service';
 
 /**
  * This service is responsible for retreving links from the content script and
@@ -18,15 +18,10 @@ export class ChromeLinkService {
   private readonly noConnectionErrorMessage = `Parent site was not found,\
   please try reloading the parent site and relaunching the extension`;
 
-  private parentSource = new BehaviorSubject<string>('');
-  parent$ = this.parentSource.asObservable();
-
-  private linkListSource = new BehaviorSubject<LinkData[]>([]);
-  linkList$ = this.linkListSource.asObservable();
-
   private parentTabId: number;
 
-  constructor(private ngZone: NgZone, private title: Title) {
+  constructor(private ccdService: CrossComponentDataService,
+      private ngZone: NgZone, private title: Title) {
 
     chrome.tabs.getCurrent((currTab: chrome.tabs.Tab) => {
       this.parentTabId = currTab.openerTabId;
@@ -52,14 +47,16 @@ export class ChromeLinkService {
         console.error(response.errorMessage);
       } else {
         this.ngZone.run(() => {
-          this.linkListSource.next(response.linkList);
+          this.ccdService.updateLinks(response.linkList);
+          // this.linkListSource.next(response.linkList);
         });
       }
     });
 
     chrome.tabs.get(this.parentTabId, (parentTab) => {
       this.title.setTitle(parentTab.title + ' (Link Diver)');
-      this.parentSource.next(parentTab.url);
+      this.ccdService.updateParent(parentTab.url);
+      // this.parentSource.next(parentTab.url);
     });
   }
 

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SortOptions, GroupCount, FilterOption, GroupByKeys } from './interfaces';
+import { SortOptions, GroupCount, FilterOption, GroupByKeys, LinkData } from './interfaces';
 
 /**
  * This service is generally responsible for passing any sort of data between
@@ -10,6 +10,9 @@ import { SortOptions, GroupCount, FilterOption, GroupByKeys } from './interfaces
   providedIn: 'root'
 })
 export class CrossComponentDataService {
+
+  private linkListSource = new BehaviorSubject<LinkData[]>([]);
+  linkList$ = this.linkListSource.asObservable();
 
   private regexArrSource = new BehaviorSubject<RegExp[]>([]);
   regexArr$ = this.regexArrSource.asObservable();
@@ -32,7 +35,14 @@ export class CrossComponentDataService {
   private expandCollapseSource = new BehaviorSubject<boolean>(false);
   expandCollapseAll$ = this.expandCollapseSource.asObservable();
 
+  private parentSource = new BehaviorSubject<string>('');
+  parent$ = this.parentSource.asObservable();
+
   constructor() { }
+
+  updateLinks(newLinks: LinkData[]) {
+    this.linkListSource.next(newLinks);
+  }
 
   updateRegex(newRegexArr: RegExp[]) {
     this.regexArrSource.next(newRegexArr);
@@ -60,6 +70,10 @@ export class CrossComponentDataService {
 
   expandCollapseAll(expand: boolean) {
     this.expandCollapseSource.next(expand);
+  }
+
+  updateParent(newParent: string) {
+    this.parentSource.next(newParent);
   }
 
 }
