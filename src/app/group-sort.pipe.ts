@@ -24,10 +24,10 @@ export class GroupSort implements PipeTransform {
 
     switch (sortOrder) {
       case SortOptions.LexicoAscend:
-        links.sort((a, b) => this.lexicographicComp(a, b, 'href'));
+        links.sort(this.hrefComp);
         break;
       case SortOptions.LexicoDescend:
-        links.sort((a, b) => -1 * this.lexicographicComp(a, b, 'href'));
+        links.sort((a, b) => -1 * this.hrefComp(a, b));
         break;
       case SortOptions.DOM:
         links.sort((a, b) => a.domId - b.domId);
@@ -86,10 +86,10 @@ export class GroupSort implements PipeTransform {
 
     switch (grouping.sort) {
       case GroupOrders.LexicoAscend:
-        groupedArr.sort((a, b) => this.lexicographicComp(a, b, 'key'));
+        groupedArr.sort(this.groupingKeyComp);
         break;
       case GroupOrders.LexicoDescend:
-        groupedArr.sort((a, b) => -1 * this.lexicographicComp(a, b, 'key'));
+        groupedArr.sort((a, b) => -1 * this.groupingKeyComp(a, b));
         break;
       case GroupOrders.SizeAscend:
         groupedArr.sort((a, b) => a.size - b.size);
@@ -107,23 +107,16 @@ export class GroupSort implements PipeTransform {
     return groupedArr;
   }
 
-  /**
-   * Comparison function for arbitrary objects that compares lexicographically
-   * based on the attributes of the object corresponding to key.
-   * @param { any } first
-   * @param { any } second
-   * @param { string } key The key denoting which attribute should be used for
-   * the comparison.
-   * @return { number }
-   */
-  private lexicographicComp(first: any, second: any, key: string): number {
-    if (first[key] < second[key]) {
-      return -1;
-    } else if (first[key] > second[key]) {
-      return 1;
-    } else {
-      return 0;
-    }
+  private hrefComp(first: LinkData, second: LinkData) {
+    if (first.href < second.href) return -1;
+    else if (first.href > second.href) return 1;
+    else return 0;
+  }
+
+  private groupingKeyComp(first: GroupData, second: GroupData) {
+    if (first.key < second.key) return -1;
+    else if (first.key > second.key) return 1;
+    else return 0;
   }
 
   /**
