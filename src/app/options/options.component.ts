@@ -79,7 +79,7 @@ export class OptionsComponent implements OnInit {
   }
 
   exportLinks() {
-    const data = new Blob([this.linksToString()], {type: 'text/csv'});
+    const data = new Blob([this.linksToString()], { type: 'text/csv' });
     const textFile = window.URL.createObjectURL(data);
 
     chrome.downloads.download({
@@ -99,7 +99,6 @@ export class OptionsComponent implements OnInit {
   }
 
   fetch() {
-    console.log('Fetching', this.links);
     this.fetchService.fetch(this.links);
     this.isFetching = true;
   }

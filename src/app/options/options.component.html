@@ -24,7 +24,7 @@
     </button>
 </mat-menu>
 
-<button *ngIf="!isFetching" mat-stroked-button (click)="fetch()">
+<button mat-stroked-button [disabled]="isFetching" (click)="fetch()">
     Fetch Links
 </button>
 <button mat-stroked-button (click)="toggleAll(true)">
