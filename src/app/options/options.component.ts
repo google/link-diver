@@ -47,7 +47,8 @@ export class OptionsComponent implements OnInit {
         this.ccdService.updateShowElementSource(init.showElementSource);
         this.chromeLinkService.linkList$.subscribe((links: LinkData[]) => {
           this.links = links;
-          if (init.fetchOnLaunch) {
+          this.isFetching = false;
+          if (this.fetchOnLaunch) {
             this.fetch();
           }
         });
