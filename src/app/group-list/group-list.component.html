@@ -1,7 +1,6 @@
 <ul>
-    <li *ngFor="let group of links | filterByRegex: regex : filters
-            | groupSort: key : order">
-        <div class="header" *ngIf="key" (click)="toggle(group)">
+    <li *ngFor="let group of links | filter: filters | groupSort: grouping : order">
+        <div class="header" *ngIf="showHeader" (click)="toggle(group)">
             <span class="larger">{{group.key}}</span>
             <span class="group-count larger">
                 {{getSizeDescription(group)}}

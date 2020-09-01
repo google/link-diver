@@ -2,10 +2,9 @@
 /// <reference types="chrome"/>
 
 import { Injectable, NgZone } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { FetchStatusService } from './fetch-status.service';
 import { Title } from '@angular/platform-browser';
 import { LinkData } from './interfaces';
+import { CrossComponentDataService } from './cross-component-data.service';
 
 /**
  * This service is responsible for retreving links from the content script and
@@ -14,21 +13,15 @@ import { LinkData } from './interfaces';
 @Injectable({
   providedIn: 'root'
 })
-export class LinkService {
+export class ChromeLinkService {
 
   private readonly noConnectionErrorMessage = `Parent site was not found,\
   please try reloading the parent site and relaunching the extension`;
 
-  private parentSource = new BehaviorSubject<string>('');
-  parent$ = this.parentSource.asObservable();
-
-  private linkListSource = new BehaviorSubject<LinkData[]>([]);
-  linkList$ = this.linkListSource.asObservable();
-
   private parentTabId: number;
 
-  constructor(private fetchService: FetchStatusService,
-    private ngZone: NgZone, private title: Title) {
+  constructor(private ccdService: CrossComponentDataService,
+      private ngZone: NgZone, private title: Title) {
 
     chrome.tabs.getCurrent((currTab: chrome.tabs.Tab) => {
       this.parentTabId = currTab.openerTabId;
@@ -54,20 +47,15 @@ export class LinkService {
         console.error(response.errorMessage);
       } else {
         this.ngZone.run(() => {
-          this.setLinks(response.linkList);
-          this.fetchService.fetch(response.linkList);
+          this.ccdService.updateLinks(response.linkList);
         });
       }
     });
 
     chrome.tabs.get(this.parentTabId, (parentTab) => {
       this.title.setTitle(parentTab.title + ' (Link Diver)');
-      this.parentSource.next(parentTab.url);
+      this.ccdService.updateParent(parentTab.url);
     });
-  }
-
-  private setLinks(newLinks: LinkData[]): void {
-    this.linkListSource.next(newLinks);
   }
 
   highlightLink(link: LinkData): Promise<boolean> {

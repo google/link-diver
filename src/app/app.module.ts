@@ -15,10 +15,10 @@ import { AppComponent } from './app.component';
 import { LinkListComponent } from './link-list/link-list.component';
 import { HighlightMatchPipe } from './highlight-match.pipe';
 import { InputBarComponent } from './input-bar/input-bar.component';
-import { FilterByRegexPipe } from './filter-by-regex.pipe';
+import { FilterPipe } from './filter.pipe';
 import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
-import { ExpandCollapseAllComponent } from './expand-collapse-all/expand-collapse-all.component';
+import { OptionsComponent } from './options/options.component';
 import { GroupListComponent } from './group-list/group-list.component';
 import { GroupSortPipe } from './group-sort.pipe';
 import { GroupCountComponent } from './group-count/group-count.component';
@@ -29,10 +29,10 @@ import { GroupCountComponent } from './group-count/group-count.component';
     LinkListComponent,
     HighlightMatchPipe,
     InputBarComponent,
-    FilterByRegexPipe,
+    FilterPipe,
     IndivLinkComponent,
     InputPanelComponent,
-    ExpandCollapseAllComponent,
+    OptionsComponent,
     GroupListComponent,
     GroupSortPipe,
     GroupCountComponent

@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { LinkService } from '../link.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
-import { LinkData, SortOptions, GroupData } from '../interfaces';
+import { LinkData, SortOptions, GroupData, FilterOption, GroupByKeys, GroupingOptions } from '../interfaces';
 
 /**
  * This component is responsible for putting the links through the filtering and
@@ -15,28 +14,25 @@ import { LinkData, SortOptions, GroupData } from '../interfaces';
 export class GroupListComponent implements OnInit {
 
   order: SortOptions;
-  regex: string;
-  key: string;
-  filters: LinkData;
+  grouping: GroupingOptions;
+  filters: FilterOption<any>[];
   links: LinkData[];
+  showHeader: boolean = true;
 
-  constructor(private linkService: LinkService,
-    private ccdService: CrossComponentDataService) { }
+  constructor(private ccdService: CrossComponentDataService) { }
 
   ngOnInit(): void {
-    this.ccdService.regexStr.subscribe((newRegex: string) => {
-      this.regex = newRegex;
-    });
-    this.linkService.linkList$.subscribe((newLinks: LinkData[]) => {
+    this.ccdService.linkList$.subscribe((newLinks: LinkData[]) => {
       this.links = newLinks;
     });
-    this.ccdService.groupingKey$.subscribe((newKey: string) => {
-      this.key = newKey;
+    this.ccdService.grouping$.subscribe((newGrouping: GroupingOptions) => {
+      this.grouping = newGrouping;
+      this.showHeader = newGrouping.groupBy !== GroupByKeys.None;
     });
     this.ccdService.sortOrder$.subscribe((newOrder: SortOptions) => {
       this.order = newOrder;
     });
-    this.ccdService.filters$.subscribe((newFilters: LinkData) => {
+    this.ccdService.filters$.subscribe((newFilters: FilterOption<any>[]) => {
       this.filters = newFilters;
     });
   }
@@ -46,10 +42,11 @@ export class GroupListComponent implements OnInit {
   }
 
   getSizeDescription(group: GroupData) {
-    let str = group.size.toString() + ' Match';
-    if (group.size != 1) {
+    let str = `${group.size.toString()} Match`;
+    if (group.size !== 1) {
       str += 'es';
     }
+    str += ` (${(group.sizeProportion * 100).toFixed(2)}%)`;
     return str;
   }
 

@@ -2,7 +2,7 @@
     <div class="left-title">
         <div class="arrow" [ngClass]="{'down': expand}"></div>
         <a href={{link.href}} target="_blank"
-            [innerHTML]="link.href | highlightMatch: regex"
+            [innerHTML]="link.href | highlightMatch: regexArr"
             (click)="toggle()"></a>        
     </div>
     <div class="right-title">
@@ -13,7 +13,8 @@
         <div class="button-wrapper">
             <button mat-icon-button aria-label="highlight button" 
                 (click)="highlight();toggle()" 
-                [color]="link.highlighted ? 'accent' : 'black'">
+                [disabled]="!link.visible"
+                [color]="link.highlighted ? 'accent' : 'basic'">
                 <mat-icon>highlight</mat-icon>
             </button>  
         </div>
@@ -29,6 +30,6 @@
         </li>
     </ul>
 </div>
-<P *ngIf="expand && showDOMSource">
+<P *ngIf="expand && showElementSource">
     <code>{{link.source}}</code>
 </P>

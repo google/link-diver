@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { SortOptions, GroupCount, LinkData } from './interfaces';
+import { SortOptions, GroupCount, FilterOption, GroupByKeys, LinkData, GroupingOptions, GroupOrders } from './interfaces';
 
 /**
  * This service is generally responsible for passing any sort of data between
@@ -11,20 +11,26 @@ import { SortOptions, GroupCount, LinkData } from './interfaces';
 })
 export class CrossComponentDataService {
 
-  private regexSource = new BehaviorSubject<string>('');
-  regexStr = this.regexSource.asObservable();
+  private linkListSource = new BehaviorSubject<LinkData[]>([]);
+  linkList$ = this.linkListSource.asObservable();
+
+  private regexArrSource = new BehaviorSubject<RegExp[]>([]);
+  regexArr$ = this.regexArrSource.asObservable();
 
   private sortOrderSource = new BehaviorSubject<SortOptions>(SortOptions.DOM);
   sortOrder$ = this.sortOrderSource.asObservable();
 
-  private groupingKeySource = new BehaviorSubject<string>('');
-  groupingKey$ = this.groupingKeySource.asObservable();
+  private groupingSource = new BehaviorSubject<GroupingOptions>({
+    groupBy: GroupByKeys.None,
+    sort: GroupOrders.None
+  });
+  grouping$ = this.groupingSource.asObservable();
 
-  private filterOptionsSource = new BehaviorSubject<LinkData>(undefined);
+  private filterOptionsSource = new BehaviorSubject<FilterOption<any>[]>([]);
   filters$ = this.filterOptionsSource.asObservable();
 
-  private showDOMSource = new BehaviorSubject<boolean>(false);
-  showDOMSource$ = this.showDOMSource.asObservable();
+  private showElementSource = new BehaviorSubject<boolean>(false);
+  showElementSource$ = this.showElementSource.asObservable();
 
   private groupCountSource = new BehaviorSubject<GroupCount>(undefined);
   groupCount$ = this.groupCountSource.asObservable();
@@ -32,26 +38,33 @@ export class CrossComponentDataService {
   private expandCollapseSource = new BehaviorSubject<boolean>(false);
   expandCollapseAll$ = this.expandCollapseSource.asObservable();
 
+  private parentSource = new BehaviorSubject<string>('');
+  parent$ = this.parentSource.asObservable();
+
   constructor() { }
 
-  updateRegex(newRegex: string) {
-    this.regexSource.next(newRegex);
+  updateLinks(newLinks: LinkData[]) {
+    this.linkListSource.next(newLinks);
+  }
+
+  updateRegex(newRegexArr: RegExp[]) {
+    this.regexArrSource.next(newRegexArr);
   }
 
   updateOrder(newOrder: SortOptions) {
     this.sortOrderSource.next(newOrder);
   }
 
-  updateGroupingKey(newKey: string) {
-    this.groupingKeySource.next(newKey);
+  updateGroupingOptions(newGrouping: GroupingOptions) {
+    this.groupingSource.next(newGrouping);
   }
 
-  updateFilters(newFilters: LinkData) {
+  updateFilters(newFilters: FilterOption<any>[]) {
     this.filterOptionsSource.next(newFilters);
   }
 
-  updateShowDOMSource(newShowSource: boolean) {
-    this.showDOMSource.next(newShowSource);
+  updateShowElementSource(newShowSource: boolean) {
+    this.showElementSource.next(newShowSource);
   }
 
   updateGroupCount(newCount: GroupCount) {
@@ -60,6 +73,10 @@ export class CrossComponentDataService {
 
   expandCollapseAll(expand: boolean) {
     this.expandCollapseSource.next(expand);
+  }
+
+  updateParent(newParent: string) {
+    this.parentSource.next(newParent);
   }
 
 }
