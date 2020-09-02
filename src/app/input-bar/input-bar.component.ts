@@ -186,7 +186,7 @@ export class InputBarComponent implements OnInit {
     }
 
     // If the argument had no valid modifier
-    if (!filterOption.value) {
+    if (filterOption.value === undefined) {
       // We assume a lack of modifier indicates a regex filter
       filterOption.filterKey = FilterKeys.Regex;
       filterOption.value = new RegExp(filterOption.inputString);

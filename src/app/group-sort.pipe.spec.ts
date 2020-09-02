@@ -1,30 +1,43 @@
 import { GroupSortPipe } from './group-sort.pipe';
 import { TestBed } from '@angular/core/testing';
 import { CrossComponentDataService } from './cross-component-data.service';
-import { GroupCount, SortOptions } from './interfaces';
+import { GroupCount, SortOptions, LinkData, GroupByKeys, GroupOrders } from './interfaces';
 
 describe('GroupSortPipe', () => {
   let pipe: GroupSortPipe;
   let ccdService: CrossComponentDataService;
   let groupCount: GroupCount;
 
-  const mockTemplate = {
-    href: 'https://www.mocklink.com/page',
-    host: 'www.mocklink.com',
-    domId: 0,
-    tagName: 'A',
-  };
-
-  const mockList = [];
-  for (let i = 0; i < 3; i++) {
-    mockList.push({
-      href: mockTemplate.href + i.toString(),
-      host: mockTemplate.host,
-      domId: mockTemplate.domId + i,
-      visible: i !== 0,
-      tagName: mockTemplate.tagName
-    });
-  }
+  const mockList: LinkData[] = [
+    {
+      href: 'https://www.mocklink.com/page1',
+      host: 'www.mocklink.com',
+      domId: 0,
+      tagName: 'A',
+      visible: false,
+      source: '',
+      highlighted: false,
+      highlightId: ''
+    }, {
+      href: 'https://www.mocklink.com/page2',
+      host: 'www.mocklink.com',
+      domId: 1,
+      tagName: 'A',
+      visible: true,
+      source: '',
+      highlighted: false,
+      highlightId: ''
+    }, {
+      href: 'https://www.mocklink.com/page3',
+      host: 'www.mocklink.com',
+      domId: 2,
+      tagName: 'A',
+      visible: true,
+      source: '',
+      highlighted: false,
+      highlightId: ''
+    }
+  ];
 
   beforeEach(() => {
     TestBed
@@ -43,15 +56,23 @@ describe('GroupSortPipe', () => {
   });
 
   it('should group all links under the same host', () => {
-    const groups = pipe.transform(mockList, 'host', SortOptions.DOM);
+    const grouping = {
+      groupBy: GroupByKeys.Host,
+      sort: GroupOrders.None
+    };
+    const groups = pipe.transform(mockList, grouping, SortOptions.DOM);
     expect(groupCount.numGroups).toEqual(1);
     expect(groups.length).toEqual(1);
-    expect(groups[0].key).toEqual(mockTemplate.host);
+    expect(groups[0].key).toEqual(mockList[0].host);
     expect(groups[0].list).toEqual(mockList);
   });
 
   it('should group links in two groups by visibility', () => {
-    const groups = pipe.transform(mockList, 'visible', SortOptions.DOM);
+    const grouping = {
+      groupBy: GroupByKeys.Visible,
+      sort: GroupOrders.None
+    };
+    const groups = pipe.transform(mockList, grouping, SortOptions.DOM);
     expect(groupCount.numGroups).toEqual(2);
     expect(groups.length).toEqual(2);
     const keysArr = groups.map((group) => group.key);
@@ -61,8 +82,12 @@ describe('GroupSortPipe', () => {
 
   it('should sort links by reverse order without grouping', () => {
     // We create a copy because the pipe sorts in place
-    const mockListCopy = mockList.map((link) => link);
-    const groups = pipe.transform(mockListCopy, '', SortOptions.DOMReverse);
+    const grouping = {
+      groupBy: GroupByKeys.None,
+      sort: GroupOrders.None
+    };
+    const listCopy = mockList.map((link) => link);
+    const groups = pipe.transform(listCopy, grouping, SortOptions.DOMReverse);
     expect(groupCount.numGroups).toEqual(1);
     expect(groups.length).toEqual(1);
     expect(groups[0].list.reverse()).toEqual(mockList);
@@ -70,12 +95,31 @@ describe('GroupSortPipe', () => {
 
   it('should sort links backwards lexicographically without grouping', () => {
     // We create a copy because the pipe sorts in place
-    const mockListCopy = mockList.map((link) => link);
-    const groups = pipe.transform(mockListCopy, '', SortOptions.LexicoDescend);
+    const grouping = {
+      groupBy: GroupByKeys.None,
+      sort: GroupOrders.None
+    };
+    const listCopy = mockList.map((link) => link);
+    const groups = pipe.transform(listCopy, grouping, SortOptions.LexicoDescend);
     expect(groupCount.numGroups).toEqual(1);
     expect(groups.length).toEqual(1);
     // Links are already in lexicographical order, so we just expect a reversal
     expect(groups[0].list.reverse()).toEqual(mockList);
+  });
+
+  it('should group by rewrite', () => {
+    const grouping = {
+      groupBy: GroupByKeys.Rewrite,
+      sort: GroupOrders.LexicoDescend,
+      regex: /https?:[/][/]www[.]mocklink[.]com[/](page\d)/,
+      rewrite: '$1'
+    };
+    const groups = pipe.transform(mockList, grouping, SortOptions.DOM);
+    expect(groupCount.numGroups).toEqual(3);
+    expect(groups.length).toEqual(3);
+    expect(groups[0].key).toEqual('page3');
+    expect(groups[1].key).toEqual('page2');
+    expect(groups[2].key).toEqual('page1');
   });
 
 });

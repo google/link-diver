@@ -9,27 +9,34 @@ describe('highlightMatchPipe', () => {
   });
 
   it('should highlight a simple regex with only text', () => {
-    const regexAsStr = 'highlightMe';
-    const result = pipe.transform(mockUrl, regexAsStr);
+    const regexArr = [/(highlightMe)/];
+    const result = pipe.transform(mockUrl, regexArr);
     expect(result).toContain('<span class="red">highlightMe</span>');
   });
 
   it('should highlight a simple digit based regex', () => {
-    const regexAsStr = '\\d{5}';
-    const result = pipe.transform(mockUrl, regexAsStr);
+    const regexArr = [/(\d{5})/];
+    const result = pipe.transform(mockUrl, regexArr);
     expect(result).toContain('<span class="red">12345</span>');
   });
 
   it('should highlight the whole link with a full regex', () => {
-    const regexAsStr = 'https?://www[.]mockurl[.]com/[a-zA-Z\\d]+';
-    const result = pipe.transform(mockUrl, regexAsStr);
+    const regexArr = [/(https?:[/][/]www[.]mockurl[.]com[/][a-zA-Z\d]+)/];
+    const result = pipe.transform(mockUrl, regexArr);
     expect(result).toContain('<span class="red">https:');
     expect(result).toContain('12345</span>');
   });
 
   it('should not highlight anything', () => {
-    const regexAsStr = 'https?://www[.]wrongurl[.]com/[a-zA-Z\\d]+';
-    const result = pipe.transform(mockUrl, regexAsStr);
+    const regexArr = [/(https?:[/][/]www[.]wrongurl[.]com[/][a-zA-Z\d]+)/];
+    const result = pipe.transform(mockUrl, regexArr);
     expect(result).not.toContain('<span class="red">');
+  });
+
+  it('should highlight both regexs in the array', () => {
+    const regexArr = [/(highlightMe)/, /(\d{5})/];
+    const result = pipe.transform(mockUrl, regexArr);
+    expect(result).toContain('<span class="red">highlightMe</span>');
+    expect(result).toContain('<span class="red">12345</span>');
   });
 });

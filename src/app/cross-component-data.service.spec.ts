@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 
 import { CrossComponentDataService } from './cross-component-data.service';
-import { SortOptions, GroupCount } from './interfaces';
+import { SortOptions, GroupCount, GroupingOptions, GroupByKeys, GroupOrders, FilterOption, FilterKeys, LinkData } from './interfaces';
 
 describe('CrossComponentDataService', () => {
   let service: CrossComponentDataService;
@@ -15,14 +15,36 @@ describe('CrossComponentDataService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should properly update the regex', () => {
-    let regex: string;
-    const fakeRegex = 'FakeRegex';
-    service.regexStr.subscribe((newVal) => regex = newVal);
+  it('should properly update the links', () => {
+    let links: LinkData[];
+    const fakeLinkList = [{
+      href: 'https://www.mocklink.com/page1',
+      host: 'www.mocklink.com',
+      domId: 0,
+      tagName: 'A',
+      visible: false,
+      source: '',
+      highlighted: false,
+      highlightId: '',
+      status: 200,
+      statusOk: true,
+      contentType: 'text/html'
+    }];
+    service.linkList$.subscribe((newVal) => links = newVal);
     // Default value for regex
-    expect(regex).toEqual('');
-    service.updateRegex(fakeRegex);
-    expect(regex).toEqual(fakeRegex);
+    expect(links).toEqual([]);
+    service.updateLinks(fakeLinkList);
+    expect(links).toEqual(fakeLinkList);
+  });
+
+  it('should properly update the regex', () => {
+    let regexArr: RegExp[];
+    const fakeRegexArr = [/FakeRegex/];
+    service.regexArr$.subscribe((newVal) => regexArr = newVal);
+    // Default value for regex
+    expect(regexArr).toEqual([]);
+    service.updateRegex(fakeRegexArr);
+    expect(regexArr).toEqual(fakeRegexArr);
   });
 
   it('should properly update the sort order', () => {
@@ -35,43 +57,61 @@ describe('CrossComponentDataService', () => {
     expect(order).toEqual(fakeOrder);
   });
 
-  it('should properly update the grouping key', () => {
-    let key: string;
-    const fakeKey = 'FakeKey';
-    service.groupingKey$.subscribe((newVal) => key = newVal);
+  it('should properly update the grouping options', () => {
+    let grouping: GroupingOptions;
+    const fakeGropuing = {
+      groupBy: GroupByKeys.Rewrite,
+      sort: GroupOrders.SizeAscend,
+      regex: /www[.](fakeurl)[.]com/,
+      rewrite: '$1'
+    };
+    service.grouping$.subscribe((newVal) => grouping = newVal);
     // Default value for grouping key
-    expect(key).toEqual('');
-    service.updateGroupingKey(fakeKey);
-    expect(key).toEqual(fakeKey);
+    expect(grouping).toEqual({
+      groupBy: GroupByKeys.None,
+      sort: GroupOrders.None
+    });
+    service.updateGroupingOptions(fakeGropuing);
+    expect(grouping).toEqual(fakeGropuing);
   });
 
   it('should properly update the filter options', () => {
-    // We need to fix the design of the filterOptions before we write this test
-    // TODO: Once we have the new filtering system down, write this test
-    /* let filters: LinkData;
-    const fakeFilters = {
-      host: 'www.fakehost.com'
-    };
-    service.filters$.subscribe((newVal) => filters = newVal);
+    let filters: FilterOption<any>[];
+    const fakeFilters: FilterOption<any>[] = [{
+      filterKey: FilterKeys.Regex,
+      value: /wronglink/,
+      isNegation: true,
+      inputString: 'wronglink',
+      isValidInput: true,
+      isHighlightableRegex: false
+    }, {
+      filterKey: FilterKeys.TagName,
+      value: 'A',
+      isNegation: false,
+      inputString: 'A',
+      isValidInput: true,
+      isHighlightableRegex: false
+    }];
+    service.filters$.subscribe((newFilters) => filters = newFilters);
     // Default value for grouping key
-    expect(filters).toBe(undefined);
+    expect(filters).toEqual([]);
     service.updateFilters(fakeFilters);
-    expect(filters).toEqual(fakeFilters); */
+    expect(filters).toEqual(fakeFilters);
   });
 
   it('should properly update the show DOM option', () => {
     let option: boolean;
     const fakeOption = true;
-    service.showDOMSource$.subscribe((newVal) => option = newVal);
+    service.showElementSource$.subscribe((newVal) => option = newVal);
     // Default value for show DOM source
     expect(option).toEqual(false);
-    service.updateShowDOMSource(fakeOption);
+    service.updateShowElementSource(fakeOption);
     expect(option).toEqual(fakeOption);
   });
 
   it('should properly update the group count', () => {
-    let count: GroupCount = {numGroups: 2, numLinks: 20};
-    const fakeCount = {numGroups: 6, numLinks: 89};
+    let count: GroupCount = { numGroups: 2, numLinks: 20 };
+    const fakeCount = { numGroups: 6, numLinks: 89 };
     service.groupCount$.subscribe((newVal) => count = newVal);
     // Default value for group count
     expect(count).toEqual(undefined);
@@ -87,6 +127,16 @@ describe('CrossComponentDataService', () => {
     expect(option).toEqual(false);
     service.expandCollapseAll(fakeOption);
     expect(option).toEqual(fakeOption);
+  });
+
+  it('should properly update the parent url', () => {
+    let parent: string;
+    const fakeParent = 'www.mockparent.com';
+    service.parent$.subscribe((newVal) => parent = newVal);
+    // Default value for show DOM source
+    expect(parent).toEqual('');
+    service.updateParent(fakeParent);
+    expect(parent).toEqual(fakeParent);
   });
 
 });

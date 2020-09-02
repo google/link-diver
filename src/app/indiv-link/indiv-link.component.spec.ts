@@ -1,15 +1,15 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IndivLinkComponent } from './indiv-link.component';
-import { LinkService } from '../link.service';
 import { CrossComponentDataService } from '../cross-component-data.service';
 import { HighlightMatchPipe } from '../highlight-match.pipe';
 import { LinkData } from '../interfaces';
+import { ChromeLinkService } from '../chrome-link.service';
 
 describe('IndivLinkComponent', () => {
   let component: IndivLinkComponent;
   let fixture: ComponentFixture<IndivLinkComponent>;
-  const fakeLinkService = {
+  const fakeChromeLinkService = {
     highlightLink() {}
   };
   const ccdService = new CrossComponentDataService();
@@ -35,7 +35,7 @@ describe('IndivLinkComponent', () => {
         HighlightMatchPipe
       ],
       providers: [
-        { provide: LinkService, useValue: fakeLinkService},
+        { provide: ChromeLinkService, useValue: fakeChromeLinkService},
         { provide: CrossComponentDataService, useValue: ccdService}
       ]
     })
@@ -53,7 +53,28 @@ describe('IndivLinkComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  /*
-    add tests with ccdService
-  */
+  it('should listen for new regular expressions to highlight', ()=> {
+    const fakeRegexArr = [/(fakeRegex)/g, /(highlightThis)/g];
+    ccdService.updateRegex(fakeRegexArr);
+    expect(component.regexArr).toEqual(fakeRegexArr);
+  });
+
+  it('should expand and collapse properly', () => {
+    expect(component.expand).toEqual(false);
+    ccdService.expandCollapseAll(true);
+    expect(component.expand).toEqual(true);
+    component.toggle();
+    expect(component.expand).toEqual(false);
+    ccdService.expandCollapseAll(false);
+    expect(component.expand).toEqual(false);
+    component.toggle();
+    expect(component.expand).toEqual(true);
+  });
+
+  it('should respond to a toggle in showElementSource', () => {
+    ccdService.updateShowElementSource(true);
+    expect(component.showElementSource).toEqual(true);
+    ccdService.updateShowElementSource(false);
+    expect(component.showElementSource).toEqual(false);
+  });
 });

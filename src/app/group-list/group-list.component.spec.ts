@@ -1,48 +1,70 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { GroupListComponent } from './group-list.component';
-import { BehaviorSubject } from 'rxjs';
-import { LinkData } from '../interfaces';
-import { LinkService } from '../link.service';
-import { FilterByRegexPipe } from '../filter-by-regex.pipe';
+import { LinkData, SortOptions, GroupByKeys, GroupOrders, FilterKeys } from '../interfaces';
 import { GroupSortPipe } from '../group-sort.pipe';
+import { FilterPipe } from '../filter.pipe';
+import { CrossComponentDataService } from '../cross-component-data.service';
 
 describe('GroupListComponent', () => {
   let component: GroupListComponent;
   let fixture: ComponentFixture<GroupListComponent>;
+  let ccdService: CrossComponentDataService;
 
-  const mockTemplate = {
-    href: 'https://www.mocklink.com/page',
-    host: 'www.mocklink.com',
-    domId: 0,
-    visible: true,
-    tagName: 'A',
+  const mockList: LinkData[] = [
+    {
+      href: 'https://www.mocklink.com/page1',
+      host: 'www.mocklink.com',
+      domId: 0,
+      tagName: 'A',
+      visible: false,
+      source: '',
+      highlighted: false,
+      highlightId: ''
+    }, {
+      href: 'https://www.mocklink.com/page2',
+      host: 'www.mocklink.com',
+      domId: 1,
+      tagName: 'A',
+      visible: true,
+      source: '',
+      highlighted: false,
+      highlightId: ''
+    }, {
+      href: 'https://www.mocklink.com/page3',
+      host: 'www.mocklink.com',
+      domId: 2,
+      tagName: 'A',
+      visible: true,
+      source: '',
+      highlighted: false,
+      highlightId: ''
+    }
+  ];
+
+  const mockOrder = {
+    groupBy: GroupByKeys.Host,
+    sort: GroupOrders.SizeDescend
   };
 
-  const mockList = [];
-  for (let i = 0; i < 3; i ++) {
-    mockList.push({
-      href: mockTemplate.href + i.toString(),
-      host: mockTemplate.host,
-      domId: mockTemplate.domId + i,
-      visible: mockTemplate.visible,
-      tagName: mockTemplate.tagName
-    });
-  }
-
-  const fakeLinkService = {
-    linkList$: new BehaviorSubject<LinkData[]>([])
-  };
+  const mockFilters = [{
+    filterKey: FilterKeys.Regex,
+    value: /wwww[.]mocklink[.]com/,
+    isNegation: false,
+    isValidInput: true,
+    inputString: 'www[.]mocklink[.]com',
+    isHighlightableRegex: true
+  }];
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
         GroupListComponent,
-        FilterByRegexPipe,
+        FilterPipe,
         GroupSortPipe
       ],
       providers: [
-        { provide: LinkService, useValue: fakeLinkService}
+        CrossComponentDataService
       ]
     })
     .compileComponents();
@@ -50,13 +72,33 @@ describe('GroupListComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(GroupListComponent);
+    ccdService = TestBed.get(CrossComponentDataService);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    ccdService.updateLinks(mockList);
+    ccdService.updateOrder(SortOptions.LexicoAscend);
+    ccdService.updateGroupingOptions(mockOrder);
+    ccdService.updateFilters(mockFilters);
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  // Add tests to confirm we have proper group components
+  it('should receive the links when they are updated', () => {
+    expect(component.links).toEqual(mockList);
+  });
+
+  it('should receive the sort options when they are updated', () => {
+    expect(component.order).toEqual(SortOptions.LexicoAscend);
+  });
+
+  it('should receive the grouping options when they are updated', () => {
+    expect(component.grouping).toEqual(mockOrder);
+    expect(component.showHeader).toEqual(true);
+  });
+
+  it('should receive the filters when they are updated', () => {
+    expect(component.filters).toEqual(mockFilters);
+  });
 });

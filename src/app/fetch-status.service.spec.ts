@@ -7,11 +7,37 @@ describe('FetchStatusService', () => {
   let service: FetchStatusService;
   let httpMock: HttpTestingController;
 
-  const mockList = [];
-
-  mockList.push({ href: 'https://www.mocklink.com/page0' });
-  mockList.push({ href: 'https://www.mocklink.com/page1' });
-  mockList.push({ href: 'https://www.mocklink.com/page2' });
+  const mockList = [{
+    href: 'https://www.mocklink.com/page0',
+    host: '',
+    visible: true,
+    domId: 0,
+    tagName: 'a',
+    source: '',
+    highlighted: false,
+    highlightId: '',
+    expectedContentType: 'text/html'
+  }, {
+    href: 'https://www.mocklink.com/page1',
+    host: '',
+    visible: true,
+    domId: 0,
+    tagName: 'a',
+    source: '',
+    highlighted: false,
+    highlightId: '',
+    expectedContentType: 'application/json'
+  }, {
+    href: 'https://www.mocklink.com/page2',
+    host: '',
+    visible: true,
+    domId: 0,
+    tagName: 'a',
+    source: '',
+    highlighted: false,
+    highlightId: '',
+    expectedContentType: 'image/png'
+  }];
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -28,24 +54,21 @@ describe('FetchStatusService', () => {
   });
 
   it('should fill the mock list with responses', () => {
-
     service.fetch(mockList);
     mockList.forEach((link) => {
-      console.log(link);
       const request = httpMock.expectOne(link.href);
-      expect(request.request.method).toEqual('GET');
-      console.log(link.hasOwnProperty('mockContentType'));
-      // Testing
-      request.flush({
-        response: {
-          status: 200,
-          ok: true,
-          headers: {
-            has: (str) => true,
-            get: (str) => 'text/html'
-          }
+      expect(request.request.method).toEqual('HEAD');
+      request.flush('', {
+        headers: {
+          'Content-Type': link.expectedContentType
         }
       });
+    });
+
+    mockList.forEach((link) => {
+      expect(link['status']).toEqual(200);
+      expect(link['statusOk']).toEqual(true);
+      expect(link['contentType']).toEqual(link.expectedContentType);
     });
 
   });
