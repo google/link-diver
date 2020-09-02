@@ -1,7 +1,7 @@
 {
     "name": "Link Diver",
-    "version": "1.0",
-    "description": "A link diver tool for chrome.",
+    "version": "1.3",
+    "description": "Link Diver is a feature-rich tool that allows you to view all of the links on a webpage. With Link Dover you can filter links by a regular expression, highlight th links on the original page, and much more! ",
     "manifest_version": 2,
     "browser_action": {},
     "background" : {
