@@ -1,7 +1,7 @@
 {
     "name": "Link Diver",
     "version": "1.3",
-    "description": "Link Diver is a feature-rich tool that allows you to view all of the links on a webpage. With Link Diver you can filter links by a regular expression, highlight the links on the original page, and much more! ",
+    "description": "A feature-rich tool that extracts all of the links on a page. Filter links by a regex, highlight them on the original page, and more",
     "manifest_version": 2,
     "browser_action": {},
     "background" : {
