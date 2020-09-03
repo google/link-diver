@@ -17,6 +17,7 @@ export interface LinkData {
     statusOk?: boolean;
     contentType?: string;
     rewrite?: string;
+    editDistance?: number;
 }
 
 /**
@@ -118,5 +119,6 @@ export enum SortOptions {
     DOM,
     DOMReverse,
     LexicoAscend,
-    LexicoDescend
+    LexicoDescend,
+    Similarity
 }

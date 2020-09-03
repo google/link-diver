@@ -41,6 +41,9 @@ export class CrossComponentDataService {
   private parentSource = new BehaviorSubject<string>('');
   parent$ = this.parentSource.asObservable();
 
+  private approximateSearchSource = new BehaviorSubject<string>('');
+  approximateSearch$ = this.approximateSearchSource.asObservable();
+
   constructor() { }
 
   updateLinks(newLinks: LinkData[]) {
@@ -77,6 +80,10 @@ export class CrossComponentDataService {
 
   updateParent(newParent: string) {
     this.parentSource.next(newParent);
+  }
+
+  updateApproximateSearch(newString: string) {
+    this.approximateSearchSource.next(newString);
   }
 
 }

@@ -24,6 +24,10 @@ export class InputBarComponent implements OnInit {
     this.ccdService.updateFilters(options.filters);
     this.ccdService.updateGroupingOptions(options.grouping);
 
+    if (options.approximateSearch) {
+      this.ccdService.updateApproximateSearch(options.approximateSearch);
+    }
+
     // We need to scan filters for regex so we can highlight matches
     const newRegexArr: RegExp[] = [];
     options.filters.forEach((filter: FilterOption<any>) => {
@@ -41,11 +45,13 @@ export class InputBarComponent implements OnInit {
       groupBy: GroupByKeys.None,
       sort: GroupOrders.None
     };
+    let approximateSearch = '';
 
     if (!input) {
       return {
         filters,
-        grouping
+        grouping,
+        approximateSearch
       };
     }
 
@@ -69,6 +75,8 @@ export class InputBarComponent implements OnInit {
             isHighlightableRegex: false
           });
         }
+      } else if (currInputArg.startsWith('approx:')) {
+        approximateSearch = currInputArg.substring('approx:'.length);
       } else {
         const newFilter = this.parseArgument(currInputArg);
         if (newFilter.isValidInput) {
@@ -79,7 +87,8 @@ export class InputBarComponent implements OnInit {
 
     return {
       filters,
-      grouping
+      grouping,
+      approximateSearch
     };
   }
 

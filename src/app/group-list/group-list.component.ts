@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CrossComponentDataService } from '../cross-component-data.service';
 import { LinkData, SortOptions, GroupData, FilterOption, GroupByKeys, GroupingOptions } from '../interfaces';
+import { StringUtils } from 'turbocommons-ts';
 
 /**
  * This component is responsible for putting the links through the filtering and
@@ -34,6 +35,12 @@ export class GroupListComponent implements OnInit {
     });
     this.ccdService.filters$.subscribe((newFilters: FilterOption<any>[]) => {
       this.filters = newFilters;
+    });
+    this.ccdService.approximateSearch$.subscribe((newStr) => {
+      this.links.forEach((link) => {
+        link.editDistance = StringUtils.compareByLevenshtein(newStr, link.href);
+      });
+      this.ccdService.updateOrder(SortOptions.Similarity);
     });
   }
 
