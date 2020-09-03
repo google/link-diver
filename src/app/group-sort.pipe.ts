@@ -34,6 +34,10 @@ export class GroupSort implements PipeTransform {
         break;
       case SortOptions.DOMReverse:
         links.sort((a, b) => b.domId - a.domId);
+        break;
+      case SortOptions.Similarity:
+        links.sort((a, b) => a.editDistance - b.editDistance);
+        break;
     }
 
     let keyAttribute;

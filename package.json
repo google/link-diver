@@ -49,6 +49,7 @@
     "protractor": "~7.0.0",
     "ts-node": "~8.3.0",
     "tslint": "~6.1.0",
+    "turbocommons-ts": "^3.7.0",
     "typescript": "~3.8.3"
   }
 }
