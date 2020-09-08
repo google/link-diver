@@ -1,7 +1,7 @@
 {
     "name": "Link Diver",
     "version": "1.3",
-    "description": "Link Diver is a feature-rich tool that allows you to view all of the links on a webpage.",
+    "description": "Link Diver is a feature-rich tool that allows you to view all of the links on a webpage and much more!",
     "manifest_version": 2,
     "browser_action": {},
     "background" : {
