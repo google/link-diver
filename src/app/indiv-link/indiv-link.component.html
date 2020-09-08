@@ -28,6 +28,9 @@
         <li *ngIf="link.contentType">
             <span class="light">Content Type: </span>{{link.contentType}}
         </li>
+        <li *ngIf="link.editDistance !== undefined">
+            <span class="light">Edit Distance: </span>{{link.editDistance}}
+        </li>
     </ul>
 </div>
 <P *ngIf="expand && showElementSource">
