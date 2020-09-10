@@ -20,7 +20,7 @@ import { IndivLinkComponent } from './indiv-link/indiv-link.component';
 import { InputPanelComponent } from './input-panel/input-panel.component';
 import { OptionsComponent } from './options/options.component';
 import { GroupListComponent } from './group-list/group-list.component';
-import { GroupSort } from './group-sort.pipe';
+import { GroupSortPipe } from './group-sort.pipe';
 import { GroupCountComponent } from './group-count/group-count.component';
 
 @NgModule({
@@ -34,7 +34,7 @@ import { GroupCountComponent } from './group-count/group-count.component';
     InputPanelComponent,
     OptionsComponent,
     GroupListComponent,
-    GroupSort,
+    GroupSortPipe,
     GroupCountComponent
   ],
   imports: [
