@@ -6,9 +6,9 @@ Link Diver is a chrome extension to speed up understanding the links that can be
  
 For installation instruction please refer to the latest release which can be found [here](https://github.com/google/link-diver/releases):
 
-## Developer Instructions
+# Developer Instructions
 
-### How to build Link Diver from the source code
+## How to build Link Diver from the source code
 
 1. Make sure you have [npm installed](https://www.npmjs.com/get-npm) in your computer.
 2. Install the latest version of angular
