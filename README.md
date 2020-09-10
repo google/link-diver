@@ -8,7 +8,7 @@ For installation instruction please refer to the latest release which can be fou
 
 ## Developer Instructions
 
-### How to develop Link Diver
+### How to build Link Diver from the source code
 
 1. Make sure you have [npm installed](https://www.npmjs.com/get-npm) in your computer.
 2. Install the latest version of angular
@@ -20,7 +20,10 @@ npm install -g @angular/cli
 3. On the project directory, install all project dependencies using npm
 
 ```
-npm install
+npm install @types/chrome
+npm install @angular-devkit/build-angular
+npm install @angular/material
+npm install turbercommons-ts
 ```
 
 4. Build the extension
@@ -29,7 +32,13 @@ npm install
 ng build
 ```
 
-5. There will be a new directory under `dist` which can be used to install the extension to chrome
+5. There will be a new directory under `dist` which can be used to install the extension to chrome. 
+
+- On Chrome, type `chrome://extensiones` in the omnibox to get to the extensions page.
+- Turn on Develepor Mode in the top right corner
+- Click on Load Unpacked in the top left corner
+- Select the `angular-link-diver` directory inside of the `dist` directory as the directory you would like to unpack.
+
  
 ## User Manual
  
