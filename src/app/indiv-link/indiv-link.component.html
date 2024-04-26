@@ -1,10 +1,11 @@
 <div class="title" (click)="toggle()">
     <div class="left-title">
-        <div class="arrow" [ngClass]="{'down': expand}"></div>
-        <a href={{link.href}} target="_blank"
-            [innerHTML]="link.href | highlightMatch: regexArr"
-            (click)="toggle()"></a>        
+      <div class="arrow" [ngClass]="{'down': expand}"></div>
+      <a href="{{link.href}}" target="_blank"
+        [innerText]="link.href | highlightMatch: regexArr"
+        (click)="toggle()"></a>        
     </div>
+
     <div class="right-title">
         <span *ngIf="link.status !== null" 
             [ngClass]="{'status': true,'red': !link.statusOk}">
