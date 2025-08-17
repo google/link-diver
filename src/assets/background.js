@@ -9,19 +9,20 @@ function launchApp(activeTab) {
   });
 }
 
-// Listens for a click of the extension button at which point it launches
-// the extension in a new tab
-chrome.browserAction.onClicked.addListener(launchApp);
+// Listens for a click on the extension's toolbar icon
+chrome.action.onClicked.addListener(launchApp);
 
-// Creates an item in the context menu which allows the user to launch the app
-chrome.contextMenus.create({
-  title: 'Link Diver',
-  onclick: function(e) {
-    chrome.tabs.query({
-      active: true,
-      currentWindow: true
-    }, function(tabs) {
-      launchApp(tabs[0]);
-    });
+// Set up the context menu only once, when the extension is installed.
+chrome.runtime.onInstalled.addListener(() => {
+  chrome.contextMenus.create({
+    id: "launchApp",
+    title: 'Link Diver'
+  });
+});
+
+// Listens for a click on any context menu item
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+  if (info.menuItemId === "launchApp" && tab) {
+    launchApp(tab);
   }
 });
